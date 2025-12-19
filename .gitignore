@@ -1,5 +1,10 @@
-frontend/node_modules/
-frontend/.next/
-backend/bin/
-backend/obj/
-.env
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/OnlineCourseSystem.Auth/bin/Debug/net8.0
+/OnlineCourseSystem.Auth/obj/Debug/net8.0
+/OnlineCourseSystem.Auth/obj
+/GlobalResponse.Shared/bin/Debug/net8.0
+/GlobalResponse.Shared/obj
+/.vs
