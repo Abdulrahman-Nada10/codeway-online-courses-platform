@@ -1,10 +1,27 @@
-﻿################################################################################
+################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/OnlineCourseSystem.Auth/bin/Debug/net8.0
-/OnlineCourseSystem.Auth/obj/Debug/net8.0
-/OnlineCourseSystem.Auth/obj
-/GlobalResponse.Shared/bin/Debug/net8.0
-/GlobalResponse.Shared/obj
-/.vs
+# Backend folders
+backend/bin/
+backend/obj/
+OnlineCourseSystem.Auth/bin/Debug/net8.0
+OnlineCourseSystem.Auth/obj/Debug/net8.0
+OnlineCourseSystem.Auth/obj
+GlobalResponse.Shared/bin/Debug/net8.0
+GlobalResponse.Shared/obj
+
+# Frontend folders
+frontend/node_modules/
+frontend/.next/
+
+# Environment files
+.env
+
+# Visual Studio folders
+.vs/
+**/.vs/
+
+# General
+bin/
+obj/
