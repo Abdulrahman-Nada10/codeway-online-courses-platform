@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../CourseMangment.MicroService/CourseMangment.MicroService.csproj" Id="0797934c-8c41-428d-aa5f-90e8b66b0000" />
+  <Project Path="../GlobalResponse.Shared/GlobalResponse.Shared.csproj" />
+</Solution>
