@@ -13,7 +13,7 @@ namespace CourseMangment.MicroService.Application.Servicies
         public async Task<IEnumerable<CourseDto>> GetAllCoursesAsync()
         {
             var Repo = unitofwork.GetRepository<Course, Guid>();
-            var Courses = await Repo.GetAllAsync();
+            var Courses = await Repo.GetAllAsync(c=>c.Category);
             // Filter out deleted courses
             var activeCourses = Courses.Where(c => !c.IsDeleted);
             if (!activeCourses.Any())
@@ -28,7 +28,7 @@ namespace CourseMangment.MicroService.Application.Servicies
         public async Task<CourseDto> GetCourseByIdAsync(Guid id)
         {
             var Repo = unitofwork.GetRepository<Course, Guid>();
-            var course = await Repo.GetByIdAsync(id);
+            var course = await Repo.GetByIdAsync(id,c=>c.Category);
             if (course == null || course.IsDeleted)
             {
                 throw new KeyNotFoundException($"Course with ID {id} not found.");
@@ -41,7 +41,7 @@ namespace CourseMangment.MicroService.Application.Servicies
         public async Task<CourseDto> CreateAsync(CreateCourseDto createCourseDto)
         {
             var Repo = unitofwork.GetRepository<Course, Guid>();
-            // ⭐ Convert DTO to Entity using extension method
+            //  Convert DTO to Entity using extension method
             var course = createCourseDto.ToEntity();
             if(course is null)
             {
@@ -49,8 +49,9 @@ namespace CourseMangment.MicroService.Application.Servicies
             }
             await Repo.CreateAsync(course);
             await unitofwork.SaveChangesAsync();
+            var createdCourse = await Repo.GetByIdAsync(course.Id, c => c.Category);
             var courseDto = course.ToCourseDto();
-            return courseDto;
+            return createdCourse!.ToCourseDto();
             
         }
 
@@ -82,11 +83,13 @@ namespace CourseMangment.MicroService.Application.Servicies
             // Save changes
             await unitofwork.SaveChangesAsync();
 
+            var updatedCourse = await Repo.GetByIdAsync(id, c => c.Category);
+
             // Reload with category for complete response
-            var updatedCourse = await Repo.GetByIdAsync(course.Id);
+            //var updatedCourse = await Repo.GetByIdAsync(course.Id);
 
             // ⭐ Convert to response DTO
-            return updatedCourse.ToCourseDto();
+            return updatedCourse!.ToCourseDto();
 
         }
 
@@ -122,7 +125,7 @@ namespace CourseMangment.MicroService.Application.Servicies
         public async Task<IEnumerable<CourseDto>> GetDraftCoursesAsync()
         {
             var repo = unitofwork.GetRepository<Course, Guid>();
-            var courses = await repo.GetAllAsync();
+            var courses = await repo.GetAllAsync(c=>c.Category);
 
             // Filter draft courses that are not deleted
             return courses
@@ -133,7 +136,7 @@ namespace CourseMangment.MicroService.Application.Servicies
         public async Task<IEnumerable<CourseDto>> GetPublishedCoursesAsync()
         {
             var repo = unitofwork.GetRepository<Course, Guid>();
-            var courses = await repo.GetAllAsync();
+            var courses = await repo.GetAllAsync(c=>c.Category);
 
             // Filter draft courses that are not deleted
             return courses
@@ -211,7 +214,7 @@ namespace CourseMangment.MicroService.Application.Servicies
             }
 
             var repo = unitofwork.GetRepository<Course, Guid>();
-            var courses = await repo.GetAllAsync();
+            var courses = await repo.GetAllAsync(c=>c.Category);
 
             // Filter by category and exclude deleted
             return courses
@@ -229,7 +232,7 @@ namespace CourseMangment.MicroService.Application.Servicies
             }
 
             var repo = unitofwork.GetRepository<Course, Guid>();
-            var courses = await repo.GetAllAsync();
+            var courses = await repo.GetAllAsync(c=>c.Category);
 
             // Search in title and description
             return courses
@@ -243,7 +246,7 @@ namespace CourseMangment.MicroService.Application.Servicies
         public async Task<IEnumerable<CourseDto>> GetCoursesByLevelAsync(CourseLevel level)
         {
             var repo = unitofwork.GetRepository<Course, Guid>();
-            var courses = await repo.GetAllAsync();
+            var courses = await repo.GetAllAsync(c=>c.Category);
 
             return courses
                 .Where(c => c.Level == level && !c.IsDeleted)
@@ -254,7 +257,7 @@ namespace CourseMangment.MicroService.Application.Servicies
         public async Task<IEnumerable<CourseDto>> GetCoursesByPriceRangeAsync(decimal? minPrice, decimal? maxPrice)
         {
             var repo = unitofwork.GetRepository<Course, Guid>();
-            var courses = await repo.GetAllAsync();
+            var courses = await repo.GetAllAsync(c=>c.Category);
 
             var filteredCourses = courses.Where(c => !c.IsDeleted);
 
