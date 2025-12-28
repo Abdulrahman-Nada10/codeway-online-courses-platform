@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36518.9
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11312.151 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineCourseSystem.Auth", "OnlineCourseSystem.Auth\OnlineCourseSystem.Auth.csproj", "{EBBB211B-4949-468A-BFC5-86648D2E27C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalResponse.Shared", "GlobalResponse.Shared\GlobalResponse.Shared.csproj", "{AE8BC13D-98B9-4C6D-A6A7-D56240DBC50B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineCourseSystem.Notifications", "OnlineCourseSystem.Notifications\OnlineCourseSystem.Notifications.csproj", "{EEC88042-6308-43F5-81FC-3F85523AA02D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{AE8BC13D-98B9-4C6D-A6A7-D56240DBC50B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE8BC13D-98B9-4C6D-A6A7-D56240DBC50B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE8BC13D-98B9-4C6D-A6A7-D56240DBC50B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEC88042-6308-43F5-81FC-3F85523AA02D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEC88042-6308-43F5-81FC-3F85523AA02D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEC88042-6308-43F5-81FC-3F85523AA02D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEC88042-6308-43F5-81FC-3F85523AA02D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
