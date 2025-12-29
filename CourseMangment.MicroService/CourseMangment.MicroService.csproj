@@ -22,4 +22,8 @@
     <Folder Include="Infrastructure\Data\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GlobalResponse.Shared\GlobalResponse.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

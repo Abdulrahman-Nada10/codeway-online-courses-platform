@@ -186,6 +186,21 @@ namespace CourseMangment.MicroService.Controllers
 
             try
             {
+                //  Check for duplicate course title
+                var existingCourses = await _courseService.GetAllCoursesAsync();
+                var duplicateCourse = existingCourses.FirstOrDefault(c =>
+                    c.Title.Trim().ToLower() == dto.Title.Trim().ToLower());
+
+                if (duplicateCourse != null)
+                {
+                    var duplicateResponse = ApiResponse<CourseDto>.ErrorResponse(
+                        $"Course with title '{dto.Title}' already exists",
+                        new List<string> { "A course with this title is already in the system" },
+                        400
+                    );
+                    return BadRequest(duplicateResponse);
+                }
+
                 var course = await _courseService.CreateAsync(dto);
                 var response = ApiResponse<CourseDto>.SuccessResponse(
                     course,
@@ -200,7 +215,6 @@ namespace CourseMangment.MicroService.Controllers
                 return BadRequest(response);
             }
         }
-
         /// <summary>
         /// Update an existing course
         /// </summary>
@@ -227,6 +241,21 @@ namespace CourseMangment.MicroService.Controllers
 
             try
             {
+                //  Check if new title conflicts with another course
+                var existingCourses = await _courseService.GetAllCoursesAsync();
+                var duplicateCourse = existingCourses.FirstOrDefault(c =>
+                    c.Title.Trim().ToLower() == dto.Title.Trim().ToLower() && c.Id != id);
+
+                if (duplicateCourse != null)
+                {
+                    var duplicateResponse = ApiResponse<CourseDto>.ErrorResponse(
+                        $"Another course with title '{dto.Title}' already exists",
+                        new List<string> { "Cannot update to a title that is already in use" },
+                        400
+                    );
+                    return BadRequest(duplicateResponse);
+                }
+
                 var course = await _courseService.UpdateAsync(id, dto);
 
                 if (course == null)
@@ -249,7 +278,6 @@ namespace CourseMangment.MicroService.Controllers
                 return BadRequest(response);
             }
         }
-
         /// <summary>
         /// Delete a course (soft delete)
         /// </summary>

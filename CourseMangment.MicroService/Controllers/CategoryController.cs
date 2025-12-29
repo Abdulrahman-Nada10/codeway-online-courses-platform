@@ -84,6 +84,21 @@ namespace CourseMangment.MicroService.Controllers
 
             var repo = _unitOfWork.GetRepository<Category, int>();
 
+            // ⭐ Check for duplicate category name
+            var categories = await repo.GetAllAsync();
+            var existingCategory = categories.FirstOrDefault(c =>
+                c.Name.Trim().ToLower() == dto.Name.Trim().ToLower());
+
+            if (existingCategory != null)
+            {
+                var duplicateResponse = ApiResponse<Category>.ErrorResponse(
+                    $"Category with name '{dto.Name}' already exists",
+                    new List<string> { "A category with this name is already in the system" },
+                    400
+                );
+                return BadRequest(duplicateResponse);
+            }
+
             var category = new Category
             {
                 Name = dto.Name,
@@ -132,6 +147,21 @@ namespace CourseMangment.MicroService.Controllers
             {
                 var response = ApiResponse<Category>.NotFoundResponse("Category not found");
                 return NotFound(response);
+            }
+
+            // ⭐ Check if new name conflicts with another category
+            var categories = await repo.GetAllAsync();
+            var duplicateCategory = categories.FirstOrDefault(c =>
+                c.Name.Trim().ToLower() == dto.Name.Trim().ToLower() && c.Id != id);
+
+            if (duplicateCategory != null)
+            {
+                var duplicateResponse = ApiResponse<Category>.ErrorResponse(
+                    $"Another category with name '{dto.Name}' already exists",
+                    new List<string> { "Cannot update to a name that is already in use" },
+                    400
+                );
+                return BadRequest(duplicateResponse);
             }
 
             category.Name = dto.Name;
