@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineCourseSystem.Auth", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalResponse.Shared", "GlobalResponse.Shared\GlobalResponse.Shared.csproj", "{AE8BC13D-98B9-4C6D-A6A7-D56240DBC50B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CourseMangment.MicroService", "CourseMangment.MicroService\CourseMangment.MicroService.csproj", "{21B00231-EDD4-FEF4-110E-9BF39C1E40F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{AE8BC13D-98B9-4C6D-A6A7-D56240DBC50B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE8BC13D-98B9-4C6D-A6A7-D56240DBC50B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE8BC13D-98B9-4C6D-A6A7-D56240DBC50B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21B00231-EDD4-FEF4-110E-9BF39C1E40F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21B00231-EDD4-FEF4-110E-9BF39C1E40F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21B00231-EDD4-FEF4-110E-9BF39C1E40F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21B00231-EDD4-FEF4-110E-9BF39C1E40F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
