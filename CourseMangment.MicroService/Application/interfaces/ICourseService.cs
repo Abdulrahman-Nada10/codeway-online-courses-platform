@@ -1,4 +1,5 @@
 ﻿using CourseMangment.MicroService.Application.DTO_s;
+using CourseMangment.MicroService.Domain.Entities;
 using CourseMangment.MicroService.Domain.Enums;
 
 namespace CourseMangment.MicroService.Application.interfaces
@@ -28,6 +29,12 @@ namespace CourseMangment.MicroService.Application.interfaces
         Task<IEnumerable<CourseDto>> GetCoursesByLevelAsync(CourseLevel level);
         Task<IEnumerable<CourseDto>> GetCoursesByPriceRangeAsync(decimal? minPrice, decimal? maxPrice);
         Task<IEnumerable<CourseDto>> SearchCoursesAsync(string searchTerm);
+        /// <summary>
+        /// 
+        /// </summary>
+       
+        /// <returns></returns>
+        Task<PagedResultDto<CourseDto>> GetCoursesWithFilterAsync(CourseQueryParameters query);
 
 
 

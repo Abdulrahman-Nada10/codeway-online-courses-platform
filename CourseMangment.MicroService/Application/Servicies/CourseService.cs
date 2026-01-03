@@ -4,6 +4,7 @@ using CourseMangment.MicroService.Application.Mapping;
 using CourseMangment.MicroService.Domain.Entities;
 using CourseMangment.MicroService.Domain.Enums;
 using CourseMangment.MicroService.Domain.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 
 namespace CourseMangment.MicroService.Application.Servicies
 {
@@ -274,6 +275,69 @@ namespace CourseMangment.MicroService.Application.Servicies
             return filteredCourses.ToCourseDtoList();
         }
 
+        /////
+        /// new git 
+        public async Task<PagedResultDto<CourseDto>> GetCoursesWithFilterAsync(CourseQueryParameters query)
+        {
+            var repo = unitofwork.GetRepository<Course, Guid>();
+
+            // هنا بنشتغل بنفس النمط: Repo + UnitOfWork
+            var coursesQuery = repo.GetQueryable(c => c.Category)
+                                   .Where(c => !c.IsDeleted);
+
+            if (!string.IsNullOrWhiteSpace(query.Search))
+            {
+                var search = query.Search.Trim();
+                coursesQuery = coursesQuery.Where(c =>
+                    c.Title.Contains(search) ||
+                    (c.Description != null && c.Description.Contains(search)));
+            }
+
+            if (query.CategoryId.HasValue)
+                coursesQuery = coursesQuery.Where(c => c.CategoryId == query.CategoryId.Value);
+
+            if (query.Level.HasValue)
+                coursesQuery = coursesQuery.Where(c => c.Level == query.Level.Value);
+
+            if (query.MinPrice.HasValue)
+                coursesQuery = coursesQuery.Where(c => c.Price >= query.MinPrice.Value);
+
+            if (query.MaxPrice.HasValue)
+                coursesQuery = coursesQuery.Where(c => c.Price <= query.MaxPrice.Value);
+
+            var totalCount = await coursesQuery.CountAsync();
+
+            var pageNumber = query.PageNumber <= 0 ? 1 : query.PageNumber;
+            var pageSize = query.PageSize <= 0 ? 10 : query.PageSize;
+
+            var items = await coursesQuery
+                .OrderBy(c => c.Title)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(c => new CourseDto
+                {
+                    Id = c.Id,
+                    Title = c.Title,
+                    Description = c.Description,
+                    Price = c.Price,
+                    Duration = c.Duration,
+                    Level = c.Level,
+                    Status = c.Status,
+                    CategoryId = c.CategoryId,
+                    CategoryName = c.Category.Name,
+                    CreatedAt = c.CreatedAt,
+                    UpdatedAt = c.UpdatedAt
+                })
+                .ToListAsync();
+
+            return new PagedResultDto<CourseDto>
+            {
+                Items = items,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalCount = totalCount
+            };
+        }
 
 
 

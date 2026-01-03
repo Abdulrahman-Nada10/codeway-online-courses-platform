@@ -15,7 +15,11 @@ namespace CourseMangment.MicroService.Infrastructure.Contexts
         //Entities 
         public DbSet<Course> Courses { get; set; }
         public DbSet<Category> Categories { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public DbSet<CourseQueryParameters> CourseQueryParameters { get; set; }
 
 
-    }
+        }
 }

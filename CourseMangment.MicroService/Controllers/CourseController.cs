@@ -1,6 +1,7 @@
 ﻿// Controllers/CourseController.cs
 using CourseMangment.MicroService.Application.DTO_s;
 using CourseMangment.MicroService.Application.interfaces;
+using CourseMangment.MicroService.Domain.Entities;
 using CourseMangment.MicroService.Domain.Enums;
 using GlobalResponse.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -361,5 +362,23 @@ namespace CourseMangment.MicroService.Controllers
             );
             return Ok(successResponse);
         }
+        /// <summary>
+        /// Search, filter and paginate courses
+        /// </summary>
+        [HttpGet("filter")]
+        [ProducesResponseType(typeof(ApiResponse<PagedResultDto<CourseDto>>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<ApiResponse<PagedResultDto<CourseDto>>>> GetWithFilter(
+            [FromQuery] CourseQueryParameters query)
+        {
+            var result = await _courseService.GetCoursesWithFilterAsync(query);
+
+            var response = ApiResponse<PagedResultDto<CourseDto>>.SuccessResponse(
+                result,
+                "Courses filtered successfully"
+            );
+
+            return Ok(response);
+        }
+
     }
 }

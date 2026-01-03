@@ -15,5 +15,9 @@ namespace CourseMangment.MicroService.Domain.Repository
         //  these overloads for eager loading
         Task<IEnumerable<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includes);
         Task<TEntity?> GetByIdAsync(TKey id, params Expression<Func<TEntity, object>>[] includes);
+        /////
+        ///
+        // الجديدة للـpagination / filtering
+        IQueryable<TEntity> GetQueryable(params Expression<Func<TEntity, object>>[] includes);
     }
 }

@@ -68,7 +68,23 @@ namespace CourseMangment.MicroService.Infrastructure.Repositories
             => context.Set<TEntity>().Remove(entity);
 
 
-        
+        /////
+        ///new get 
+        public IQueryable<TEntity> GetQueryable(params Expression<Func<TEntity, object>>[] includes)
+        {
+            IQueryable<TEntity> query = context.Set<TEntity>();
+
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            return query;
+        }
+
 
     }
 }
