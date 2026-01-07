@@ -18,13 +18,13 @@ namespace CourseOnline.Auth.Services.Implementation
         private readonly IUserRepository _userRepository;
         private readonly IUserRepositoryLogin _userRepo;
         public readonly IUserVerificationRepository _userVerification;
-
-        public AuthService(IUserRepository userRepository, IUserRepositoryLogin userRepo, IUserVerificationRepository userVerification)
+        private readonly IJwtService _jwtService;
+        public AuthService(IUserRepository userRepository, IUserRepositoryLogin userRepo, IUserVerificationRepository userVerification, IJwtService jwtService)
         {
             _userRepository = userRepository;
             _userRepo = userRepo;
             _userVerification = userVerification;
-
+            _jwtService = jwtService;
         }
         public string Register(RegisterRequestDto dto)
         {
@@ -96,7 +96,7 @@ namespace CourseOnline.Auth.Services.Implementation
 
 
         }
-        public string Login(LoginRequestDto dto)
+        public object Login(LoginRequestDto dto)
         {
             var user = _userRepo.GetbyLogin(dto.login);
 
@@ -119,12 +119,18 @@ namespace CourseOnline.Auth.Services.Implementation
 
             if (user.IsLocked && user.LockoutEnd > DateTime.Now)
                 return $"Account locked until {user.LockoutEnd}";
-
+            if (string.IsNullOrEmpty(user.PasswordHash) || string.IsNullOrEmpty(user.PasswordSalt))
+            {
+                return "This account uses social login";
+            }
             if (string.IsNullOrEmpty(user.PasswordHash) || string.IsNullOrEmpty(user.PasswordSalt))
             {
                 return "Password not set for this user";
             }
-
+            if (string.IsNullOrEmpty(user.PasswordHash) || string.IsNullOrEmpty(user.PasswordSalt))
+            {
+                return  "This account uses social login" ;
+            }
             // التحقق من الباسورد
             bool passwordCorrect = PasswordHasher.VerifyPassword(dto.Password, user.PasswordHash, user.PasswordSalt);
 
@@ -135,11 +141,17 @@ namespace CourseOnline.Auth.Services.Implementation
                 return "Invalid password";
             }
 
+            var token = _jwtService.GenerateToken(user.UserID, user.UserName, user.Email);
 
-            // Reset Failed Attempts عند النجاح
-            _userRepo.ResetFailedLoginAttempts(user.UserID);
-
-            return "Login successful";
+            return new
+            {
+                Success = true,
+                Message = "Login successful",
+                UserID = user.UserID,
+                Token = token
+            };
+          
+          
         }
 
         public void SendEmailVerification(long userId, string email)

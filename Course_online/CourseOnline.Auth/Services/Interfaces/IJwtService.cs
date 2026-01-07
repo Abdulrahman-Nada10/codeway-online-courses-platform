@@ -4,6 +4,6 @@ namespace CourseOnline.Auth.Services.Interfaces
 {
     public interface IJwtService
     {
-        string GenerateToken(User user);
+        string GenerateToken(long userId, string userName, string email);
     }
 }

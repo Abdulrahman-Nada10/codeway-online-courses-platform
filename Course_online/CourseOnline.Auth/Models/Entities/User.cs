@@ -19,7 +19,7 @@ namespace CourseOnline.Auth.Models.Entities
         public bool IsLocked { get; set; }
    public bool    IsActive { get; set; }
       public string  ResetPasswordCode { get; set; }
-       
+      public string AuthType="Local"; // Local | Google | Facebook | GitHub
         public DateTime? ResetPasswordExpiry { get; set; }  // Nullable عشان يكون ممكن يكون null
         public DateTime? LockoutEnd { get; set; }
 
