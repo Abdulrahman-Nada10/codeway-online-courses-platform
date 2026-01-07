@@ -24,5 +24,7 @@ namespace CourseMangment.MicroService.Application.DTO_s
         // Metadata
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public double Rating { get; set; }          //
+        public int EnrollmentsCount { get; set; }   //
     }
 }

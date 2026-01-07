@@ -20,8 +20,12 @@ namespace CourseMangment.MicroService.Application.Mapping
                 CategoryId = course.CategoryId,
                 CategoryName = course.Category?.Name ?? "Unknown",
                 CreatedAt = course.CreatedAt,
-                UpdatedAt = course.UpdatedAt
+                UpdatedAt = course.UpdatedAt,
+                ///
+                Rating = course.Rating,                 // 
+                EnrollmentsCount = course.EnrollmentsCount // 
             };
+        
         }
         // CreateCourseDto → Course
         public static Course ToEntity(this CreateCourseDto dto)

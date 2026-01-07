@@ -1,4 +1,5 @@
-﻿using CourseMangment.MicroService.Application.DTO_s;
+﻿
+using CourseMangment.MicroService.Application.DTO_s;
 using CourseMangment.MicroService.Application.interfaces;
 using CourseMangment.MicroService.Application.Mapping;
 using CourseMangment.MicroService.Domain.Entities;
@@ -310,8 +311,36 @@ namespace CourseMangment.MicroService.Application.Servicies
             var pageNumber = query.PageNumber <= 0 ? 1 : query.PageNumber;
             var pageSize = query.PageSize <= 0 ? 10 : query.PageSize;
 
+            // Sorting
+            switch (query.SortBy?.ToLower())
+            {
+                case "newest":
+                    coursesQuery = query.SortDescending
+                        ? coursesQuery.OrderByDescending(c => c.CreatedAt)
+                        : coursesQuery.OrderBy(c => c.CreatedAt);
+                    break;
+
+                case "rating":
+                    coursesQuery = query.SortDescending
+                        ? coursesQuery.OrderByDescending(c => c.Rating)
+                        : coursesQuery.OrderBy(c => c.Rating);
+                    break;
+
+                case "enrollments":
+                    coursesQuery = query.SortDescending
+                        ? coursesQuery.OrderByDescending(c => c.EnrollmentsCount)
+                        : coursesQuery.OrderBy(c => c.EnrollmentsCount);
+                    break;
+
+                default:
+                    coursesQuery = query.SortDescending
+                        ? coursesQuery.OrderByDescending(c => c.Title)
+                        : coursesQuery.OrderBy(c => c.Title);
+                    break;
+            }
+
+            // Pagination + projection زي ما هي
             var items = await coursesQuery
-                .OrderBy(c => c.Title)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .Select(c => new CourseDto
@@ -329,6 +358,7 @@ namespace CourseMangment.MicroService.Application.Servicies
                     UpdatedAt = c.UpdatedAt
                 })
                 .ToListAsync();
+
 
             return new PagedResultDto<CourseDto>
             {

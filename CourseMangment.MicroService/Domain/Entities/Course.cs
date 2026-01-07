@@ -20,10 +20,15 @@ namespace CourseMangment.MicroService.Domain.Entities
 
         public int CategoryId { get; set; }
 
-        // Navigation property
+        // Navigation property//
 
         public Category Category { get; set; }
+        public double Rating { get; set; }        // أو float / decimal حسب ما تحبي
+        public int EnrollmentsCount { get; set; } // عدد الطلاب المسجلين
 
 
+      
     }
+
 }
+
