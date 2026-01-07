@@ -355,7 +355,9 @@ namespace CourseMangment.MicroService.Application.Servicies
                     CategoryId = c.CategoryId,
                     CategoryName = c.Category.Name,
                     CreatedAt = c.CreatedAt,
-                    UpdatedAt = c.UpdatedAt
+                    UpdatedAt = c.UpdatedAt,
+                    Rating = c.Rating,                 // 
+                    EnrollmentsCount = c.EnrollmentsCount // 
                 })
                 .ToListAsync();
 
