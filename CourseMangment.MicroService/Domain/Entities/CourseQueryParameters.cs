@@ -5,7 +5,7 @@ namespace CourseMangment.MicroService.Domain.Entities
     public class CourseQueryParameters:BaseEntity<Guid>
     {
         public string? Search { get; set; }
-        public int? CategoryId { get; set; }
+        //public int? CategoryId { get; set; }
         public CourseLevel? Level { get; set; }
         public decimal? MinPrice { get; set; }
         public decimal? MaxPrice { get; set; }
@@ -13,6 +13,17 @@ namespace CourseMangment.MicroService.Domain.Entities
         public int PageSize { get; set; } = 10;
         public string? SortBy { get; set; }      // "newest", "rating", "enrollments"
         public bool SortDescending { get; set; } = true; // الافتراضي تنازلي
+       
+        // بدل CategoryId واحد، نخليها ليست
+        public List<int>? CategoryIds { get; set; }
 
+        // فلتر على أقل Rating
+        public double? MinRating { get; set; }
+
+        // لغة الكورس ("en", "ar", ...)
+        public string? Language { get; set; }
+
+     
+     
     }
 }

@@ -25,9 +25,10 @@ namespace CourseMangment.MicroService.Domain.Entities
         public Category Category { get; set; }
         public double Rating { get; set; }        // أو float / decimal حسب ما تحبي
         public int EnrollmentsCount { get; set; } // عدد الطلاب المسجلين
+        public string Language { get; set; } = "en";
 
 
-      
+
     }
 
 }

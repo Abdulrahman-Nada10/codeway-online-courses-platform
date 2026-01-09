@@ -293,9 +293,9 @@ namespace CourseMangment.MicroService.Application.Servicies
                     c.Title.Contains(search) ||
                     (c.Description != null && c.Description.Contains(search)));
             }
-
-            if (query.CategoryId.HasValue)
-                coursesQuery = coursesQuery.Where(c => c.CategoryId == query.CategoryId.Value);
+            // 1) CategoryIds
+            if (query.CategoryIds != null && query.CategoryIds.Any())
+                coursesQuery = coursesQuery.Where(c => query.CategoryIds.Contains(c.CategoryId));
 
             if (query.Level.HasValue)
                 coursesQuery = coursesQuery.Where(c => c.Level == query.Level.Value);
@@ -305,6 +305,14 @@ namespace CourseMangment.MicroService.Application.Servicies
 
             if (query.MaxPrice.HasValue)
                 coursesQuery = coursesQuery.Where(c => c.Price <= query.MaxPrice.Value);
+          
+            // 4) Rating
+            if (query.MinRating.HasValue)
+                coursesQuery = coursesQuery.Where(c => c.Rating >= query.MinRating.Value);
+
+            // 5) Language
+            if (!string.IsNullOrWhiteSpace(query.Language))
+                coursesQuery = coursesQuery.Where(c => c.Language == query.Language);
 
             var totalCount = await coursesQuery.CountAsync();
 
