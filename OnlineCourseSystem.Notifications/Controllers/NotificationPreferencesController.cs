@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GlobalResponse.Shared.Extensions;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using OnlineCourseSystem.Notifications.DTOs;
+using OnlineCourseSystem.Notifications.Features.NotificationPreference.Commands;
+using OnlineCourseSystem.Notifications.Features.NotificationPreference.Queries;
+using OnlineCourseSystem.Notifications.Features.Notifications.Commands.MarkAsRead;
 using OnlineCourseSystem.Notifications.Models;
 using OnlineCourseSystem.Notifications.Services;
-using GlobalResponse.Shared.Extensions;
 using System.Security.Claims;
 
 namespace OnlineCourseSystem.Notifications.Controllers
@@ -14,31 +18,26 @@ namespace OnlineCourseSystem.Notifications.Controllers
     [ApiController]
     public class NotificationPreferencesController : ControllerBase
     {
-        private readonly IPreferenceService _service;
+        private readonly IMediator _mediator;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NotificationPreferencesController"/> class.
-        /// </summary>
-        /// <param name="service">Service responsible for managing notification preferences.</param>
-        public NotificationPreferencesController(
-            IPreferenceService service)
+        public NotificationPreferencesController(IMediator mediator)
         {
-            _service = service;
+            _mediator = mediator;
         }
 
         /// <summary>
         /// Retrieves notification preferences for a specific user.
         /// </summary>
         /// <param name="userId">The unique identifier of the user.</param>
-        /// <returns>
-        /// Returns the notification preferences associated with the specified user.
-        /// </returns>
         /// <response code="200">Notification preferences returned successfully.</response>
-        /// <response code="500">User or notification preferences were not found.</response>
+        /// <response code="404">User or notification preferences were not found.</response>
         [HttpGet("{userId:guid}")]
         public async Task<IActionResult> Get(Guid userId)
         {
-            var result = await _service.GetAsync(userId);
+            var query = new GetNotificationPreferenceQuery(userId);
+
+            // Explicitly specify the result type as object? since IMediator.Send returns object? for non-generic IRequest
+            var result = await _mediator.Send(query);
 
             return this.OkResponse(
                 result,
@@ -62,10 +61,12 @@ namespace OnlineCourseSystem.Notifications.Controllers
             Guid userId,
             UpdateNotificationPreferenceDto request)
         {
-            await _service.UpdateAsync(userId, request);
+            var command = new UpdateNotificationPreferenceCommand(userId, request);
+
+            var result = await _mediator.Send(command);
 
             return this.OkResponse(
-                true,
+                result,
                 "Preferences updated successfully"
             );
         }

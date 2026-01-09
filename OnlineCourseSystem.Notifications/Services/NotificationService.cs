@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OnlineCourseSystem.Notifications.DTOs;
 using OnlineCourseSystem.Notifications.Models.Data;
 using OnlineCourseSystem.Notifications.Models.Enums;
-using OnlineCourseSystem.Notifications.Services.Repositories;
+using OnlineCourseSystem.Notifications.Services.UnitOfWork;
 using System.Data;
 
 namespace OnlineCourseSystem.Notifications.Services
@@ -11,7 +11,7 @@ namespace OnlineCourseSystem.Notifications.Services
     public class NotificationService : INotificationService
     {
         private readonly NotificationsDbContext _dbContext;
-        private readonly IUserReferenceRepository _userReferenceRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<NotificationService> _logger;
 
         
@@ -19,14 +19,24 @@ namespace OnlineCourseSystem.Notifications.Services
         private static readonly TimeSpan InitialRetryDelay = TimeSpan.FromMilliseconds(200); // Initial delay before retrying
 
         public NotificationService(NotificationsDbContext dbContext,
-                                   IUserReferenceRepository userReferenceRepository,
+                                   IUnitOfWork unitOfWork,
                                    ILogger<NotificationService> logger)
         {
             _dbContext = dbContext;
-            _userReferenceRepository = userReferenceRepository;
+            _unitOfWork = unitOfWork;
             _logger = logger;
         }
 
+        /// <summary>
+        /// Creates a notification and sends it to the specified users asynchronously.
+        /// </summary>
+        /// <remarks>If the operation fails due to a transient database error, the method retries the
+        /// operation up to a maximum number of attempts before propagating the exception. Logging is performed for both
+        /// successful and failed attempts.</remarks>
+        /// <param name="request">An object containing the notification details and the list of user IDs to receive the notification. The list
+        /// of user IDs must not be empty, and all users must exist.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="InvalidOperationException">Thrown if the list of user IDs is empty or if one or more specified users do not exist.</exception>
         public async Task CreateNotificationAsync(CreateNotificationDto request)
         {
             var distinctUserIds = request.UserIds.Distinct().ToList();
@@ -36,7 +46,7 @@ namespace OnlineCourseSystem.Notifications.Services
                 throw new InvalidOperationException("UserIds list cannot be empty.");
             }
 
-            var allUsersExist = await _userReferenceRepository.AllUsersExistAsync(distinctUserIds);
+            var allUsersExist = await _unitOfWork.UserReferences.AllUsersExistAsync(distinctUserIds);
 
             if (!allUsersExist)
             {
@@ -117,6 +127,10 @@ namespace OnlineCourseSystem.Notifications.Services
             }
         }
 
+
+        /// <summary>
+        /// Calculates the expiry date for a notification based on its type and, if applicable, the course end date.
+        /// </summary>
         private DateTime CalculateExpiry(NotificationType type, DateTime? courseEndDate)
         {
             return type switch
@@ -129,5 +143,34 @@ namespace OnlineCourseSystem.Notifications.Services
             };
         }
 
+
+        /// <summary>
+        /// Retrieves paginated notifications for a user, optionally filtered by read status.
+        /// </summary>
+        public async Task<List<UserNotificationDto>> GetUserNotificationsAsync(
+            Guid userId,
+            bool? isRead,
+            int pageNumber,
+            int pageSize)
+        {
+            if (!await _unitOfWork.UserReferences.ExistsAsync(userId))
+            {
+                throw new InvalidOperationException("User does not exist.");
+            }
+
+            var parameters = new[]
+            {
+                new SqlParameter("@UserId", userId),
+                new SqlParameter("@IsRead", isRead ?? (object)DBNull.Value),
+                new SqlParameter("@PageNumber", pageNumber),
+                new SqlParameter("@PageSize", pageSize)
+            };
+
+                return await _dbContext.Database
+                    .SqlQueryRaw<UserNotificationDto>(
+                        "EXEC sp_GetUserNotifications @UserId, @IsRead, @PageNumber, @PageSize",
+                        parameters)
+                    .ToListAsync();
+        }
     }
 }

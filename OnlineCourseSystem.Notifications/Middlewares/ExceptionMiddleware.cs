@@ -1,37 +1,136 @@
-﻿using GlobalResponse.Shared.Models;
+﻿using FluentValidation;
+using GlobalResponse.Shared.Models;
+using OnlineCourseSystem.Notifications.Exceptions;
+using System.Net;
+using System.Text.Json;
+using InvalidDataException = OnlineCourseSystem.Notifications.Exceptions.InvalidDataException;
 
-namespace OnlineCourseSystem.Notifications.Middlewares
+public class ExceptionMiddleware
 {
-    /// <summary>
-    /// Middleware to handle exceptions globally and return standardized error responses.
-    /// </summary>
-    public class ExceptionMiddleware
+    private readonly RequestDelegate _next;
+
+    public ExceptionMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate _next;
+        _next = next;
+    }
 
-        public ExceptionMiddleware(RequestDelegate next)
+    public async Task InvokeAsync(HttpContext context)
+    {
+        try
         {
-            _next = next;
+            await _next(context);
         }
-
-        public async Task InvokeAsync(HttpContext context)
+        catch (ValidationException ex)
         {
-            try
-            {
-                await _next(context);
-            }
-            catch (Exception ex)
-            {
-                var response = ApiResponse<object>.ErrorResponse(
-                    message: ex.Message,
-                    statusCode: StatusCodes.Status500InternalServerError
-                );
-
-                context.Response.StatusCode = response.StatusCode;
-                context.Response.ContentType = "application/json";
-
-                await context.Response.WriteAsJsonAsync(response);
-            }
+            await HandleValidation(context, ex);
         }
+        catch (DomainException ex)
+        {
+            await HandleDomainException(context, ex);
+        }
+        catch (Exception)
+        {
+            await HandleGeneric(context);
+        }
+    }
+
+    // =======================
+    // Validation (FluentValidation)
+    // =======================
+    private static Task HandleValidation(
+        HttpContext context,
+        ValidationException exception)
+    {
+        var errors = exception.Errors
+            .Select(e => e.ErrorMessage)
+            .ToList();
+
+        return WriteResponse(
+            context,
+            ApiResponse<object>.ErrorResponse(
+                "Validation failed",
+                errors,
+                (int)HttpStatusCode.BadRequest
+            )
+        );
+    }
+
+    // =======================
+    // Domain Exceptions
+    // =======================
+    private static Task HandleDomainException(
+        HttpContext context,
+        DomainException exception)
+    {
+        return exception switch
+        {
+            NotFoundException =>
+                WriteResponse(context,
+                    ApiResponse<object>.NotFoundResponse(exception.Message)),
+
+            AlreadyProcessedException =>
+                WriteResponse(context,
+                    ApiResponse<object>.ErrorResponse(
+                        exception.Message,
+                        statusCode: (int)HttpStatusCode.Conflict)),
+
+            ResourceExpiredException =>
+                WriteResponse(context,
+                    ApiResponse<object>.ErrorResponse(
+                        exception.Message,
+                        statusCode: (int)HttpStatusCode.Gone)),
+
+            AccessDeniedException =>
+                WriteResponse(context,
+                    ApiResponse<object>.ErrorResponse(
+                        exception.Message,
+                        statusCode: (int)HttpStatusCode.Forbidden)),
+
+            EmptyCollectionException or InvalidDataException =>
+                WriteResponse(context,
+                    ApiResponse<object>.ErrorResponse(
+                        exception.Message,
+                        statusCode: (int)HttpStatusCode.BadRequest)),
+
+            OperationFailedException =>
+                WriteResponse(context,
+                    ApiResponse<object>.ErrorResponse(
+                        exception.Message,
+                        statusCode: (int)HttpStatusCode.InternalServerError)),
+
+            _ =>
+                WriteResponse(context,
+                    ApiResponse<object>.ErrorResponse(
+                        exception.Message,
+                        statusCode: (int)HttpStatusCode.BadRequest))
+        };
+    }
+
+    // =======================
+    // Generic
+    // =======================
+    private static Task HandleGeneric(HttpContext context)
+    {
+        return WriteResponse(
+            context,
+            ApiResponse<object>.ErrorResponse(
+                "An unexpected error occurred",
+                statusCode: (int)HttpStatusCode.InternalServerError
+            )
+        );
+    }
+
+    // =======================
+    // Response Writer
+    // =======================
+    private static Task WriteResponse(
+        HttpContext context,
+        ApiResponse<object> response)
+    {
+        context.Response.StatusCode = response.StatusCode;
+        context.Response.ContentType = "application/json";
+
+        return context.Response.WriteAsync(
+            JsonSerializer.Serialize(response));
     }
 }

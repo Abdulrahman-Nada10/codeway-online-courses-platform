@@ -2,7 +2,7 @@
 using OnlineCourseSystem.Notifications.DTOs;
 using OnlineCourseSystem.Notifications.Models.Enums;
 
-namespace OnlineCourseSystem.Notifications.Validators
+namespace OnlineCourseSystem.Notifications.Validators.Notification
 {
     public class CreateNotificationValidator : AbstractValidator<CreateNotificationDto>
     {

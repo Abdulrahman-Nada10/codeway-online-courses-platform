@@ -1,12 +1,12 @@
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using OnlineCourseSystem.Notifications.Filters;
-using OnlineCourseSystem.Notifications.Middlewares;
 using OnlineCourseSystem.Notifications.Models.Data;
 using OnlineCourseSystem.Notifications.Services;
 using OnlineCourseSystem.Notifications.Services.Repositories;
-using OnlineCourseSystem.Notifications.Validators;
+using OnlineCourseSystem.Notifications.Services.UnitOfWork;
+using OnlineCourseSystem.Notifications.Validators.Notification;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,13 +19,19 @@ builder.Services.AddDbContext<NotificationsDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // =======================
-// Controllers + Filters
+// Controllers
 // =======================
 builder.Services.AddControllers(options =>
 {
-    options.Filters.Add<ValidationFilter>();
     options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
 });
+
+// =======================
+// FluentValidation
+// =======================
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateNotificationValidator>();
+
 
 // =======================
 // Swagger + XML Comments
@@ -43,22 +49,34 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // =======================
-// Services
+// MediatR (CQRS)
 // =======================
-builder.Services.AddScoped<INotificationService, NotificationService>();
-builder.Services.AddScoped<IPreferenceService, PreferenceService>();
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(
+        typeof(CreateNotificationValidator).Assembly
+    );
+});
 
-// =======================
-// Repositories
-// =======================
-builder.Services.AddScoped<INotificationPreferenceRepository, NotificationPreferenceRepository>();
-builder.Services.AddScoped<IUserReferenceRepository, UserReferenceRepository>();
+builder.Services.AddTransient(
+    typeof(IPipelineBehavior<,>),
+    typeof(ValidationBehavior<,>)
+);
 
 // =======================
 // FluentValidation
 // =======================
-builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateNotificationValidator>();
+
+// =======================
+// Unit of Work
+// =======================
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// =======================
+// Services
+// =======================
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 var app = builder.Build();
 
