@@ -15,5 +15,6 @@ namespace online_curess_task.Data
         public DbSet<Lesson> lessons { get; set; }
         public DbSet<Student> students { get; set; }
         public DbSet<ScormStatement> scormStatements { get; set; }
+        public DbSet<UserPreference> userPreferences { get; set; }
     }
 }

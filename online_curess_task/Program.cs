@@ -30,6 +30,7 @@ namespace online_curess_task
                  .AddEntityFrameworkStores<ApplicationDbContext>()
                  .AddDefaultTokenProviders();
             builder.Services.AddScoped<IScormStatmentRepository , ScormStatmentRepository>();
+            builder.Services.AddScoped<IUserPreferenceRepository , UserPreferenceRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IDbinitialize, Dbinitialize>();
             

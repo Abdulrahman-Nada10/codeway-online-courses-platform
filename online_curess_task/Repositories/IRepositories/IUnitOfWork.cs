@@ -8,5 +8,6 @@ namespace online_curess_task.Repositories.IRepositories
         public IScormStatmentRepository ScormStatmentRepository { get; }
         public UserManager<ApplicationUser> UserManager { get; }
         public RoleManager<IdentityRole> RoleManager { get; }
+        public IUserPreferenceRepository UserPreferenceRepository { get; }
     }
 }
