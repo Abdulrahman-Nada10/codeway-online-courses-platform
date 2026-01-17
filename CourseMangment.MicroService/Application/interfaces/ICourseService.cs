@@ -35,6 +35,8 @@ namespace CourseMangment.MicroService.Application.interfaces
        
         /// <returns></returns>
         Task<PagedResultDto<CourseDto>> GetCoursesWithFilterAsync(CourseQueryParameters query);
+        Task<PagedResultDto<CourseDto>> SearchCoursesAsync(string query, int page, int pageSize);
+
 
 
 

@@ -1,5 +1,6 @@
 ﻿using CourseMangment.MicroService.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 
 namespace CourseMangment.MicroService.Application.DTO_s
 {
@@ -26,5 +27,11 @@ namespace CourseMangment.MicroService.Application.DTO_s
         public DateTime UpdatedAt { get; set; }
         public double Rating { get; set; }          //
         public int EnrollmentsCount { get; set; }   //
+        public string TitleEn { get; set; } = null!;
+        public string TitleAr { get; set; } = null!;
+        public string InstructorName { get; set; }
+        public Guid InstructorId { get; set; }
+        public string Language { get; set; } = "en";    
+
     }
 }

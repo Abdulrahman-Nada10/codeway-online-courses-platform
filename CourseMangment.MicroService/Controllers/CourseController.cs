@@ -379,6 +379,26 @@ namespace CourseMangment.MicroService.Controllers
 
             return Ok(response);
         }
+        //serach  with pagination
+
+        [HttpGet("search-paged")]
+        [ProducesResponseType(typeof(ApiResponse<PagedResultDto<CourseDto>>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<ApiResponse<PagedResultDto<CourseDto>>>> SearchPaged(
+        [FromQuery] string query,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10)
+        {
+            var result = await _courseService.SearchCoursesAsync(query, page, pageSize);
+
+            var response = ApiResponse<PagedResultDto<CourseDto>>.SuccessResponse(
+                result,
+                $"Search results for '{query}' (page {page})"
+            );
+
+            return Ok(response);
+        }
+
+
 
     }
 }

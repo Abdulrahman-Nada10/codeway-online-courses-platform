@@ -23,9 +23,15 @@ namespace CourseMangment.MicroService.Domain.Entities
         // Navigation property//
 
         public Category Category { get; set; }
+        public Instructor Instructor { get; set; }
         public double Rating { get; set; }        // أو float / decimal حسب ما تحبي
         public int EnrollmentsCount { get; set; } // عدد الطلاب المسجلين
         public string Language { get; set; } = "en";
+        public string TitleEn { get; set; } = null!;
+        public string TitleAr { get; set; } = null!;
+        public Guid InstructorId { get; set; }   // أو int حسب تصميمكم
+       
+
 
 
 

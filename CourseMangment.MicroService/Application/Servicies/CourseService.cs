@@ -378,7 +378,60 @@ namespace CourseMangment.MicroService.Application.Servicies
                 TotalCount = totalCount
             };
         }
+        /// <summary>
+        /// New method for searching courses with pagination
+        /// </summary>
 
+        public async Task<PagedResultDto<CourseDto>> SearchCoursesAsync(string query, int page, int pageSize)
+        {
+            var repo = unitofwork.GetRepository<Course, Guid>();
+
+            var coursesQuery = repo.GetQueryable(c => c.Instructor, c => c.Category)
+                                   .Where(c => !c.IsDeleted);
+
+            if (!string.IsNullOrWhiteSpace(query))
+            {
+                var q = query.Trim();
+
+                coursesQuery = coursesQuery.Where(c =>
+                    c.TitleEn.Contains(q) ||
+                    c.TitleAr.Contains(q) ||
+                    c.Instructor.Name.Contains(q) ||
+                    c.Category.Name.Contains(q));
+            }
+
+            var totalCount = await coursesQuery.CountAsync();
+
+            var items = await coursesQuery
+                .OrderBy(c => c.TitleEn)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(c => new CourseDto
+                {
+                    Id = c.Id,
+                    TitleEn = c.TitleEn,
+                    TitleAr = c.TitleAr,
+                    InstructorName = c.Instructor.Name,
+                    CategoryName = c.Category.Name,
+                    InstructorId = c.InstructorId,
+                    CategoryId= c.CategoryId,
+
+
+                    // باقي الحقول اللي محتاجاها
+                })
+                .ToListAsync();
+            return new PagedResultDto<CourseDto>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = page,
+                PageSize = pageSize
+            };
+
+
+
+            // return new PagedResultDto<CourseDto>(items, totalCount, page, pageSize);
+        }
 
 
     }

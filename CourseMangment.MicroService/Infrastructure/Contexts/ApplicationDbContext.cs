@@ -19,7 +19,8 @@ namespace CourseMangment.MicroService.Infrastructure.Contexts
         /// 
         /// </summary>
         public DbSet<CourseQueryParameters> CourseQueryParameters { get; set; }
+        public DbSet<Instructor> Instructors { get; set; }  
 
 
-        }
+    }
 }
