@@ -3,15 +3,16 @@ using GlobalResponse.Shared.Models;
 using OnlineCourseSystem.Notifications.Exceptions;
 using System.Net;
 using System.Text.Json;
-using InvalidDataException = OnlineCourseSystem.Notifications.Exceptions.InvalidDataException;
 
 public class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly IWebHostEnvironment _env;
 
-    public ExceptionMiddleware(RequestDelegate next)
+    public ExceptionMiddleware(RequestDelegate next, IWebHostEnvironment env)
     {
         _next = next;
+        _env = env;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -28,29 +29,30 @@ public class ExceptionMiddleware
         {
             await HandleDomainException(context, ex);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            await HandleGeneric(context);
+            await HandleGeneric(context, ex);
         }
     }
 
     // =======================
     // Validation (FluentValidation)
     // =======================
-    private static Task HandleValidation(
-        HttpContext context,
-        ValidationException exception)
+    private static Task HandleValidation(HttpContext context, ValidationException exception)
     {
         var errors = exception.Errors
-            .Select(e => e.ErrorMessage)
-            .ToList();
+            .GroupBy(e => e.PropertyName)
+            .ToDictionary(
+                g => g.Key,
+                g => g.Select(x => x.ErrorMessage).ToList()
+            );
 
         return WriteResponse(
             context,
             ApiResponse<object>.ErrorResponse(
                 "Validation failed",
-                errors,
-                (int)HttpStatusCode.BadRequest
+                errors: errors.SelectMany(x => x.Value).ToList(),
+                statusCode: (int)HttpStatusCode.BadRequest
             )
         );
     }
@@ -58,9 +60,7 @@ public class ExceptionMiddleware
     // =======================
     // Domain Exceptions
     // =======================
-    private static Task HandleDomainException(
-        HttpContext context,
-        DomainException exception)
+    private static Task HandleDomainException(HttpContext context, DomainException exception)
     {
         return exception switch
         {
@@ -68,7 +68,7 @@ public class ExceptionMiddleware
                 WriteResponse(context,
                     ApiResponse<object>.NotFoundResponse(exception.Message)),
 
-            AlreadyProcessedException =>
+            AlreadyProcessedException or ConflictException =>
                 WriteResponse(context,
                     ApiResponse<object>.ErrorResponse(
                         exception.Message,
@@ -86,7 +86,13 @@ public class ExceptionMiddleware
                         exception.Message,
                         statusCode: (int)HttpStatusCode.Forbidden)),
 
-            EmptyCollectionException or InvalidDataException =>
+            UnauthorizedException =>
+                WriteResponse(context,
+                    ApiResponse<object>.ErrorResponse(
+                        exception.Message,
+                        statusCode: (int)HttpStatusCode.Unauthorized)),
+
+            EmptyCollectionException or BadRequestException =>
                 WriteResponse(context,
                     ApiResponse<object>.ErrorResponse(
                         exception.Message,
@@ -109,12 +115,17 @@ public class ExceptionMiddleware
     // =======================
     // Generic
     // =======================
-    private static Task HandleGeneric(HttpContext context)
+    private Task HandleGeneric(HttpContext context, Exception ex)
     {
+        // show detailed message only in dev
+        var message = _env.IsDevelopment()
+            ? ex.Message
+            : "An unexpected error occurred";
+
         return WriteResponse(
             context,
             ApiResponse<object>.ErrorResponse(
-                "An unexpected error occurred",
+                message,
                 statusCode: (int)HttpStatusCode.InternalServerError
             )
         );
@@ -123,14 +134,13 @@ public class ExceptionMiddleware
     // =======================
     // Response Writer
     // =======================
-    private static Task WriteResponse(
-        HttpContext context,
-        ApiResponse<object> response)
+    private static Task WriteResponse(HttpContext context, ApiResponse<object> response)
     {
         context.Response.StatusCode = response.StatusCode;
         context.Response.ContentType = "application/json";
 
-        return context.Response.WriteAsync(
-            JsonSerializer.Serialize(response));
+        var json = JsonSerializer.Serialize(response);
+
+        return context.Response.WriteAsync(json);
     }
 }

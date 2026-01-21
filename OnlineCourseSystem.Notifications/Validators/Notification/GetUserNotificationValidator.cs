@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using OnlineCourseSystem.Notifications.DTOs;
+using OnlineCourseSystem.Notifications.Features.Notifications.DTOs;
 
 namespace OnlineCourseSystem.Notifications.Validators.Notification
 {

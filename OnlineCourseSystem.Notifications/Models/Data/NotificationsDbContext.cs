@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace OnlineCourseSystem.Notifications.Models.Data
 {
@@ -17,6 +17,8 @@ namespace OnlineCourseSystem.Notifications.Models.Data
         public DbSet<EmailOutbox> EmailOutbox { get; set; }
         public DbSet<PushOutbox> PushOutbox { get; set; }
         public DbSet<UserDevice> UserDevices { get; set; }
+        public DbSet<ScheduledNotification> ScheduledNotifications { get; set; }
+        public DbSet<UserNotificationDelivery> UserNotificationDeliveries { get; set; }
 
 
 
@@ -32,6 +34,8 @@ namespace OnlineCourseSystem.Notifications.Models.Data
             ConfigureEmailOutbox(modelBuilder);
             ConfigurePushOutbox(modelBuilder);
             ConfigureUserDevices(modelBuilder);
+            ConfigureScheduledNotification(modelBuilder);
+            ConfigureUserNotificationDelivery(modelBuilder);
         }
 
         private void ConfigureUserDevices(ModelBuilder modelBuilder)
@@ -58,6 +62,36 @@ namespace OnlineCourseSystem.Notifications.Models.Data
                 entity.HasIndex(x => x.UserId);
             });
 
+        }
+
+        private static void ConfigureUserNotificationDelivery(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserNotificationDelivery>(entity =>
+            {
+                entity.ToTable("UserNotificationDeliveries");
+
+                entity.HasKey(x => x.Id);
+
+                entity.Property(x => x.Channel)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(x => x.Status)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(x => x.ErrorMessage)
+                    .HasMaxLength(1000);
+
+                entity.Property(x => x.ProviderMessageId)
+                    .HasMaxLength(200);
+
+                entity.Property(x => x.CreatedAt)
+                    .HasDefaultValueSql("GETUTCDATE()");
+
+                entity.HasIndex(x => x.UserNotificationId);
+                entity.HasIndex(x => new { x.Channel, x.Status });
+            });
         }
 
         private void ConfigurePushOutbox(ModelBuilder modelBuilder)
@@ -232,6 +266,39 @@ namespace OnlineCourseSystem.Notifications.Models.Data
 
                 entity.HasIndex(x => new { x.SenderId, x.ReceiverId }); // Index for faster lookups of messages between users
                 entity.HasIndex(x => x.SentAt); // Index on SentAt for querying recent messages
+            });
+        }
+
+        private static void ConfigureScheduledNotification(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ScheduledNotification>(entity =>
+            {
+                entity.ToTable("ScheduledNotifications");
+
+                entity.HasKey(x => x.Id);
+
+                entity.Property(x => x.NotificationType)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(x => x.Title)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(x => x.Content)
+                    .IsRequired()
+                    .HasMaxLength(1000);
+
+                entity.Property(x => x.UserIdsJson)
+                    .IsRequired();
+
+                entity.Property(x => x.IsProcessed)
+                    .HasDefaultValue(false);
+
+                entity.Property(x => x.CreatedAt)
+                    .HasDefaultValueSql("GETUTCDATE()");
+
+                entity.HasIndex(x => new { x.IsProcessed, x.ScheduledFor });
             });
         }
     }

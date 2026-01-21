@@ -1,13 +1,9 @@
 ﻿using GlobalResponse.Shared.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using OnlineCourseSystem.Notifications.DTOs;
 using OnlineCourseSystem.Notifications.Features.NotificationPreference.Commands;
+using OnlineCourseSystem.Notifications.Features.NotificationPreference.DTOs;
 using OnlineCourseSystem.Notifications.Features.NotificationPreference.Queries;
-using OnlineCourseSystem.Notifications.Features.Notifications.Commands.MarkAsRead;
-using OnlineCourseSystem.Notifications.Models;
-using OnlineCourseSystem.Notifications.Services;
-using System.Security.Claims;
 
 namespace OnlineCourseSystem.Notifications.Controllers
 {
@@ -36,7 +32,6 @@ namespace OnlineCourseSystem.Notifications.Controllers
         {
             var query = new GetNotificationPreferenceQuery(userId);
 
-            // Explicitly specify the result type as object? since IMediator.Send returns object? for non-generic IRequest
             var result = await _mediator.Send(query);
 
             return this.OkResponse(
@@ -50,12 +45,8 @@ namespace OnlineCourseSystem.Notifications.Controllers
         /// </summary>
         /// <param name="userId">The unique identifier of the user.</param>
         /// <param name="request">The updated notification preference values.</param>
-        /// <returns>
-        /// Returns a success response if the preferences were updated successfully.
-        /// </returns>
         /// <response code="200">Preferences updated successfully.</response>
-        /// <response code="400">The provided request is invalid.</response>
-        /// <response code="500">User or notification preferences were not found.</response>
+        /// <response code="404">User or notification preferences were not found.</response>
         [HttpPost("{userId:guid}")]
         public async Task<IActionResult> Update(
             Guid userId,

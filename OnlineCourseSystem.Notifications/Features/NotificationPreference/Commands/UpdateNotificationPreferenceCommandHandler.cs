@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using OnlineCourseSystem.Notifications.DTOs;
 using OnlineCourseSystem.Notifications.Exceptions;
-using OnlineCourseSystem.Notifications.Services.UnitOfWork;
+using OnlineCourseSystem.Notifications.Features.NotificationPreference.DTOs;
+using OnlineCourseSystem.Notifications.Infrastructure.Repositories.UnitOfWork;
 
 namespace OnlineCourseSystem.Notifications.Features.NotificationPreference.Commands
 {
@@ -24,12 +24,13 @@ namespace OnlineCourseSystem.Notifications.Features.NotificationPreference.Comma
                 .GetAsync(request.UserId, request.Preference.NotificationType);
 
             if (pref == null)
-                throw new NotFoundException("Notification preference not found for This User.");
+                throw new NotFoundException(
+                    "NotificationPreference",
+                    $"{request.UserId} - {request.Preference.NotificationType}");
 
             pref.Email = request.Preference.Email;
             pref.Push = request.Preference.Push;
 
-            await _unitOfWork.NotificationPreferences.UpdateAsync(pref);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return new NotificationPreferenceDto

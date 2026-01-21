@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using OnlineCourseSystem.Notifications.DTOs;
+using OnlineCourseSystem.Notifications.Features.Notifications.DTOs;
 using OnlineCourseSystem.Notifications.Models.Enums;
 
 namespace OnlineCourseSystem.Notifications.Validators.Notification
@@ -9,8 +9,11 @@ namespace OnlineCourseSystem.Notifications.Validators.Notification
         public CreateNotificationValidator()
         {
             RuleFor(x => x.NotificationType)
+                .NotEmpty()
+                .WithMessage("NotificationType is required.")
                 .IsInEnum()
                 .WithMessage($"Invalid notification type. Allowed values: {string.Join(", ", Enum.GetNames<NotificationType>())}.");
+
 
             RuleFor(x => x.Title)
                 .NotEmpty().WithMessage("Title is required.")

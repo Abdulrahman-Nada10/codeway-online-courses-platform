@@ -1,27 +1,127 @@
 ################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+# Visual Studio / Rider / VS Code
 ################################################################################
-
-# Backend folders
-backend/bin/
-backend/obj/
-OnlineCourseSystem.Auth/bin/Debug/net8.0
-OnlineCourseSystem.Auth/obj/Debug/net8.0
-OnlineCourseSystem.Auth/obj
-GlobalResponse.Shared/bin/Debug/net8.0
-GlobalResponse.Shared/obj
-
-# Frontend folders
-frontend/node_modules/
-frontend/.next/
-
-# Environment files
-.env
-
-# Visual Studio folders
 .vs/
-**/.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
 
-# General
-bin/
-obj/
+################################################################################
+# Build / Output folders (.NET)
+################################################################################
+**/bin/
+**/obj/
+**/TestResults/
+**/artifacts/
+
+################################################################################
+# NuGet
+################################################################################
+**/packages/
+*.nupkg
+*.snupkg
+
+################################################################################
+# Logs
+################################################################################
+*.log
+
+################################################################################
+# OS files
+################################################################################
+.DS_Store
+Thumbs.db
+
+################################################################################
+# Environment / Secrets
+################################################################################
+.env
+.env.*
+secrets.json
+
+# Appsettings (keep example files, ignore real dev settings)
+**/appsettings.Development.json
+**/appsettings.Local.json
+**/appsettings.*.local.json
+**/appsettings.*.secrets.json
+**/appsettings.*.private.json
+**/appsettings.*.override.json
+**/appsettings.*.dev.json
+!**/appsettings.json
+
+################################################################################
+# Firebase Credentials / Keys / Certificates (IMPORTANT)
+################################################################################
+**/Credentials/
+**/credentials/
+**/*firebase*.json
+**/*service-account*.json
+**/*adminsdk*.json
+**/*.pfx
+**/*.pem
+**/*.key
+**/*.cer
+**/*.crt
+**/*.csr
+**/*.der
+**/*.p12
+**/*.keystore
+**/*.jks
+**/*.mobileprovision
+*.publishsettings
+*.publish.xml
+*.pubxml
+
+################################################################################
+# Additional Secrets / Sensitive Files
+################################################################################
+**/secrets/
+**/Secrets/
+**/secret*/
+**/*secret*.json
+**/*secret*.yml
+**/*secret*.yaml
+**/*secret*.txt
+**/*credentials*.json
+**/*credentials*.yaml
+**/*credentials*.yml
+**/*credentials*.txt
+**/*apikey*.json
+**/*api-key*.json
+**/config/local/*
+**/.config/local/*
+**/local.settings.json
+*.bak
+*.db
+*.sqlite
+*.mdf
+*.ldf
+*.ndf
+*.dacpac
+*.bacpac
+*.dump
+*.sql
+publish/
+**/publish/
+**/coverage/
+**/CoverageResults/
+**/.scannerwork/
+**/TestOutput/
+**/.toolstarget/
+**/.aws/
+**/.azure/
+**/.terraform/
+/OnlineCourseSystem.Notifications/appsettings.Development.json
+
+################################################################################
+# Node / Frontend
+################################################################################
+**/node_modules/
+**/.next/
+**/dist/
+**/build/
+/OnlineCourseSystem.Notifications/appsettings.Development.json
+/OnlineCourseSystem.TestPublisher/OnlineCourseSystem.TestPublisher.csproj

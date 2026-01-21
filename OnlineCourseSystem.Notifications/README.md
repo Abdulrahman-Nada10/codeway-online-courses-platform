@@ -1,45 +1,58 @@
+![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?style=flat-square&logo=dotnet&logoColor=white)
+![SQL Server](https://img.shields.io/badge/SQL%20Server-2019+-CC2927?style=flat-square&logo=microsoft-sql-server&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Beta-orange?style=flat-square)
+
 # OnlineCourseSystem.Notifications
 
-ASP.NET Core 8.0 microservice that centralizes notification delivery for the Codeway Online Courses platform. It exposes REST APIs for creating notifications and managing per-user delivery preferences while persisting multi-channel delivery data (in-app, email, push) via SQL Server and Entity Framework Core.
+ASP.NET Core 8 microservice that centralizes notification delivery for the Codeway Online Courses platform. It exposes REST APIs for creating notifications, orchestrates user-level preferences, and stages multi-channel delivery (in-app, email, push) via SQL Server and the Outbox pattern.
 
 ## Table of Contents
 
-1. [Features](#features)
-2. [Architecture](#architecture)
-3. [Tech Stack](#tech-stack)
-4. [Project Structure](#project-structure)
-5. [Prerequisites](#prerequisites)
-6. [Local Setup](#local-setup)
-7. [Running & Tooling](#running--tooling)
-8. [API Surface](#api-surface)
-9. [Validation & Error Handling](#validation--error-handling)
-10. [Deployment Notes](#deployment-notes)
-11. [Operational Checklist](#operational-checklist)
+1. [Overview](#overview)
+2. [Highlights](#highlights)
+3. [Architecture](#architecture)
+4. [Tech Stack](#tech-stack)
+5. [Project Structure](#project-structure)
+6. [Getting Started](#getting-started)
+7. [Running the Service](#running-the-service)
+8. [Configuration](#configuration)
+9. [API Surface](#api-surface)
+10. [Background Processing](#background-processing)
+11. [Validation & Error Handling](#validation--error-handling)
+12. [Deployment Checklist](#deployment-checklist)
+13. [Development & Testing](#development--testing)
+14. [Contributing](#contributing)
+15. [License](#license)
 
-## Features
+## Overview
 
-- **Multi-channel delivery:** Persists in-app notifications and stages email/push messages via the Outbox pattern (EmailOutbox / PushOutbox tables) for asynchronous workers.
-- **User-level preferences:** CRUD logic for notification preferences with sensible defaults and per-channel toggles (`InApp`, `Email`, `Push`).
-- **Bulk fan-out:** Accepts multiple user IDs per notification using a SQL TVP to keep calls efficient.
-- **Hard validation & DTOs:** FluentValidation guards payloads before they reach the domain logic.
-- **Retry-aware stored procedure call:** Notification creation replays transient SQL failures with exponential backoff.
-- **Unified responses:** `GlobalResponse.Shared` provides consistent success/error envelopes across controllers, filters, and middleware.
+The Notifications service is a shared platform component. It receives high-level notification intents, validates the audience, persists user-specific copies, and stages outbound email/push jobs. A shared response layer (`GlobalResponse.Shared`) keeps payloads consistent everywhere.
+
+## Highlights
+
+- **Multi-channel fan-out:** Persists in-app notifications and enqueues email/push work through the Outbox pattern.
+- **Preference orchestration:** Per-user channel toggles with sensible defaults and lazy creation when queried.
+- **Resilient SQL integration:** `sp_CreateNotification` + table-valued parameters batch inserts while supporting retry/backoff.
+- **Guard rails:** FluentValidation + custom middleware provide strict validation and structured errors.
+- **Infra ready:** Designed to work with background workers and containerized deployments.
 
 ## Architecture
 
 ```
-Client → REST API (Controllers)
-         ↓
-     Services layer (NotificationService, PreferenceService)
-         ↓
- Entity Framework Core + Stored procedures (sp_CreateNotification)
-         ↓
- SQL Server (Notifications, UserNotifications, NotificationPreferences, Outbox tables)
+Client / Event Bus
+        ↓
+Controllers (Notifications, Preferences)
+        ↓
+Services (NotificationService, PreferenceService)
+        ↓
+EF Core + Stored Procedure (sp_CreateNotification)
+        ↓
+SQL Server (Notifications, UserNotifications, Preferences, Outbox tables)
 ```
 
-- `NotificationService` validates target users, converts payloads to the `dbo.UserIdTableType`, and executes `sp_CreateNotification` to fan out records and enqueue outbox rows.
-- `PreferenceService` manages defaults and customizations for each notification type.
-- Custom middleware (`ExceptionMiddleware`) and filters (`ValidationFilter`) keep cross-cutting policies centralized.
+- `NotificationService` validates users, converts IDs into `dbo.UserIdTableType`, and executes the stored procedure that inserts notifications and Outbox rows in one transaction.
+- `PreferenceService` manages defaults/custom overrides for each notification type.
+- `ExceptionMiddleware` + `ValidationFilter` keep cross-cutting policies centralized.
 
 ## Tech Stack
 
@@ -54,19 +67,21 @@ Client → REST API (Controllers)
 
 ```
 OnlineCourseSystem.Notifications/
-├── Controllers/                     # REST endpoints (Notifications, NotificationPreferences)
-├── DTOs/                            # Request/response shapes
-├── Services/                        # Domain services + repositories
-├── Models/                          # Entities, enums, EF DbContext
-├── Filters/                         # Validation filter
-├── Middlewares/                     # Exception middleware
+├── Controllers/                     # REST endpoints
+├── DTOs/                            # Request/response contracts
+├── Services/                        # Domain orchestration + UoW
+├── Repositories/                    # EF Core repositories
+├── Models/                          # Entities, enums, DbContext
 ├── Validators/                      # FluentValidation rules
-├── Database/CreateNotification.sql  # TVP + stored procedure script
+├── Filters & Middlewares/           # Validation + exception handling
+├── Database/CreateNotification.sql  # TVP + stored procedure
 ├── Program.cs                       # Composition root
 └── OnlineCourseSystem.Notifications.csproj
 ```
 
-## Prerequisites
+## Getting Started
+
+### Prerequisites
 
 - .NET 8 SDK (8.0.100+)  
 - SQL Server 2019+ (local or remote)  
@@ -74,7 +89,7 @@ OnlineCourseSystem.Notifications/
 - Access to the shared `GlobalResponse.Shared` project (already referenced in the solution).  
 - (Optional) Firebase credentials for the push worker that consumes `PushOutbox`.
 
-## Local Setup
+### Local Setup
 
 1. **Restore packages**
    ```powershell
@@ -94,7 +109,7 @@ OnlineCourseSystem.Notifications/
 5. **Seed references (manual/SQL)**  
    Populate `UserReferences` (and optionally `NotificationPreferences`) so that notifications can target valid users. The API will lazily create default preferences, but it requires `UserReferences` rows to exist.
 
-## Running & Tooling
+## Running the Service
 
 ```powershell
 dotnet run --project OnlineCourseSystem.Notifications
@@ -103,6 +118,17 @@ dotnet run --project OnlineCourseSystem.Notifications
 - Swagger UI is available in `Development` at `https://localhost:5001/swagger`.
 - Logging levels are configured via `appsettings*.json`. Override with `Logging__LogLevel__Default`.
 - The service uses HTTPS redirection and expects requests over TLS in production.
+
+## Configuration
+
+| Setting | Description |
+| --- | --- |
+| `ConnectionStrings__DefaultConnection` | SQL Server connection string used by EF Core. |
+| `Logging__LogLevel__*` | Override logging verbosity per category. |
+| `Email:*` (future) | Email worker settings (from address, retries, etc.). |
+| `Firebase:*` (future) | Push worker credentials and project info. |
+
+> All settings can be supplied via `appsettings.{Env}.json`, environment variables, or user secrets.
 
 ## API Surface
 
@@ -150,7 +176,7 @@ Content-Type: application/json
 - `ExceptionMiddleware` wraps unhandled exceptions into a consistent 500 response and prevents leaking stack traces.
 - Controller responses use `GlobalResponse.Shared.Extensions` (`OkResponse`, etc.) ensuring uniform JSON envelopes.
 
-## Deployment Notes
+## Deployment Checklist
 
 1. **Build/Publish**
    ```powershell
@@ -167,3 +193,34 @@ Content-Type: application/json
    - The API writes to `EmailOutbox`/`PushOutbox`. Ensure the corresponding dispatcher jobs/workers are deployed and pointing at the same database.
 5. **Observability**
    - Built-in logging uses `ILogger<T>`; connect to Application Insights, ELK, or structured log sinks as needed.
+
+## Background Processing
+
+- **EmailOutboxWorker** — Dequeues `EmailOutbox` records, sends via SMTP, and marks rows as sent/failed.
+- **PushOutboxWorker** — Integrates with Firebase Cloud Messaging (FCM) and tracks provider IDs/errors.
+- **ScheduledNotificationWorker** — Dispatches scheduled reminders by reading `ScheduledNotifications` in batches.
+
+Each worker is a hosted service/console app that shares the same database so that this API can remain stateless.
+
+## Development & Testing
+
+- Format: `dotnet format OnlineCourseSystem.Notifications`
+- Tests: `dotnet test OnlineCourseSystem.sln`
+- Add migration:
+  ```powershell
+  dotnet ef migrations add <Name> `
+    --project OnlineCourseSystem.Notifications `
+    --startup-project OnlineCourseSystem.Notifications
+  ```
+
+## Contributing
+
+1. Fork & create a feature branch.
+2. Follow coding standards (nullable reference types, async/await, logging).
+3. Add or update tests whenever functionality changes.
+4. Run `dotnet format` and `dotnet test` before submitting a PR.
+5. Document migrations or schema changes in the PR description.
+
+## License
+
+License details will be finalized before public release. Treat as "all rights reserved" internally until then.

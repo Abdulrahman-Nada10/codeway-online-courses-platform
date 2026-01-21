@@ -5,20 +5,16 @@ namespace OnlineCourseSystem.Notifications.Exceptions
     /// </summary>
     public abstract class DomainException : Exception
     {
-        protected DomainException(string message) : base(message)
-        {
-        }
+        protected DomainException(string message) : base(message) { }
 
         protected DomainException(string message, Exception? innerException)
-            : base(message, innerException)
-        {
-        }
+            : base(message, innerException) { }
     }
 
-    /// <summary>
-    /// Represents a missing entity/resource.
-    /// </summary>
-    public class NotFoundException : DomainException
+    // =========================
+    // 404 Not Found
+    // =========================
+    public sealed class NotFoundException : DomainException
     {
         public string ResourceName { get; }
         public object? ResourceKey { get; }
@@ -33,10 +29,10 @@ namespace OnlineCourseSystem.Notifications.Exceptions
         }
     }
 
-    /// <summary>
-    /// Represents a conflict because the resource is already in the desired state.
-    /// </summary>
-    public class AlreadyProcessedException : DomainException
+    // =========================
+    // 409 Conflict
+    // =========================
+    public sealed class AlreadyProcessedException : DomainException
     {
         public string ResourceName { get; }
         public string? Action { get; }
@@ -51,88 +47,82 @@ namespace OnlineCourseSystem.Notifications.Exceptions
         }
     }
 
-    /// <summary>
-    /// Represents an attempt to use data that has expired.
-    /// </summary>
-    public class ResourceExpiredException : DomainException
+    public sealed class ConflictException : DomainException
     {
-        public string ResourceName { get; }
-        public DateTime ExpiredAt { get; }
-
-        public ResourceExpiredException(string resourceName, DateTime expiredAt)
-            : base($"{resourceName} expired on {expiredAt:yyyy-MM-dd HH:mm:ss}.")
-        {
-            ResourceName = resourceName;
-            ExpiredAt = expiredAt;
-        }
+        public ConflictException(string message) : base(message) { }
     }
 
-    /// <summary>
-    /// Represents a validation rule that requires non-empty collections.
-    /// </summary>
-    public class EmptyCollectionException : DomainException
+    // =========================
+    // 400 Bad Request
+    // =========================
+    public sealed class BadRequestException : DomainException
     {
-        public string CollectionName { get; }
+        public string? PropertyName { get; }
 
-        public EmptyCollectionException(string collectionName)
-            : base($"{collectionName} cannot be empty.")
-        {
-            CollectionName = collectionName;
-        }
-    }
-
-    /// <summary>
-    /// Represents a forbidden access scenario.
-    /// </summary>
-    public class AccessDeniedException : DomainException
-    {
-        public string ResourceName { get; }
-        public object? ResourceKey { get; }
-        public Guid? SubjectId { get; }
-
-        public AccessDeniedException(string resourceName, object? resourceKey = null, Guid? subjectId = null)
-            : base(subjectId is null
-                ? $"Access to {resourceName} is denied."
-                : $"User '{subjectId}' is not authorized to access {resourceName}{(resourceKey is null ? string.Empty : $" '{resourceKey}'")}."
-              )
-        {
-            ResourceName = resourceName;
-            ResourceKey = resourceKey;
-            SubjectId = subjectId;
-        }
-    }
-
-    /// <summary>
-    /// Represents a failure while performing an operation.
-    /// </summary>
-    public class OperationFailedException : DomainException
-    {
-        public string OperationName { get; }
-
-        public OperationFailedException(string operationName, string reason)
-            : base($"Failed to {operationName}: {reason}")
-        {
-            OperationName = operationName;
-        }
-
-        public OperationFailedException(string operationName, string reason, Exception innerException)
-            : base($"Failed to {operationName}: {reason}", innerException)
-        {
-            OperationName = operationName;
-        }
-    }
-
-    /// <summary>
-    /// Represents invalid domain data or payload.
-    /// </summary>
-    public class InvalidDataException : DomainException
-    {
-        public string PropertyName { get; }
-
-        public InvalidDataException(string propertyName, string message)
-            : base($"Invalid {propertyName}: {message}")
+        public BadRequestException(string message, string? propertyName = null)
+            : base(message)
         {
             PropertyName = propertyName;
+        }
+    }
+
+    public sealed class EmptyCollectionException : DomainException
+    {
+        public string ResourceName { get; }
+
+        public EmptyCollectionException(string resourceName)
+            : base($"{resourceName} must not be empty.")
+        {
+            ResourceName = resourceName;
+        }
+    }
+
+    // =========================
+    // 403 Forbidden
+    // =========================
+    public sealed class AccessDeniedException : DomainException
+    {
+        public AccessDeniedException(string message = "Access denied.")
+            : base(message)
+        {
+        }
+    }
+
+    // =========================
+    // 410 Gone (Expired)
+    // =========================
+    public sealed class ResourceExpiredException : DomainException
+    {
+        public ResourceExpiredException(string message = "Resource has expired.")
+            : base(message)
+        {
+        }
+    }
+
+    // =========================
+    // 401 Unauthorized (optional)
+    // =========================
+    public sealed class UnauthorizedException : DomainException
+    {
+        public UnauthorizedException(string message = "Unauthorized.")
+            : base(message)
+        {
+        }
+    }
+
+    // =========================
+    // 500 Internal Server Error (Domain Failure)
+    // =========================
+    public sealed class OperationFailedException : DomainException
+    {
+        public OperationFailedException(string message = "Operation failed.")
+            : base(message)
+        {
+        }
+
+        public OperationFailedException(string message, Exception inner)
+            : base(message, inner)
+        {
         }
     }
 }

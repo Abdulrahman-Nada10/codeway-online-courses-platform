@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using OnlineCourseSystem.Notifications.Exceptions;
-using OnlineCourseSystem.Notifications.Services.UnitOfWork;
+using OnlineCourseSystem.Notifications.Infrastructure.Repositories.UnitOfWork;
 
 namespace OnlineCourseSystem.Notifications.Features.Notifications.Commands.MarkAsRead
 {
@@ -16,13 +16,13 @@ namespace OnlineCourseSystem.Notifications.Features.Notifications.Commands.MarkA
         public async Task Handle(MarkNotificationAsReadCommand request, CancellationToken cancellationToken)
         {
             var notification = await _unitOfWork.Notifications
-                .GetNotificationByIdAsync(request.NotificationId, cancellationToken);
+                .GetUserNotificationByIdAsync(request.UserNotificationId, cancellationToken);
 
             if (notification is null)
-                throw new NotFoundException("Notification", request.NotificationId);
+                throw new NotFoundException("User Notification", request.UserNotificationId);
 
             if (notification.IsRead)
-                throw new AlreadyProcessedException("Notifacation", "Readed");
+                throw new AlreadyProcessedException("Notifacation For This User", "Readed");
 
             notification.IsRead = true;
             notification.ReadAt = DateTime.UtcNow;

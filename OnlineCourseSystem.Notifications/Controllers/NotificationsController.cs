@@ -1,11 +1,10 @@
 ﻿using GlobalResponse.Shared.Extensions;
-using GlobalResponse.Shared.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using OnlineCourseSystem.Notifications.DTOs;
 using OnlineCourseSystem.Notifications.Features.Notifications.Commands.MarkAsRead;
+using OnlineCourseSystem.Notifications.Features.Notifications.DTOs;
+using OnlineCourseSystem.Notifications.Infrastructure.Services.Interfaces;
 using OnlineCourseSystem.Notifications.Models.Enums;
-using OnlineCourseSystem.Notifications.Services;
 
 namespace OnlineCourseSystem.Notifications.Controllers
 {
@@ -40,9 +39,9 @@ namespace OnlineCourseSystem.Notifications.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateNotificationDto request)
         {
-            await _notificationService.CreateNotificationAsync(request);
+            var userNotificationIds = await _notificationService.CreateNotificationAsync(request);
 
-            return this.OkResponse("Notification created successfully");
+            return this.OkResponse(userNotificationIds, "Notification created successfully");
         }
 
 
@@ -65,11 +64,11 @@ namespace OnlineCourseSystem.Notifications.Controllers
         }
 
 
+        // انا شايف ان هيبقي افضل لو دخلنا النوتيفيكيشن اي دي وجبنا اليوزر اي دي من التوكن افضل من اننا ندخل اليوزر نوتيفيكيشن اي دي
         /// <summary>
-        /// Marks a specific notification as read.
+        /// Marks a specific notification for User as read.
         /// </summary>
-        /// <param name="id">Notification unique identifier.</param>
-        /// <returns>Success result.</returns>
+        /// <param name="id">User Notification unique identifier.</param>
         [HttpPost("{id:guid}/read")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using OnlineCourseSystem.Notifications.DTOs;
+using OnlineCourseSystem.Notifications.Features.NotificationPreference.DTOs;
 
 namespace OnlineCourseSystem.Notifications.Features.NotificationPreference.Commands
 {

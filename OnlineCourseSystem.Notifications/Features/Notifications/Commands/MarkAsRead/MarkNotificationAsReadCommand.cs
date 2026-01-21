@@ -4,10 +4,10 @@ namespace OnlineCourseSystem.Notifications.Features.Notifications.Commands.MarkA
 {
     public class MarkNotificationAsReadCommand : IRequest
     {
-        public Guid NotificationId { get; }
-        public MarkNotificationAsReadCommand(Guid notificationId)
+        public Guid UserNotificationId { get; }
+        public MarkNotificationAsReadCommand(Guid userNotificationId)
         {
-            NotificationId = notificationId;
+            UserNotificationId = userNotificationId;
         }
     }
 }

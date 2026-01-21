@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using OnlineCourseSystem.Notifications.DTOs;
+using OnlineCourseSystem.Notifications.Features.NotificationPreference.DTOs;
 using OnlineCourseSystem.Notifications.Models.Enums;
 
 namespace OnlineCourseSystem.Notifications.Validators.NotificationPreference
