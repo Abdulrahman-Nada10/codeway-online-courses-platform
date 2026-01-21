@@ -1,5 +1,5 @@
 ![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?style=flat-square&logo=dotnet&logoColor=white)
-![SQL Server](https://img.shields.io/badge/SQL%20Server-2022+-CC2927?style=flat-square&logo=microsoft-sql-server&logoColor=white)
+![SQL Server](https://img.shields.io/badge/SQL%20Server-2019+-CC2927?style=flat-square&logo=microsoft-sql-server&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Beta-orange?style=flat-square)
 
 # OnlineCourseSystem.Notifications
