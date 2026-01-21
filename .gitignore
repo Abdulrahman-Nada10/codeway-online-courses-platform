@@ -45,12 +45,6 @@ secrets.json
 # Appsettings (keep example files, ignore real dev settings)
 **/appsettings.Development.json
 **/appsettings.Local.json
-**/appsettings.*.local.json
-**/appsettings.*.secrets.json
-**/appsettings.*.private.json
-**/appsettings.*.override.json
-**/appsettings.*.dev.json
-!**/appsettings.json
 
 ################################################################################
 # Firebase Credentials / Keys / Certificates (IMPORTANT)
@@ -63,58 +57,6 @@ secrets.json
 **/*.pfx
 **/*.pem
 **/*.key
-**/*.cer
-**/*.crt
-**/*.csr
-**/*.der
-**/*.p12
-**/*.keystore
-**/*.jks
-**/*.mobileprovision
-*.publishsettings
-*.publish.xml
-*.pubxml
-
-################################################################################
-# Additional Secrets / Sensitive Files
-################################################################################
-**/secrets/
-**/Secrets/
-**/secret*/
-**/*secret*.json
-**/*secret*.yml
-**/*secret*.yaml
-**/*secret*.txt
-**/*credentials*.json
-**/*credentials*.yaml
-**/*credentials*.yml
-**/*credentials*.txt
-**/*apikey*.json
-**/*api-key*.json
-**/config/local/*
-**/.config/local/*
-**/local.settings.json
-*.bak
-*.db
-*.sqlite
-*.mdf
-*.ldf
-*.ndf
-*.dacpac
-*.bacpac
-*.dump
-*.sql
-publish/
-**/publish/
-**/coverage/
-**/CoverageResults/
-**/.scannerwork/
-**/TestOutput/
-**/.toolstarget/
-**/.aws/
-**/.azure/
-**/.terraform/
-/OnlineCourseSystem.Notifications/appsettings.Development.json
 
 ################################################################################
 # Node / Frontend
@@ -123,5 +65,6 @@ publish/
 **/.next/
 **/dist/
 **/build/
-/OnlineCourseSystem.Notifications/appsettings.Development.json
-/OnlineCourseSystem.TestPublisher/OnlineCourseSystem.TestPublisher.csproj
+
+**/Migrations/
+**README.md
