@@ -68,3 +68,11 @@ secrets.json
 
 **/Migrations/
 **README.md
+/OnlineCourseSystem.Notifications/Migrations/20251223205341_InitialNotificationsSchema.cs
+/OnlineCourseSystem.Notifications/Migrations/20251227141215_AddUserReferenceTable.cs
+/OnlineCourseSystem.Notifications/Migrations/20251227175107_update UserReference.cs
+/OnlineCourseSystem.Notifications/Migrations/20251227180224_Add EmailOutbox, PushOutbox, UserDevices entities.cs
+/OnlineCourseSystem.Notifications/Migrations/20260115130852_AddScheduledNotificationsTable.cs
+/OnlineCourseSystem.Notifications/Migrations/20260119130641_AddUserNotificationDeliveriesTable.cs
+/OnlineCourseSystem.Notifications/Migrations/NotificationsDbContextModelSnapshot.cs
+/OnlineCourseSystem.Notifications/README.md
