@@ -1,5 +1,5 @@
-﻿using CourseContentMicroService.Domain.Entities;
-using CourseContentMicroService.Domain.Repository;
+﻿using CourseContentMicroService.Domain.Repository;
+using CourseContentMicroService.MicroService.Domain.Entities;
 
 namespace CourseContentMicroService.Domain.UnitOfWork
 {

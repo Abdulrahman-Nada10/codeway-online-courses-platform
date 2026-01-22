@@ -1,4 +1,5 @@
 ﻿using CourseContentMicroService.Domain.Entities;
+using CourseContentMicroService.MicroService.Domain.Entities;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using System.Linq.Expressions;
 

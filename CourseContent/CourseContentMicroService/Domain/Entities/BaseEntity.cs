@@ -1,4 +1,4 @@
-﻿namespace CourseContentMicroService.Domain.Entities
+﻿namespace CourseContentMicroService.MicroService.Domain.Entities
 {
     public class BaseEntity<TKey>
     {

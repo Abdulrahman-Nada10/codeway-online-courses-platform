@@ -1,4 +1,7 @@
-﻿namespace CourseContentMicroService.Domain.Entities
+﻿
+using CourseContentMicroService.MicroService.Domain.Entities;
+
+namespace CourseContentMicroService.Domain.Entities
 {
     public class StudentQuizSubmission : BaseEntity<int>
     {

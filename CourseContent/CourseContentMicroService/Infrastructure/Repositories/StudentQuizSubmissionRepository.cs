@@ -5,14 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CourseContentMicroService.Infrastructure.Repositories
 {
-    public class StudentQuizSubmissionRepository : GenericRepository<StudentQuizSubmission, int>, IStudentQuizSubmissionRepository
+    public class StudentQuizSubmissionRepository(ApplicationDbContext _context) : GenericRepository<StudentQuizSubmission, int>(_context), IStudentQuizSubmissionRepository
     {
-        private readonly ApplicationDbContext _context;
-
-        public StudentQuizSubmissionRepository(ApplicationDbContext context) : base(context)
-        {
-            _context = context;
-        }
+       
 
         public async Task<IEnumerable<StudentQuizSubmission>> GetSubmissionsByStudentIdAsync(Guid studentId)
         {

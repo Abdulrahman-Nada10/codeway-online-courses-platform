@@ -1,6 +1,7 @@
-﻿re  using CourseContentMicroService.Domain.Entities;
+﻿using CourseContentMicroService.Domain.Entities;
 using CourseContentMicroService.Domain.Repository;
 using CourseContentMicroService.Infrastructure.Contexts;
+using CourseContentMicroService.MicroService.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 

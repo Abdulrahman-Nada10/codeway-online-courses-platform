@@ -3,6 +3,7 @@ using CourseContentMicroService.Domain.Repository;
 using CourseContentMicroService.Domain.UnitOfWork;
 using CourseContentMicroService.Infrastructure.Contexts;
 using CourseContentMicroService.Infrastructure.Repositories;
+using CourseContentMicroService.MicroService.Domain.Entities;
 namespace CourseMangment.MicroService.Infrastructure.UnitOfWork
 {
     public class UnitOfWork(ApplicationDbContext context):IUOW

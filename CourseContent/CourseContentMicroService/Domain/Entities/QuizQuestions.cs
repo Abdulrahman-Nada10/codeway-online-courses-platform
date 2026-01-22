@@ -1,4 +1,6 @@
 ﻿using CourseContentMicroService.Domain.Entities.Enums;
+using CourseContentMicroService.MicroService.Domain.Entities;
+
 
 namespace CourseContentMicroService.Domain.Entities
 {
