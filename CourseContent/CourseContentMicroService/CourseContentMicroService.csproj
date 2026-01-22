@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.23" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.23">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Serilog" Version="4.3.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
@@ -16,12 +23,7 @@
     <Folder Include="Application\Mapping\" />
     <Folder Include="Application\Servicies\" />
     <Folder Include="Controllers\" />
-    <Folder Include="Domain\UnitOfWork\" />
-    <Folder Include="Domain\Repository\" />
-    <Folder Include="Infrastructure\Contexts\" />
     <Folder Include="Infrastructure\Data\" />
-    <Folder Include="Infrastructure\UnitOfWork\" />
-    <Folder Include="Infrastructure\Repositories\" />
   </ItemGroup>
 
 </Project>

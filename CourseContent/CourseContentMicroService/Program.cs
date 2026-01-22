@@ -1,4 +1,7 @@
 
+using CourseContentMicroService.Infrastructure.Contexts;
+using Microsoft.EntityFrameworkCore;
+
 namespace CourseContentMicroService
 {
     public class Program
@@ -7,6 +10,11 @@ namespace CourseContentMicroService
         {
             var builder = WebApplication.CreateBuilder(args);
 
+
+
+            // Add DbContext
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             // Add services to the container.
 
             builder.Services.AddControllers();

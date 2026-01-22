@@ -1,7 +1,7 @@
 ﻿using CourseContentMicroService.Domain.Entities;
 using CourseContentMicroService.Domain.Repository;
 
-namespace CourseContentMicroService.Infrastructure.UnitOfWork
+namespace CourseContentMicroService.Domain.UnitOfWork
 {
     public interface IUOW
     {

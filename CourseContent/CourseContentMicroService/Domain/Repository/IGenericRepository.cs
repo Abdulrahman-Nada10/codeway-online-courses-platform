@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.DataProtection.KeyManagement;
+﻿using CourseContentMicroService.Domain.Entities;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using System.Linq.Expressions;
 
 namespace CourseContentMicroService.Domain.Repository
 {
-    public interface IGenericRepository<TEntity, Tkey> where TEntity : class
+    public interface IGenericRepository<TEntity, Tkey> where TEntity : BaseEntity<Tkey>
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<TEntity> GetByIdAsync(Tkey id);

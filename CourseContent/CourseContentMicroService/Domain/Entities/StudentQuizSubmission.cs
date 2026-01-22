@@ -1,6 +1,6 @@
 ﻿namespace CourseContentMicroService.Domain.Entities
 {
-    public class StudentQuizSubmission
+    public class StudentQuizSubmission : BaseEntity<int>
     {
         public int QuizId { get; set; }
         public Guid StudentId { get; set; } // Foreign key to User/Student service

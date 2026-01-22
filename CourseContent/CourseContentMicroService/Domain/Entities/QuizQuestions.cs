@@ -19,4 +19,4 @@ namespace CourseContentMicroService.Domain.Entities
         public ICollection<StudentQuizAnswers> StudentAnswers { get; set; } = new List<StudentQuizAnswers>();
     }
 }
-}
+
