@@ -9,7 +9,7 @@ using CourseContentMicroService.Domain.UnitOfWork;
 
 namespace CourseContentMicroService.Application.Servicies
 {
-    public class StudentQuizService(IUOW _unitOfWork, IMapper _mapper, IStudentQuizService repo
+    public class StudentQuizService(IUOW _unitOfWork, IMapper _mapper
 
         , IStudentQuizSubmissionRepository subRepo, IStudentQuizAnswerRepository ansRepo,
 
