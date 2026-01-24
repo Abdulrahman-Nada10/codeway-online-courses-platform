@@ -52,7 +52,16 @@ namespace CourseContentMicroService
             builder.Services.AddScoped<IQuizQuestionOptionService, QuizQuestionOptionService>();
             builder.Services.AddScoped<IStudentQuizService, StudentQuizService>();
 
+            // Configure Kestrel to accept large file uploads
+            builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 2147483648; // 2 GB
+            });
 
+            builder.WebHost.ConfigureKestrel(serverOptions =>
+            {
+                serverOptions.Limits.MaxRequestBodySize = 2147483648; // 2 GB
+            });
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
