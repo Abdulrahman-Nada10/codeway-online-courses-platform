@@ -277,5 +277,22 @@ namespace CourseContentMicroService.Application.Servicies
 
             return true;
         }
+
+
+        public async Task<IEnumerable<QuizSubmissionDto>> GetSubmissionsByQuizAsync(int quizId)
+        {
+            var submissions = (await subRepo.GetAllAsync())
+                .Where(s => s.QuizId == quizId)
+                .ToList();
+            return _mapper.Map<IEnumerable<QuizSubmissionDto>>(submissions);
+        }
+
+        public async Task<IEnumerable<QuizSubmissionDto>> GetCompletedSubmissionsByQuizAsync(int quizId)
+        {
+            var submissions = (await subRepo.GetAllAsync())
+                .Where(s => s.QuizId == quizId && s.Completed)
+                .ToList();
+            return _mapper.Map<IEnumerable<QuizSubmissionDto>>(submissions);
+        }
     }
 }

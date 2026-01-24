@@ -18,10 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Mapping\" />
-    <Folder Include="Application\Servicies\" />
-    <Folder Include="Controllers\" />
     <Folder Include="Infrastructure\Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\GlobalResponse.Shared\GlobalResponse.Shared.csproj" />
   </ItemGroup>
 
 </Project>

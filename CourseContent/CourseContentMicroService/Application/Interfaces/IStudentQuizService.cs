@@ -23,5 +23,12 @@ namespace CourseContentMicroService.Application.Interfaces
         Task<decimal> AutoGradeMCQAsync(int answerId);
         Task<decimal> AutoGradeSubmissionAsync(int submissionId);
         Task<bool> ManualGradeAnswerAsync(GradeAnswerDto dto); //for the essay ones 
+
+
+        Task<IEnumerable<QuizSubmissionDto>> GetSubmissionsByQuizAsync(int quizId);
+        Task<IEnumerable<QuizSubmissionDto>> GetCompletedSubmissionsByQuizAsync(int quizId);
+
+
+
     }
 }
