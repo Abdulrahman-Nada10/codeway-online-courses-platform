@@ -4,5 +4,6 @@
     {
         MCQ = 1,
         Essay = 2,
+        TrueFalse = 3,
     }
 }

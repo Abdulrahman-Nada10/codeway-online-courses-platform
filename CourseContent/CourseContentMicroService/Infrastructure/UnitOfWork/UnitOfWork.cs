@@ -9,6 +9,7 @@ namespace CourseMangment.MicroService.Infrastructure.UnitOfWork
     public class UnitOfWork(ApplicationDbContext context):IUOW
     {
         private Dictionary<string, object> repositories = [];
+
         public IGenericRepository<TEntity, TKey> GetRepository<TEntity, TKey>() where TEntity : BaseEntity<TKey>
         {
             var TypeName = typeof(TEntity).Name;//esm el repo

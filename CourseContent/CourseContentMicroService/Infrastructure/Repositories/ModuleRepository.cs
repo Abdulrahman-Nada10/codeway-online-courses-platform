@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace CourseContentMicroService.Infrastructure.Repositories
 {
-    public class ModuleRepository(ApplicationDbContext context) :  GenericRepository<Module, int>(context),IModuleRepository 
+    public class ModuleRepository(ApplicationDbContext context ) :  GenericRepository<Module, int>(context),IModuleRepository 
     {
         public async  Task<IEnumerable<Module>> GetModulesByCourseIdAsync(Guid courseId)
         {
