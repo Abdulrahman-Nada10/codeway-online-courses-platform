@@ -1,7 +1,9 @@
 
 using AutoMapper;
+using CourseContentMicroService.Application.Configurations;
 using CourseContentMicroService.Application.Interfaces;
 using CourseContentMicroService.Application.Mapping.AutoMapperProfiles;
+using CourseContentMicroService.Application.Services;
 using CourseContentMicroService.Application.Servicies;
 using CourseContentMicroService.Domain.Repository;
 using CourseContentMicroService.Domain.UnitOfWork;
@@ -18,7 +20,8 @@ namespace CourseContentMicroService
         {
             var builder = WebApplication.CreateBuilder(args);
 
-
+            builder.Services.Configure<FileUploadSettings>(
+                builder.Configuration.GetSection("FileUpload"));
 
             // Add DbContext
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -62,6 +65,8 @@ namespace CourseContentMicroService
             {
                 serverOptions.Limits.MaxRequestBodySize = 2147483648; // 2 GB
             });
+            //file upload service
+            builder.Services.AddScoped<IFileUploadService, FileUploadService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

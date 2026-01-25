@@ -126,25 +126,31 @@ namespace CourseContentMicroService.Application.Servicies
         }
 
 
-        public async Task<bool> ValidateLessonContentAsync(LessonType lessonType, string content)
+        public Task<bool> ValidateLessonContentAsync(LessonType lessonType, string content)
         {
-            if (string.IsNullOrWhiteSpace(content))
-                return false;
-
             switch (lessonType)
             {
                 case LessonType.video:
                 case LessonType.PDF:
-                    // Validate URL format
-                    return Uri.TryCreate(content, UriKind.Absolute, out var uri)
-                        && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+                    // Allow empty when lesson is first created; it will be filled after upload
+                    if (string.IsNullOrWhiteSpace(content))
+                        return Task.FromResult(true);
+
+                    // If provided, it must be a valid URL
+                    return Task.FromResult(
+                        Uri.TryCreate(content, UriKind.Absolute, out var uri) &&
+                        (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps)
+                    );
 
                 case LessonType.Text:
-                    // Validate text length
-                    return content.Length <= 10000; // Max 10k characters
+                    // Text must be non-empty and reasonably bounded
+                    return Task.FromResult(
+                        !string.IsNullOrWhiteSpace(content) &&
+                        content.Length <= 10000
+                    );
 
                 default:
-                    return false;
+                    return Task.FromResult(false);
             }
         }
     }

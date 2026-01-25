@@ -96,23 +96,24 @@ namespace CourseContentMicroService.Application.Services
 
         public async Task<bool> ValidateFileAsync(IFormFile file, LessonType lessonType)
         {
+            Console.WriteLine($"[UPLOAD] Name={file.FileName}, Len={file.Length}, Type={file.ContentType}, LessonType={lessonType}");
+
             if (file == null || file.Length == 0)
                 return false;
 
-            // Determine max size based on file type
             var maxSizeBytes = lessonType switch
             {
-                LessonType.video => (long)_settings.MaxVideoFileSizeMB * 1024 * 1024,  // 2 GB
-                LessonType.PDF => (long)_settings.MaxPdfFileSizeMB * 1024 * 1024,      // 100 MB
+                LessonType.video => (long)_settings.MaxVideoFileSizeMB * 1024 * 1024,
+                LessonType.PDF => (long)_settings.MaxPdfFileSizeMB * 1024 * 1024,
                 _ => 0
             };
+
+            Console.WriteLine($"[UPLOAD] MaxSize={maxSizeBytes}");
 
             if (file.Length > maxSizeBytes)
                 return false;
 
-            // Validate file extension
             var fileExtension = Path.GetExtension(file.FileName).ToLower();
-
             var allowedExtensions = lessonType switch
             {
                 LessonType.video => _settings.AllowedVideoExtensions,
@@ -120,12 +121,13 @@ namespace CourseContentMicroService.Application.Services
                 _ => new List<string>()
             };
 
+            Console.WriteLine($"[UPLOAD] Ext={fileExtension}, Allowed=[{string.Join(", ", allowedExtensions)}]");
+
             if (!allowedExtensions.Contains(fileExtension))
                 return false;
 
             return true;
         }
-
         public string GetFileUrl(string fileName)
         {
             return $"{_settings.BaseUrl}/{fileName}";
