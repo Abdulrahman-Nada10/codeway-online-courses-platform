@@ -1,6 +1,5 @@
 <Solution>
   <Project Path="../CourseMangment.MicroService/CourseMangment.MicroService.csproj" />
   <Project Path="../GlobalResponse.Shared/GlobalResponse.Shared.csproj" />
-  <Project Path="CertificateGenerationMicroService/CertificateGenerationMicroService.csproj" Id="6482d8eb-9090-47dc-9393-bb06a17d2007" />
   <Project Path="CourseContentMicroService/CourseContentMicroService.csproj" />
 </Solution>
