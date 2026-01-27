@@ -13,11 +13,11 @@ namespace CourseContentMicroService.Domain.Entities
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigational properties
-        public Lesson Lesson { get; set; }
+        public virtual Lesson Lesson { get; set; }
         public int LessonId { get; set; }
 
-        public ICollection<QuizQuestions> Questions { get; set; } = new List<QuizQuestions>();
-        public ICollection<StudentQuizSubmission> Submissions { get; set; } = new List<StudentQuizSubmission>();
+        public virtual  ICollection<QuizQuestions> Questions { get; set; } = new List<QuizQuestions>();
+        public virtual ICollection<StudentQuizSubmission> Submissions { get; set; } = new List<StudentQuizSubmission>();
 
 
     }

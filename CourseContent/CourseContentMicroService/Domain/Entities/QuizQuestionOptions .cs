@@ -8,10 +8,10 @@ namespace CourseContentMicroService.Domain.Entities
         public bool IsCorrect { get; set; } // 
 
         // Nav property
-        public QuizQuestions QuizQuestions { get; set; }
+        public virtual QuizQuestions QuizQuestions { get; set; }
         public int QuestionId { get; set; }
         
         //students who selected this option
-        public ICollection<StudentQuizAnswers> StudentAnswers { get; set; } = new List<StudentQuizAnswers>();
+        public virtual ICollection<StudentQuizAnswers> StudentAnswers { get; set; } = new List<StudentQuizAnswers>();
     }
 }

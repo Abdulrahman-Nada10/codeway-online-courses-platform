@@ -13,7 +13,7 @@ namespace CourseContentMicroService.Domain.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // When student started
 
         // Navigation Properties
-        public Quiz Quiz { get; set; }
-        public ICollection<StudentQuizAnswers> Answers { get; set; } = new List<StudentQuizAnswers>();
+        public virtual Quiz Quiz { get; set; }
+        public virtual ICollection<StudentQuizAnswers> Answers { get; set; } = new List<StudentQuizAnswers>();
     }
 }

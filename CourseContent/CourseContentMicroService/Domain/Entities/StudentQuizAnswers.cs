@@ -11,8 +11,8 @@ namespace CourseContentMicroService.Domain.Entities
         public decimal Score { get; set; } // Score awarded for this answer
 
         // Navigation Properties
-        public StudentQuizSubmission Submission { get; set; }
-        public QuizQuestions Question { get; set; }
-        public QuizQuestionOptions? SelectedOption { get; set; } // Nullable - only for MCQ
+        public virtual StudentQuizSubmission Submission { get; set; }
+        public virtual QuizQuestions Question { get; set; }
+        public virtual QuizQuestionOptions? SelectedOption { get; set; } // Nullable - only for MCQ
     }
 }

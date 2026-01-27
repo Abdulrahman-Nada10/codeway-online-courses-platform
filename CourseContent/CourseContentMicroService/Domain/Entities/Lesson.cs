@@ -11,14 +11,14 @@ namespace CourseContentMicroService.Domain.Entities
         public int Duration { get; set; }
         public int Order { get; set; }
 
-        // ✅ ADD THESE
+        // 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation Property
-        public Module Module { get; set; }
+        public virtual Module Module { get; set; }
         public int ModuleId { get; set; }
 
-        public ICollection<Quiz> Quizzes { get; set; } = new List<Quiz>();
+        public virtual ICollection<Quiz> Quizzes { get; set; } = new List<Quiz>();
     }
 }

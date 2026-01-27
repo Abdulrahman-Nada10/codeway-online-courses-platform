@@ -16,7 +16,7 @@ namespace CourseContentMicroService.Domain.Entities
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigational property
-        public ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
+        public virtual ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
 
 
     }
