@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/OnlineCourseSystem.Notifications/firebase-test.html
+/OnlineCourseSystem.Notifications/firebase-messaging-sw.js
+/OnlineCourseSystem.Notifications/Credentials/notification-firebase-39a4a-firebase-adminsdk-fbsvc-4d3952bd7d.json
