@@ -1,5 +1,7 @@
 # Notifications Microservice — Production Configuration Guide
 
+-> The Notifications service runs background workers (Email, Push, Scheduled) inside the same API host.
+
 The Notifications service requires the following external services to run in production:
 
 1- SQL Server database
@@ -37,7 +39,7 @@ The Notifications service requires the following external services to run in pro
 
 ### B) Frontend
 
-See [Section 5](#5-firebase-configuration-frontend) for the exact structure.
+See [Section 4](#4-firebase-configuration-frontend) for the exact structure.
 
 ---
 
