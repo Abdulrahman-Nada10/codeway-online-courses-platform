@@ -39,7 +39,7 @@ The Notifications service requires the following external services to run in pro
 
 ### B) Frontend
 
-See [Section 4](#4-firebase-configuration-frontend) for the exact structure.
+See [Section 4](#4-firebase-configuration) for the exact structure.
 
 ---
 
