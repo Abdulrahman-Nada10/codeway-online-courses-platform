@@ -101,8 +101,13 @@ namespace CourseOnline.Auth.Services.Implementation
             var user = _userRepo.GetbyLogin(dto.login);
 
             if (user == null)
-                return "User not found";
+                //return "User not found";
 
+                return new
+                {
+                    Success = false,
+                    Message = "User not found"
+                };
 
 
             //  التحقق من التفعيل
@@ -115,21 +120,46 @@ namespace CourseOnline.Auth.Services.Implementation
                 notVerified.Add("Phone");
 
             if (notVerified.Any())
-                return $"Account not verified. Please verify your {string.Join(" and ", notVerified)}.";
+                //return $"Account not verified. Please verify your {string.Join(" and ", notVerified)}.";
+                return new
+                {
+                    Success = false,
+                    Message = $"Account not verified. Please verify your {string.Join(" and ", notVerified)}."
+                };
 
             if (user.IsLocked && user.LockoutEnd > DateTime.Now)
-                return $"Account locked until {user.LockoutEnd}";
+                //return $"Account locked until {user.LockoutEnd}";
+                return new
+                {
+                    Success = false,
+                    Message = $"Account locked until {user.LockoutEnd}"
+                };
             if (string.IsNullOrEmpty(user.PasswordHash) || string.IsNullOrEmpty(user.PasswordSalt))
             {
-                return "This account uses social login";
+                //return "This account uses social login";
+                return new
+                {
+                    Success = false,
+                    Message = "This account uses social login"
+                };
             }
             if (string.IsNullOrEmpty(user.PasswordHash) || string.IsNullOrEmpty(user.PasswordSalt))
             {
-                return "Password not set for this user";
+                //return "Password not set for this user";
+                return new
+                {
+                    Success = false,
+                    Message = "Password not set for this user"
+                };
             }
             if (string.IsNullOrEmpty(user.PasswordHash) || string.IsNullOrEmpty(user.PasswordSalt))
             {
-                return  "This account uses social login" ;
+                //return  "This account uses social login" ;
+                return new
+                {
+                    Success = false,
+                    Message = "This account uses social login"
+                };
             }
             // التحقق من الباسورد
             bool passwordCorrect = PasswordHasher.VerifyPassword(dto.Password, user.PasswordHash, user.PasswordSalt);
@@ -138,7 +168,12 @@ namespace CourseOnline.Auth.Services.Implementation
             if (!passwordCorrect)
             {
                 _userRepo.UpdateLoginFailure(user.UserID);
-                return "Invalid password";
+                //return "Invalid password";
+                return new
+                {
+                    Success = false,
+                    Message = "Invalid password"
+                };
             }
 
             var token = _jwtService.GenerateToken(user.UserID, user.UserName, user.Email);

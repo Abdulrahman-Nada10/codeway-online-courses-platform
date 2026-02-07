@@ -1,4 +1,5 @@
 ﻿using CourseOnline.Auth.DTOs.Profile;
+using CourseOnline.Auth.Models.Entities;
 using CourseOnline.Auth.Services.Implementation;
 using CourseOnline.Auth.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -17,51 +18,58 @@ namespace CourseOnline.Auth.Controllers
             _service = service;
         }
 
-        private long GetUserIdFromToken()
-        {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdClaim))
-                throw new UnauthorizedAccessException("User ID not found in token.");
+        //private long GetUserIdFromToken()
+        //{
+        //    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //    if (string.IsNullOrEmpty(userIdClaim))
+        //        throw new UnauthorizedAccessException("User ID not found in token.");
 
-            return long.Parse(userIdClaim);
-        }
-       
-        [HttpPut]
-        public IActionResult UpdateProfile([FromForm] UpdateProfileDto dto)
+        //    return long.Parse(userIdClaim);
+        //}
+
+        [HttpPut("{userId}")]
+
+        public IActionResult UpdateProfile(long userId, [FromForm] UpdateProfileDto dto)
         {
-            var userId = GetUserIdFromToken();
+          
             var updatedProfile = _service.UpdateProfile(userId, dto);
             return Ok(updatedProfile);
         }
-
+        [HttpGet("{userId}/enrollments")]
        
-        [HttpGet("enrollments")]
-        public IActionResult GetEnrollments()
+        public IActionResult GetEnrollments(long userId)
         {
-            var userId = GetUserIdFromToken();
             var enrollments = _service.GetEnrollments(userId);
 
             return Ok(new
             {
-                message = enrollments.Any() ? "Enrollments retrieved successfully" : "You are not enrolled in any courses yet",
+                message = enrollments.Any()
+                    ? "Enrollments retrieved successfully"
+                    : "You are not enrolled in any courses yet",
                 data = enrollments,
-                progress = enrollments.Any() ? enrollments.Average(e => e.ProgressPercentage) : 0
+                progress = enrollments.Any()
+                    ? enrollments.Average(e => e.ProgressPercentage)
+                    : 0
             });
         }
 
-        [HttpGet("certificates")]
-        public IActionResult GetCertificates()
+
+
+        [HttpGet("{userId}/certificates")]
+
+        public IActionResult GetCertificates(long userId)
         {
-            var userId = GetUserIdFromToken();
             var certificates = _service.GetCertificates(userId);
 
             return Ok(new
             {
-                message = certificates.Any() ? "Certificates retrieved successfully" : "You don't have any certificates yet",
+                message = certificates.Any()
+                    ? "Certificates retrieved successfully"
+                    : "You don't have any certificates yet",
                 data = certificates
             });
         }
     }
 }
-        
+
 

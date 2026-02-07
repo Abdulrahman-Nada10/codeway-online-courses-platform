@@ -20,8 +20,10 @@ namespace CourseOnline.Auth.Services.Implementation
             var claims = new[]
             {
         new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-        new Claim("username", userName ?? ""),
-        new Claim("email", email ?? "")
+    new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+    new Claim("username", userName ?? ""),
+    new Claim("email", email ?? "")
+
     };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));

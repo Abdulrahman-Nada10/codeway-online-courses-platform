@@ -70,19 +70,19 @@ builder.Services.AddScoped<ISocialAuthRepository, SocialAuthRepository>();
 
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
-builder.Services.AddSingleton<FileHelper>(); // لو عايزة Singleton
+builder.Services.AddSingleton<FileHelper>();
 
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme; // <== مهم
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme; 
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddCookie() // مهم للـ OAuth flow
 .AddGoogle(options =>
 {
-    options.ClientId = googleClientId;
-    options.ClientSecret = googleClientSecret;
-    options.CallbackPath = "/signin-google";
+    options.ClientId = "";
+    options.ClientSecret = "";
+    options.CallbackPath = "";
 })
 //.AddFacebook(options =>
 //{
@@ -92,9 +92,9 @@ builder.Services.AddAuthentication(options =>
 //})
 .AddGitHub(options =>
 {
-    options.ClientId = gitHubClientId;
-    options.ClientSecret = gitHubClientSecret;
-    options.CallbackPath = "/signin-github";
+    options.ClientId = "";
+    options.ClientSecret = "";
+    options.CallbackPath = "";
     options.Scope.Add("user:email");
 })
 .AddJwtBearer(options =>

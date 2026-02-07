@@ -146,7 +146,7 @@ namespace CourseOnline.Auth.Controllers
                 UserName = name
             };
 
-            // 🌟 الربط مع Service
+            // الربط مع Service
             var result = _socialAuthService.SocialLogin(dto);
 
             if (!result.Success)

@@ -8,5 +8,7 @@ namespace CourseOnline.Auth.DTOs.Auth
         public string login {get; set;}
         [Required(ErrorMessage = "Password is required")]
         public string Password{ get; set;}
+        public bool Success { get; set; }
+       
     }
 }
