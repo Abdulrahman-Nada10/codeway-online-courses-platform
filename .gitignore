@@ -3,3 +3,5 @@ frontend/.next/
 backend/bin/
 backend/obj/
 .env
+node_modules
+.next
