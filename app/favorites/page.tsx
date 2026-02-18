@@ -6,6 +6,7 @@ import Sidebar from '../components/Sidebar';
 import FavoriteCourseCard from '../components/FavoriteCourseCard';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
+import { Heart } from 'lucide-react';
 
 export default function Favorites() {
   const favoriteCourses = useSelector((state: RootState) => state.favorites.courses
@@ -39,9 +40,7 @@ export default function Favorites() {
           {favoriteCourses.length === 0 && (
             <div className="text-center py-10 sm:py-12">
               <div className="flex flex-col items-center justify-center gap-3 sm:gap-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 sm:h-16 sm:w-16 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
+                <Heart className="h-12 w-12 sm:h-16 sm:w-16 text-gray-300" />
                 <p className="text-gray-500 text-sm sm:text-base lg:text-lg font-cairo">
                   لا توجد دورات في المفضلة
                 </p>

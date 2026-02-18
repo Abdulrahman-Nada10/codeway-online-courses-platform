@@ -34,7 +34,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({ activeFilter, onFilterCha
                 rounded-xl
                 font-cairo font-semibold
                 text-xs sm:text-sm lg:text-lg
-                flex items-center justify-center gap-2 sm:gap-3
+                flex items-center justify-between gap-2 sm:gap-3
                 transition-all duration-300
                 border
                 ${
@@ -44,23 +44,23 @@ const FilterSection: React.FC<FilterSectionProps> = ({ activeFilter, onFilterCha
                 }
               `}
             >
-              <span className="truncate">{filter.label}</span>
+              <span className="truncate ">{filter.label}</span>
 
               <span
                 className={`
                   text-[10px] sm:text-xs
-                  px-2 sm:px-3 py-0.5 sm:py-1
+                  px-2 sm:px-5 py-0.5 sm:py-1
                   rounded-full
                   transition-all duration-300
                   shrink-0
                   ${
                     activeFilter === filter.id
-                      ? 'bg-white/20 text-white'
-                      : 'bg-gray-100 text-gray-600 group-hover:bg-orange-50'
+                      ? ' text-white'
+                      : ' text-black group-hover:bg-orange-50'
                   }
                 `}
               >
-                {count}
+                ({count})
               </span>
             </button>
           );

@@ -1,9 +1,8 @@
 'use client';
 
-import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { InstructorIcon, CalendarIcon, DiplomaIcon, EyeIcon, DownloadIcon, ShareIcon } from './Icons';
+import { InstructorIcon, CalendarIcon, DiplomaIcon, EyeIcon, DownloadIcon, ShareIcon } from './icons';
 
 interface Certificate {
   id: number;
@@ -39,18 +38,20 @@ export default function CertificateCard({ certificate }: { certificate: Certific
         <div className="flex items-center gap-2">
           <InstructorIcon className="w-4 h-3.5" />
           <span className="font-cairo text-sm text-gray-600">
-            {certificate.instructor}
+            م.{certificate.instructor}
           </span>
         </div>
         <div className="flex items-center gap-2">
           <CalendarIcon className="w-4 h-4" />
-          <span className="font-cairo text-sm text-gray-600">
-            {certificate.day} {certificate.month} {certificate.year}
+          <span className="font-cairo text-sm text-black font-normal">
+           <span className='font-cairo text-sm text-gray-600'>تاريخ الاصدار : </span> 
+           {certificate.day} {certificate.month} {certificate.year}
           </span>
         </div>
         <div className="flex items-center gap-2">
           <DiplomaIcon className="w-4 h-4" />
-          <span className="font-cairo text-sm text-gray-600">
+          <span className="font-cairo text-sm text-black font-normal">
+          <span className='font-cairo text-sm text-gray-600'>رقم الشهادة : </span> 
             {certificate.certificateNumber}
           </span>
         </div>

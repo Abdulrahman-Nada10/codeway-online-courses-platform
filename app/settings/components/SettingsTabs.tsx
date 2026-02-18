@@ -22,7 +22,7 @@ export default function SettingsTabs({ activeTab, onTabChange }: SettingsTabsPro
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
-            className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl font-cairo font-medium text-sm sm:text-base transition-all duration-200 ${
+            className={`px-4 sm:px-24 py-2.5 sm:py-3 rounded-xl font-cairo font-medium text-sm sm:text-base transition-all duration-200 ${
               activeTab === tab.id
                 ? 'bg-[#FF6400] text-white shadow-md'
                 : 'text-[#113555] hover:bg-gray-100'

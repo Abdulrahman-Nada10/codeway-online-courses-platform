@@ -6,6 +6,7 @@ import Sidebar from '../components/Sidebar';
 import UserInfo from '../components/profile/UserInfo';
 import Stats from '../components/profile/Stats';
 import CertificateList from '../components/profile/CertificateList';
+import { Pencil } from 'lucide-react';
 
 type TabType = 'personal' | 'education' | 'experience' | 'skills';
 
@@ -46,31 +47,33 @@ export default function Profile() {
         <Navbar />
 
         <main className="p-3 sm:p-4 lg:p-3">
-          <div className="text-right sm:mb-2">
-            <h1 className="font-cairo font-bold text-xl sm:text-2xl text-[#113555]">
-              الملف الشخصي
-            </h1>
-            <p className="font-cairo text-sm text-gray-600 mt-1">
-              عرض و إدارة معلوماتك الشخصية
-            </p>
-          </div>
+        <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
+  
+  <div className="text-right">
+    <h1 className="font-cairo font-bold text-xl sm:text-2xl text-[#113555]">
+      الملف الشخصي
+    </h1>
+    
+    <p className="font-cairo text-sm text-gray-600 mt-1">
+      عرض و إدارة معلوماتك الشخصية
+    </p>
+  </div>
 
-          <div className="space-y-4 sm:space-y-6">
-            
-            <div className="flex justify-end">
-              <button 
-                onClick={() => window.location.href = '/settings'}
-                className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-[#FF6400] text-white rounded-xl font-cairo font-medium text-sm hover:bg-[#E55A00] transition-colors"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-                <span className="hidden sm:inline">تعديل الملف</span>
-                <span className="sm:hidden">تعديل</span>
-              </button>
-            </div>
+  <button 
+    onClick={() => window.location.href = '/settings'}
+    className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-[#FF6400] text-white rounded-xl font-cairo font-medium text-sm hover:bg-[#E55A00] transition-colors"
+  >
+    <Pencil className="w-4 h-4" />
+    <span className="hidden sm:inline">تعديل الملف</span>
+    <span className="sm:hidden">تعديل</span>
+  </button>
 
-            <UserInfo
+</div>
+
+
+          <div className="space-y-6 sm:space-y-6">
+          
+              <UserInfo
               name={userData.name}
               email={userData.email}
               phone={userData.phone}
