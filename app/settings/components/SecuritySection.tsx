@@ -23,13 +23,13 @@ export default function SecuritySection({
 }: SecuritySectionProps) {
   return (
     <div className="space-y-8">
-      <div className="text-right pb-4 border-b border-gray-100">
+      <div className="text-right pb-4">
         <h3 className="font-cairo font-bold text-lg text-[#113555]">
           الأمان و كلمة المرور
         </h3>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-6 xl:space-x-142 sm:space-x-89">
         <div>
           <label htmlFor="current-password" className="block font-cairo font-medium text-sm text-[#113555] mb-2">
             كلمة المرور الحالية
@@ -72,7 +72,7 @@ export default function SecuritySection({
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-6 border-t border-gray-100 justify-end">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-6 justify-end">
         <button
           onClick={onCancel}
           className="px-6 py-3 border-2 border-[#FF6400] text-[#FF6400] rounded-xl font-cairo font-medium text-sm hover:bg-[#FFF3EB] transition-colors w-full sm:w-auto"

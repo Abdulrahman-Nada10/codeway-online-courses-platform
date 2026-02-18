@@ -150,11 +150,11 @@ export default function Settings() {
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl p-3 sm:p-4 lg:p-6 shadow-sm border border-gray-100 mb-4 sm:mb-6">
+          <div className="bg-white rounded-2xl p-3 sm:p-4 lg:p-6 shadow-sm  mb-4 sm:mb-6">
             <SettingsTabs activeTab={activeTab} onTabChange={setActiveTab} />
           </div>
 
-          <div className="bg-white rounded-2xl p-3 sm:p-4 lg:p-6 shadow-sm border border-gray-100">
+          <div className="bg-white rounded-2xl p-3 sm:p-4 lg:p-6 shadow-sm ">
             <div className="mt-2 sm:mt-4">
               {activeTab === 'profile' && (
                 <ProfileSection

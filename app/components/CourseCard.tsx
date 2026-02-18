@@ -21,7 +21,6 @@ const CourseCard = ({ course }: { course: Course }) => {
   return (
     <div className="w-full bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
 
-      {/* Course Image */}
       <div className="relative w-full aspect-video">
         <Image
           src={course.image}
@@ -31,20 +30,16 @@ const CourseCard = ({ course }: { course: Course }) => {
         />
       </div>
 
-      {/* Content */}
       <div className="p-4 flex flex-col gap-3">
 
-        {/* Title */}
         <h3 className="font-cairo font-bold text-sm sm:text-base text-[#113555] line-clamp-2">
           {course.title}
         </h3>
 
-        {/* Instructor */}
         <p className="font-cairo text-xs sm:text-sm text-gray-500 flex items-center gap-2">
           {course.instructor}
         </p>
 
-        {/* Stats */}
         <div className="flex justify-between text-xs sm:text-sm text-gray-600">
           <span>
             {course.completedLessons} / {course.totalLessons} درس
@@ -54,7 +49,6 @@ const CourseCard = ({ course }: { course: Course }) => {
           </span>
         </div>
 
-        {/* Progress */}
         {!course.isCompleted && (
           <div className="flex flex-col gap-1">
             <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -71,7 +65,6 @@ const CourseCard = ({ course }: { course: Course }) => {
           </div>
         )}
 
-        {/* Button */}
         <button
           className={`mt-2 w-full py-2 sm:py-3 rounded-lg font-cairo font-semibold text-sm sm:text-base transition-all duration-200 ${
             course.isCompleted

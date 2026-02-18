@@ -39,7 +39,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({ activeFilter, onFilterCha
                 border
                 ${
                   activeFilter === filter.id
-                    ? 'bg-gradient-to-r from-[#FF6400] to-[#FF8C42] text-white border-transparent shadow-md'
+                    ? 'bg-linear-to-r from-[#FF6400] to-[#FF8C42] text-white border-transparent shadow-md'
                     : 'bg-white text-[#113555] border-gray-300 hover:border-[#FF6400] hover:shadow-sm'
                 }
               `}

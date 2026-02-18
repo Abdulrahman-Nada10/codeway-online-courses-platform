@@ -11,14 +11,11 @@ const Navbar = () => {
   return (
     <div className="p-3 sm:p-4 lg:p-6 pt-3 sm:pt-4 lg:pt-6">
       <nav className="bg-white rounded-2xl px-3 sm:px-4 lg:px-6 py-3 sm:py-4 flex items-center justify-between gap-2 sm:gap-3 lg:gap-4 shadow-sm">
-        {/* Search Bar */}
         <div className="flex-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl">
           <SearchBar />
         </div>
 
-        {/* Right Side - Notifications & Profile */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Notifications - Desktop */}
           <button 
             className="hidden md:block relative p-1.5 sm:p-2 rounded-xl hover:bg-gray-100 transition-colors"
             aria-label="الإشعارات"
@@ -30,7 +27,6 @@ const Navbar = () => {
             <span className="absolute top-0.5 sm:top-1 left-0.5 sm:left-1 w-1.5 sm:w-2 h-1.5 sm:h-2 bg-[#FF6400] rounded-full"></span>
           </button>
 
-          {/* Mobile Notifications Dropdown */}
           <div className="md:hidden relative">
             <button 
               className="relative p-1.5 sm:p-2 rounded-xl hover:bg-gray-100 transition-colors"
@@ -43,7 +39,6 @@ const Navbar = () => {
               <span className="absolute top-0.5 sm:top-1 left-0.5 sm:left-1 w-1.5 sm:w-2 h-1.5 sm:h-2 bg-[#FF6400] rounded-full"></span>
             </button>
 
-            {/* Mobile Notifications Dropdown Menu */}
             {showNotifications && (
               <div className="absolute left-0 mt-2 w-64 sm:w-72 bg-white rounded-xl shadow-lg border border-gray-100 z-50 overflow-hidden">
                 <div className="p-3 border-b border-gray-100">
@@ -82,7 +77,6 @@ const Navbar = () => {
                 />
               </div>
             </Link>
-            {/* Name - Hidden on small screens */}
             <span className="hidden sm:block font-cairo font-bold text-sm sm:text-base text-[#113555] leading-none">
               عمر محمد السيد
             </span>

@@ -12,14 +12,11 @@ export default function MyCourses() {
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const searchQuery = useAppSelector((state) => state.search.query);
 
-  // Filter courses based on both search query and active filter
   const filteredCourses = allCourses.filter((course) => {
-    // First apply the category filter
     if (activeFilter !== 'all' && course.category !== activeFilter) {
       return false;
     }
     
-    // Then apply the search filter
     if (searchQuery) {
       const searchLower = searchQuery.toLowerCase();
       const matchesTitle = course.title.toLowerCase().includes(searchLower);
@@ -33,17 +30,14 @@ export default function MyCourses() {
   return (
     <div className="min-h-screen bg-[#FFF3EB] overflow-x-hidden">
       
-      {/* Sidebar - لازم يكون hidden على الموبايل */}
       <Sidebar />
 
-      {/* Main Content */}
-      <div className="lg:mr-56 xl:mr-60 md:mr-60">
+      <div className="lg:mr-70 xl:mr-70 md:mr-0">
         
         <Navbar />
 
         <main className="p-3 sm:p-4 lg:p-6">
 
-          {/* Header */}
           <div className="mb-4 sm:mb-6 text-right">
             <h1 className="font-cairo font-bold text-xl sm:text-2xl text-[#113555]">
               دوراتي
@@ -53,20 +47,17 @@ export default function MyCourses() {
             </p>
           </div>
 
-          {/* Filters */}
           <FilterSection 
             activeFilter={activeFilter} 
             onFilterChange={setActiveFilter} 
           />
 
-          {/* Courses Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
             {filteredCourses.map((course) => (
               <CourseCard key={course.id} course={course} />
             ))}
           </div>
 
-          {/* Empty State - No courses found */}
           {filteredCourses.length === 0 && (
             <div className="text-center py-10 sm:py-12">
               <div className="flex flex-col items-center justify-center gap-3 sm:gap-4">

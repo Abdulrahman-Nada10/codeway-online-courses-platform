@@ -108,7 +108,6 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-[#FF6400] text-white rounded-lg shadow-lg"
@@ -123,7 +122,6 @@ const Sidebar = () => {
         </svg>
       </button>
 
-      {/* Overlay for mobile */}
       {isMobileMenuOpen && (
         <div 
           className="lg:hidden fixed inset-0 bg-black/50 z-30"
@@ -131,7 +129,6 @@ const Sidebar = () => {
         />
       )}
 
-      {/* Sidebar - Desktop */}
       <aside className={`
         hidden lg:flex flex-col
         fixed right-6 top-6 bottom-12
@@ -142,7 +139,6 @@ const Sidebar = () => {
         z-40
         shadow-sm
       `}>
-        {/* Logo */}
         <div className="px-3 sm:px-4 pb-3 sm:pb-4 border-b border-gray-100">
           <div className="flex items-center justify-start">
             <div className="w-20 h-14 sm:w-22 sm:h-16 flex items-center justify-center overflow-hidden">
@@ -157,14 +153,12 @@ const Sidebar = () => {
           </div>
         </div>
 
-        {/* Menu Items - Top Section */}
         <nav className="flex-1 overflow-y-auto">
           <ul className="space-y-1.5 sm:space-y-2 px-1">
             {menuItems.map(renderMenuItem)}
           </ul>
         </nav>
 
-        {/* Bottom Items */}
         <div className="pt-3 sm:pt-4 mt-auto border-t border-gray-100">
           <ul className="space-y-1.5 sm:space-y-2 px-1">
             {bottomItems.map(renderMenuItem)}
@@ -172,7 +166,6 @@ const Sidebar = () => {
         </div>
       </aside>
 
-      {/* Mobile Sidebar */}
       <aside className={`
         lg:hidden
         fixed top-0 right-0 h-screen w-56 sm:w-60 md:w-64
@@ -180,7 +173,6 @@ const Sidebar = () => {
         transform transition-transform duration-300 ease-in-out z-50
         ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}
       `}>
-        {/* Logo */}
         <div className="p-4 sm:p-6 border-b border-gray-100">
           <div className="flex items-center">
             <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center overflow-hidden">
@@ -195,14 +187,12 @@ const Sidebar = () => {
           </div>
         </div>
 
-        {/* Menu Items */}
         <nav className="flex-1 p-3 sm:p-4 overflow-y-auto">
           <ul className="space-y-1.5 sm:space-y-2">
             {menuItems.map(renderMenuItem)}
           </ul>
         </nav>
 
-        {/* Bottom Items */}
         <div className="p-3 sm:p-4 border-t border-gray-100">
           <ul className="space-y-1.5 sm:space-y-2">
             {bottomItems.map(renderMenuItem)}

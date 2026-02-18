@@ -19,7 +19,6 @@ export default function Profile() {
     { id: 'skills' as TabType, label: 'المهارات' },
   ];
 
-  // Mock user data
   const userData = {
     name: 'عمر محمد السيد',
     email: 'omar@example.com',
@@ -33,7 +32,6 @@ export default function Profile() {
     workingHours: 150,
   };
 
-  // Mock certificates
   const certificates = [
     { id: 1, title: 'Advanced Web Development', day: 15, month: 'ديسمبر', year: 2023 },
     { id: 2, title: 'React Mastery', day: 20, month: 'نوفمبر', year: 2023 },
@@ -42,15 +40,12 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-[#FFF3EB] overflow-x-hidden">
-      {/* Sidebar */}
       <Sidebar />
 
-      {/* Main Content */}
       <div className="lg:mr-75">
         <Navbar />
 
         <main className="p-3 sm:p-4 lg:p-3">
-          {/* Header */}
           <div className="text-right sm:mb-2">
             <h1 className="font-cairo font-bold text-xl sm:text-2xl text-[#113555]">
               الملف الشخصي
@@ -60,10 +55,8 @@ export default function Profile() {
             </p>
           </div>
 
-          {/* Profile Content */}
           <div className="space-y-4 sm:space-y-6">
             
-            {/* Edit Profile Button */}
             <div className="flex justify-end">
               <button 
                 onClick={() => window.location.href = '/settings'}
@@ -77,7 +70,6 @@ export default function Profile() {
               </button>
             </div>
 
-            {/* User Info Component */}
             <UserInfo
               name={userData.name}
               email={userData.email}
@@ -87,7 +79,6 @@ export default function Profile() {
               avatar={userData.avatar}
             />
 
-            {/* Stats Component */}
             <Stats
               registeredCourses={userData.registeredCourses}
               completedCourses={userData.completedCourses}
@@ -95,7 +86,6 @@ export default function Profile() {
               workingHours={userData.workingHours}
             />
 
-            {/* Certificate List Component */}
             <CertificateList certificates={certificates} />
 
           </div>

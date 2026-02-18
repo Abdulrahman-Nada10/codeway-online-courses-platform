@@ -28,7 +28,7 @@ export default function ProfileSection({
 }: ProfileSectionProps) {
   return (
     <div className="space-y-8">
-      <div className="text-right pb-4 border-b border-gray-100">
+      <div className="text-right pb-4">
         <h3 className="font-cairo font-bold text-lg text-[#113555]">
           المعلومات الأساسية
         </h3>
@@ -125,7 +125,7 @@ export default function ProfileSection({
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-6 border-t border-gray-100 justify-end">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-6 justify-end">
         <button
           onClick={onCancel}
           className="px-6 py-3 border-2 border-[#FF6400] text-[#FF6400] rounded-xl font-cairo font-medium text-sm hover:bg-[#FFF3EB] transition-colors w-full sm:w-auto"
