@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import Navbar from '../../components/Navbar';
+import Navbar from '../../components/NavbarInstructor';
 import Sidebar from '../../components/Sidebar';
 import { DiplomaIcon, BackIcon, CalendarIconAlt, User as InstructorIcon, BadgeCheck as BadgeIcon, CheckCircle as CheckCircleIcon, Download as DownloadIconAlt, Share2 as ShareIconAlt } from '../../components/icons';
 
