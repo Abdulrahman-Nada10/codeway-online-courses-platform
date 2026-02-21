@@ -1,88 +1,184 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import SearchBar from './SearchBar';
-import { Bell as BellIcon } from './icons';
+import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Search, ShoppingCart, Bell, Menu, X, ArrowLeft, LogIn } from "lucide-react";
 
-const Navbar = () => {
-  const [showNotifications, setShowNotifications] = useState(false);
+// روابط التنقل الأساسية
+const navLinks = [
+  { name: "الرئيسية", href: "/" },
+  { name: "الدورات", href: "/courses" },
+  { name: "المميزات", href: "/features" },
+  { name: "تواصل معنا", href: "/contact" },
+];
+
+export default function Navbar() {
+  // يمكنك تغيير هذه الحالة لاحقاً بناءً على نظام التوثيق (Auth) لديك
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  //  بس هلق مشان التجربه
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navbarRef = useRef<HTMLDivElement>(null);
+
+  // إغلاق القوائم والبحث عند الضغط خارج النافبار
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (navbarRef.current && !navbarRef.current.contains(event.target as Node)) {
+        setIsSearchOpen(false);
+        setIsMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <div className="p-3 sm:p-4 lg:p-6 pt-3 sm:pt-4 lg:pt-6">
-      <nav className="bg-white rounded-2xl px-3 sm:px-4 lg:px-6 py-3 sm:py-4 flex items-center justify-between gap-2 sm:gap-3 lg:gap-4 shadow-sm">
-        <div className="flex-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl">
-          <SearchBar />
-        </div>
+    <header className="w-full bg-[#FFF9F5] p-3 sm:p-5 font-cairo sticky top-0 z-50" dir="rtl">
+      <nav 
+        ref={navbarRef}
+        className="mx-auto max-w-7xl bg-white rounded-2xl sm:rounded-[2rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-orange-50/50 px-4 sm:px-8 py-3 transition-all duration-300"
+      >
+        <div className="flex items-center justify-between h-14">
 
-        <div className="flex items-center gap-2 sm:gap-3">
-          <button 
-            className="hidden md:block relative p-1.5 sm:p-2 rounded-xl hover:bg-gray-100 transition-colors"
-            aria-label="الإشعارات"
-            onClick={() => setShowNotifications(!showNotifications)}
-          >
-            <BellIcon className="h-4 w-4 sm:h-5 sm:w-5 text-[#113555]" strokeWidth={2} />
-            <span className="absolute top-0.5 sm:top-1 left-0.5 sm:left-1 w-1.5 sm:w-2 h-1.5 sm:h-2 bg-[#FF6400] rounded-full"></span>
-          </button>
+          {/* --- القسم الأيمن: اللوجو (ثابت دائماً) --- */}
+          <div className="flex items-center gap-2 shrink-0 group">
+            <div className={`flex items-center gap-2 transition-all duration-300 ${isSearchOpen ? 'hidden sm:flex' : 'flex'}`}>
+            <Link href="/" className="shrink-0 hover:scale-105 transition-transform">
+              <Image
+                src="/favicon.ico"
+                alt="Logo"
+                width={45}
+                height={45}
+                className="object-contain"
+              />
+            </Link>
+          </div>
+          </div>
 
-          <div className="md:hidden relative">
-            <button 
-              className="relative p-1.5 sm:p-2 rounded-xl hover:bg-gray-100 transition-colors"
-              aria-label="الإشعارات"
-              onClick={() => setShowNotifications(!showNotifications)}
-            >
-              <BellIcon className="h-4 w-4 sm:h-5 sm:w-5 text-[#113555]" strokeWidth={2} />
-              <span className="absolute top-0.5 sm:top-1 left-0.5 sm:left-1 w-1.5 sm:w-2 h-1.5 sm:h-2 bg-[#FF6400] rounded-full"></span>
-            </button>
-
-            {showNotifications && (
-              <div className="absolute left-0 mt-2 w-64 sm:w-72 bg-white rounded-xl shadow-lg border border-gray-100 z-50 overflow-hidden">
-                <div className="p-3 border-b border-gray-100">
-                  <h3 className="font-cairo font-bold text-sm sm:text-base text-[#113555]">الإشعارات</h3>
-                </div>
-                <div className="max-h-64 overflow-y-auto">
-                  <div className="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50">
-                    <p className="font-cairo text-xs sm:text-sm text-[#113555]">تم إضافة دورة جديدة</p>
-                    <span className="font-cairo text-xs text-gray-400">منذ ساعة</span>
-                  </div>
-                  <div className="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50">
-                    <p className="font-cairo text-xs sm:text-sm text-[#113555]">تم منحك شهادة جديدة</p>
-                    <span className="font-cairo text-xs text-gray-400">منذ يوم</span>
-                  </div>
-                  <div className="p-3 hover:bg-gray-50 cursor-pointer">
-                    <p className="font-cairo text-xs sm:text-sm text-[#113555]">خصم 20% على جميع الدورات</p>
-                    <span className="font-cairo text-xs text-gray-400">منذ يومين</span>
-                  </div>
-                </div>
-                <Link href="/settings" className="block p-3 text-center bg-gray-50 hover:bg-gray-100">
-                  <span className="font-cairo text-xs sm:text-sm text-[#FF6400]">عرض كل الإشعارات</span>
-                </Link>
+          {/* --- القسم الأوسط: روابط أو مربع بحث --- */}
+          <div className="flex-1 flex justify-center items-center px-4">
+            {isLoggedIn && isSearchOpen ? (
+              // مربع البحث يظهر فقط للمسجل عند تفعيله
+              <div className="w-full max-w-xl relative animate-in fade-in zoom-in duration-300">
+                <input
+                  autoFocus
+                  type="text"
+                  placeholder="ابحث عن دوراتك..."
+                  className="w-full bg-orange-50/50 border border-orange-100 rounded-2xl py-2.5 pr-12 pl-4 outline-none focus:ring-2 focus:ring-orange-500/20 focus:bg-white transition-all text-gray-700"
+                />
+                <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-orange-600" size={20} />
               </div>
+            ) : (
+              // الروابط تظهر في وضع الزائر أو المسجل (إذا كان البحث مغلقاً)
+              <ul className="hidden lg:flex items-center gap-2">
+                {navLinks.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      href={link.href}
+                      className="px-5 py-2 text-[15px] font-bold text-gray-500 hover:text-orange-600 rounded-xl hover:bg-orange-50 transition-all"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3">
-            <Link href="/profile" className="block">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-full overflow-hidden border-2 border-[#FF6400] cursor-pointer">
-                <Image
-                  src="/profile.jpg"
-                  alt="البروفايل"
-                  width={40}
-                  height={40}
-                  className="w-full h-full object-cover"
-                />
+          {/* --- القسم الأيسر: الإجراءات (تتغير حسب الحالة) --- */}
+          <div className="flex items-center gap-2 sm:gap-4">
+            
+            {isLoggedIn ? (
+              /* واجهة المستخدم المسجل */
+              <div className="flex items-center gap-1 sm:gap-3">
+                {!isSearchOpen && (
+                  <button 
+                    onClick={() => setIsSearchOpen(true)}
+                    className="p-2.5 text-gray-500 hover:text-orange-600 hover:bg-orange-50 rounded-full transition-all"
+                  >
+                    <Search size={22} />
+                  </button>
+                )}
+                <Link href="/cart" className="p-2.5 text-gray-500 hover:text-orange-600 relative">
+                  <ShoppingCart size={22} />
+                  <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-orange-600 rounded-full border-2 border-white shadow-sm"></span>
+                </Link>
+                <Link href="/notifications" className="p-2.5 text-gray-500 hover:text-orange-600"><Bell size={22} /></Link>
+                
+                <div className="h-8 w-px bg-gray-100 mx-1 hidden sm:block"></div>
+
+                <Link href="/profile" className="flex items-center gap-3 pr-2 group">
+                  <span className="text-sm font-bold text-gray-700 hidden md:block group-hover:text-orange-600 transition">م. محمد محمود</span>
+                  <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-orange-100 shadow-sm group-hover:border-orange-500 transition-all">
+                    <Image src="/profile.png" alt="Profile" fill className="object-cover" />
+                  </div>
+                </Link>
               </div>
-            </Link>
-            <span className="hidden sm:block font-cairo font-bold text-sm sm:text-base text-[#113555] leading-none">
-              عمر محمد السيد
-            </span>
+            ) : (
+              /* واجهة الزائر (Guest) */
+              <div className="flex items-center gap-2">
+                <Link 
+                  href="/login" 
+                  className="hidden sm:flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-gray-600 hover:text-[#1D3E61] transition-all"
+                >
+                  <LogIn size={18} />
+                  <span>تسجيل الدخول</span>
+                </Link>
+                <Link 
+                  href="/register" 
+                  className="bg-orange-600 text-white px-6 py-3 rounded-xl sm:rounded-2xl font-bold text-sm hover:bg-orange-700 shadow-lg shadow-orange-200 active:scale-95 transition-all flex items-center gap-2 group"
+                >
+                  <span>ابدأ التعلم</span>
+                  <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+                </Link>
+              </div>
+            )}
+
+            {/* زر القائمة للجوال */}
+            <button 
+              className="lg:hidden p-2.5 bg-gray-50 text-gray-600 rounded-xl hover:bg-orange-50 transition-colors"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X size={24}/> : <Menu size={24}/>}
+            </button>
           </div>
         </div>
+
+        {/* --- القائمة المنسدلة للجوال (Responsive Menu) --- */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden mt-4 pt-4 border-t border-gray-50 animate-in slide-in-from-top-4 duration-300">
+            <div className="flex flex-col gap-1">
+              {navLinks.map((link) => (
+                <Link 
+                  key={link.name} 
+                  href={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-4 font-bold text-gray-600 hover:bg-orange-50 hover:text-orange-600 rounded-xl transition-all"
+                >
+                  {link.name}
+                </Link>
+              ))}
+              {!isLoggedIn && (
+                <Link 
+                  href="/login" 
+                  className="p-4 font-bold text-[#1D3E61] border-t border-gray-50 mt-2 flex items-center gap-2"
+                >
+                  <LogIn size={20} /> تسجيل الدخول
+                </Link>
+              )}
+            </div>
+          </div>
+        )}
       </nav>
-    </div>
+
+      {/* زر تجريبي (اختياري) لتبديل الحالة أثناء التطوير */}
+      {/* <button 
+        onClick={() => setIsLoggedIn(!isLoggedIn)}
+        className="fixed bottom-6 right-6 bg-[#1D3E61] text-white text-[10px] px-4 py-2 rounded-full opacity-40 hover:opacity-100 transition-opacity"
+      >
+        تبديل الحالة: {isLoggedIn ? "طالب" : "زائر"}
+      </button> */}
+    </header>
   );
-};
-
-export default Navbar;
-
+}

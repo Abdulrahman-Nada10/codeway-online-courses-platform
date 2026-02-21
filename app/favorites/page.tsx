@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/NavbarInstructor';
 import Sidebar from '../components/Sidebar';
 import FavoriteCourseCard from '../components/FavoriteCourseCard';
 import { useSelector } from 'react-redux';

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/NavbarInstructor';
 import Sidebar from '../components/Sidebar';
 import ProfileSection from './components/ProfileSection';
 import NotificationsSection from './components/NotificationsSection';

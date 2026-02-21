@@ -1,18 +1,18 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { 
-  User, 
-  BookOpen, 
-  Heart, 
-  Award, 
-  Settings, 
-  LogOut, 
-  Menu, 
-  X 
+import {
+  User,
+  BookOpen,
+  Heart,
+  Award,
+  Settings,
+  LogOut,
+  Menu,
+  X
 } from "lucide-react";
 
 interface MenuItem {
@@ -25,6 +25,16 @@ interface MenuItem {
 const Sidebar = () => {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const menuItems: MenuItem[] = [
     {
@@ -107,7 +117,9 @@ const Sidebar = () => {
     <>
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-[#FF6400] text-white rounded-lg shadow-lg"
+        className={`lg:hidden fixed left-4 z-50 p-2 bg-[#FF6400] text-white rounded-lg shadow-lg transition-all duration-300 ${
+          isScrolled ? 'top-2.5' : 'top-27.5'
+        }`}
         aria-label="القائمة"
       >
         {isMobileMenuOpen ? (
