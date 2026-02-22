@@ -12,12 +12,12 @@ const Navbar = () => {
   return (
     <div className="p-3 sm:p-4 lg:p-6 pt-3 sm:pt-4 lg:pt-6">
       <nav className="bg-white rounded-2xl px-3 sm:px-4 lg:px-6 py-3 sm:py-4 flex items-center justify-between gap-2 sm:gap-3 lg:gap-4 shadow-sm">
-        <div className="flex-1 mr-60 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl">
+        <div className="flex-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl">
           <SearchBar />
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3">
-          <button 
+          <button
             className="hidden md:block relative p-1.5 sm:p-2 rounded-xl hover:bg-gray-100 transition-colors"
             aria-label="الإشعارات"
             onClick={() => setShowNotifications(!showNotifications)}
@@ -27,7 +27,7 @@ const Navbar = () => {
           </button>
 
           <div className="md:hidden relative">
-            <button 
+            <button
               className="relative p-1.5 sm:p-2 rounded-xl hover:bg-gray-100 transition-colors"
               aria-label="الإشعارات"
               onClick={() => setShowNotifications(!showNotifications)}

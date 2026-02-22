@@ -65,20 +65,20 @@ export default function Hero() {
 
           {/* الأزرار */}
           <div className="flex gap-3 sm:gap-4 flex-wrap">
-            
-          <Link href="/list-of-courses">
-            <button
-            
-              className="bg-[#FF6400] hover:bg-[#FF7A33] transition-colors text-white font-bold rounded-lg text-sm sm:text-base px-6 sm:px-12 py-3 sm:py-3.5"
-              style={{
-                boxShadow: "0px 8px 24px rgba(255, 100, 0, 0.4)",
-              }}
-            >
-              
-            ابدأ رحلتك الآن
-            </button>
+
+            <Link href="/list-of-courses">
+              <button
+
+                className="bg-[#FF6400] hover:bg-[#FF7A33] transition-colors text-white font-bold rounded-lg text-sm sm:text-base px-6 sm:px-12 py-3 sm:py-3.5"
+                style={{
+                  boxShadow: "0px 8px 24px rgba(255, 100, 0, 0.4)",
+                }}
+              >
+
+                ابدأ رحلتك الآن
+              </button>
             </Link>
-            
+
             <button
               className="flex items-center gap-2 text-white hover:text-[#FFB987] font-bold rounded-lg transition-colors text-sm sm:text-base px-6 sm:px-10 py-3 sm:py-3.5"
               style={{
@@ -170,7 +170,7 @@ export default function Hero() {
             </div>
 
             <div
-              className="absolute -bottom-8 sm:-bottom-10 left-4 sm:left-16 md:left-32 lg:left-62 bg-gradient-to-r from-[#FF6400] to-[#FF8C4B] text-white rounded-xl sm:rounded-2xl px-3 sm:px-5 py-3 sm:py-4 flex items-center gap-2 sm:gap-4 backdrop-blur-sm"
+              className="absolute -bottom-8 sm:-bottom-10 left-4 sm:left-16 md:left-32 lg:left-62 bg-gradient-to-r from-[#FF6400] to-[#FF8C4B] text-white rounded-xl sm:rounded-2xl px-3 sm:px-5 py-4 sm:py-4 flex items-center gap-2 sm:gap-4 backdrop-blur-sm"
               style={{
                 boxShadow:
                   "0px 12px 40px rgba(255, 100, 0, 0.4), 0px 4px 12px rgba(0, 0, 0, 0.3)",
@@ -192,7 +192,7 @@ export default function Hero() {
                 ].map((avatar, i) => (
                   <div
                     key={i}
-                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-full font-bold flex items-center justify-center text-xs sm:text-sm border-2 border-white shadow-md"
+                    className="w-8 h-8  sm:w-10 sm:h-10 rounded-full font-bold flex items-center justify-center text-xs sm:text-sm border-2 border-white shadow-md"
                     style={{
                       backgroundColor: avatar.bg,
                       color: avatar.textColor || "#FFFFFF",

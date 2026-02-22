@@ -1,15 +1,22 @@
 import Sidebar from "../components/ui/SidebarInstructor";
 import Navbar from "../components/NavbarInstructor";
+import InstructorDashboard from "./components/InstructorDashboard";
+
+export const metadata = {
+  title: "لوحة التحكم - المدرب | منصة التعلم الإلكترونية",
+  description: "لوحة تحكم المدرب - إدارة الدورات والطلاب والأرباح",
+};
 
 export default function Page() {
   return (
     <>
       <Sidebar />
-      <Navbar />
-      <main dir="rtl" className="p-8 md:mr-64">
-        <h1 className="text-2xl font-bold mb-2">نظرة عامة</h1>
-        <p className="text-gray-600">هذه صفحة نظرة عامة للمدرّس. أضف هنا إحصاءات وتعليمات سريعة.</p>
-      </main>
+      <div className="md:mr-64 min-h-screen bg-page-bg flex flex-col">
+        <Navbar />
+        <main dir="rtl" className="flex-1 p-4 sm:p-6 lg:p-8">
+          <InstructorDashboard />
+        </main>
+      </div>
     </>
   );
 }

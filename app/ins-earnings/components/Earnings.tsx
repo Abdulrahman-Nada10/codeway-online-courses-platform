@@ -2,13 +2,13 @@
 
 import React, { useState, useMemo } from 'react';
 import { Cairo } from 'next/font/google';
-import { 
-  Download, 
-  TrendingUp, 
-  TrendingDown, 
-  Wallet, 
-  PieChart as PieChartIcon, 
-  ArrowUpRight, 
+import {
+  Download,
+  TrendingUp,
+  TrendingDown,
+  Wallet,
+  PieChart as PieChartIcon,
+  ArrowUpRight,
   DollarSign,
   FileText,
   Calendar,
@@ -58,7 +58,7 @@ const generateRealTransactions = (count: number) => {
     const daysAgo = Math.floor(Math.random() * 180); // آخر 6 أشهر
     const date = new Date(today);
     date.setDate(date.getDate() - daysAgo);
-    
+
     const amount = Math.floor(Math.random() * 600) + 200; // 200-800 ج.م
     const commissionRate = 0.2; // 20%
     const commission = Math.floor(amount * commissionRate);
@@ -86,7 +86,7 @@ const calculateStats = () => {
   const totalEarnings = TRANSACTIONS.reduce((sum, tx) => sum + tx.net, 0);
   const totalAmount = TRANSACTIONS.reduce((sum, tx) => sum + tx.amount, 0);
   const totalCommission = Math.abs(TRANSACTIONS.reduce((sum, tx) => sum + tx.commission, 0));
-  
+
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
   const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
@@ -100,7 +100,7 @@ const calculateStats = () => {
     .filter(tx => tx.month === lastMonth && tx.year === lastMonthYear)
     .reduce((sum, tx) => sum + tx.net, 0);
 
-  const monthChange = lastMonthEarnings > 0 
+  const monthChange = lastMonthEarnings > 0
     ? Math.round(((currentMonthEarnings - lastMonthEarnings) / lastMonthEarnings) * 100)
     : 0;
 
@@ -119,38 +119,38 @@ const calculateStats = () => {
 const stats = calculateStats();
 
 const STATS_DATA = [
-  { 
-    id: 1, 
-    title: 'إجمالي الأرباح', 
-    value: stats.totalEarnings.toLocaleString('ar-EG'), 
-    unit: 'ج.م', 
-    change: `+${Math.round((stats.totalEarnings / TRANSACTIONS.length) * 0.15)}%`, 
-    isUp: true, 
+  {
+    id: 1,
+    title: 'إجمالي الأرباح',
+    value: stats.totalEarnings.toLocaleString('ar-EG'),
+    unit: 'ج.م',
+    change: `+${Math.round((stats.totalEarnings / TRANSACTIONS.length) * 0.15)}%`,
+    isUp: true,
     icon: DollarSign,
     gradient: 'bg-gradient-to-b from-[#FFF3EB] to-[#fce7e7edB]'
   },
-  { 
-    id: 2, 
-    title: 'أرباح هذا الشهر', 
-    value: stats.currentMonthEarnings.toLocaleString('ar-EG'), 
-    unit: 'ج.م', 
-    change: `${stats.monthChange > 0 ? '+' : ''}${stats.monthChange}%`, 
-    isUp: stats.monthChange >= 0, 
+  {
+    id: 2,
+    title: 'أرباح هذا الشهر',
+    value: stats.currentMonthEarnings.toLocaleString('ar-EG'),
+    unit: 'ج.م',
+    change: `${stats.monthChange > 0 ? '+' : ''}${stats.monthChange}%`,
+    isUp: stats.monthChange >= 0,
     icon: TrendingUp,
     gradient: 'bg-gradient-to-br from-[#FFF3EB] to-[#fce7e7edB]'
   },
-  { 
-    id: 3, 
-    title: 'الرصيد المتاح', 
-    value: stats.availableBalance.toLocaleString('ar-EG'), 
-    unit: 'ج.م', 
+  {
+    id: 3,
+    title: 'الرصيد المتاح',
+    value: stats.availableBalance.toLocaleString('ar-EG'),
+    unit: 'ج.م',
     icon: Wallet,
     gradient: 'bg-gradient-to-br from-[#FFF3EB] to-[#fce7e7edB]'
   },
-  { 
-    id: 4, 
-    title: 'معدل العمولة', 
-    value: `${stats.commissionRate}%`, 
+  {
+    id: 4,
+    title: 'معدل العمولة',
+    value: `${stats.commissionRate}%`,
     icon: PieChartIcon,
     gradient: 'bg-gradient-to-br from-[#FFF3EB] to-[#fce7e7edB]'
   },
@@ -167,7 +167,7 @@ const generateChartData = () => {
     const monthIndex = (currentMonth - i + 12) % 12;
     const monthTransactions = TRANSACTIONS.filter(tx => tx.month === monthIndex);
     const monthEarnings = monthTransactions.reduce((sum, tx) => sum + tx.net, 0);
-    
+
     chartData.push({
       name: months[monthIndex],
       value: monthEarnings,
@@ -184,9 +184,9 @@ const CHART_DATA = generateChartData();
 
 const StatCard = ({ item }: { item: typeof STATS_DATA[0] }) => (
   <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 group relative overflow-hidden">
-    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity" 
-         style={{ backgroundImage: `linear-gradient(to right, var(--tw-gradient-stops))` }} />
-    
+    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity"
+      style={{ backgroundImage: `linear-gradient(to right, var(--tw-gradient-stops))` }} />
+
     <div className="flex items-start justify-between">
       <div className="space-y-2 flex-1">
         <p className="text-gray-500 text-sm font-medium">{item.title}</p>
@@ -253,7 +253,7 @@ export default function EarningsPage() {
   // تصدير إلى Excel
   const handleDownload = () => {
     setIsDownloading(true);
-    
+
     setTimeout(() => {
       try {
         // إعداد البيانات للتصدير
@@ -278,7 +278,7 @@ export default function EarningsPage() {
 
         // إنشاء ورقة العمل
         const ws = XLSX.utils.json_to_sheet(exportData);
-        
+
         // تنسيق العرض
         const colWidths = [
           { wch: 8 },  // الرقم
@@ -326,8 +326,8 @@ export default function EarningsPage() {
   };
 
   return (
-    <div dir="rtl" className={`${cairo.className} min-h-screen bg-gradient-to-br from-[#FDFBF7] via-orange-50/30 to-[#FDFBF7] p-4 md:p-8 space-y-6`}>
-      
+    <div dir="rtl" className={`${cairo.className} space-y-6`}>
+
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white/60 backdrop-blur-sm p-6 rounded-2xl border border-orange-100">
         <div>
@@ -337,7 +337,7 @@ export default function EarningsPage() {
             تتبع أرباحك ومعاملاتك المالية بدقة واحترافية
           </p>
         </div>
-        <button 
+        <button
           onClick={handleDownload}
           disabled={isDownloading}
           className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-3 rounded-xl font-bold transition-all disabled:opacity-70 shadow-lg shadow-orange-200 hover:shadow-xl hover:scale-105 active:scale-95"
@@ -358,17 +358,17 @@ export default function EarningsPage() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 text-black  sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        {STATS_DATA.map(item => <StatCard key={item.id} item={item}  />)}
+        {STATS_DATA.map(item => <StatCard key={item.id} item={item} />)}
       </div>
 
       {/* Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
+
         {/* Monthly Chart */}
         <div className="lg:col-span-7 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center justify-between mb-6">
             <h3 className="font-bold text-gray-900 text-xl flex items-center gap-2">
-               الأرباح الشهرية
+              الأرباح الشهرية
             </h3>
             <div className="text-sm text-gray-500 bg-gray-50 px-4 py-2 rounded-lg">
               آخر 6 أشهر
@@ -379,31 +379,31 @@ export default function EarningsPage() {
               <AreaChart data={CHART_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#f97316" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#f97316" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#f97316" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#f97316" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                <XAxis 
-                  dataKey="name" 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fill: '#9ca3af', fontSize: 13, fontWeight: 600 }} 
+                <XAxis
+                  dataKey="name"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: '#9ca3af', fontSize: 13, fontWeight: 600 }}
                   dy={10}
                 />
-                <YAxis 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fill: '#9ca3af', fontSize: 12 }} 
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: '#9ca3af', fontSize: 12 }}
                 />
                 <Tooltip content={<CustomTooltip />} />
-                <Area 
-                  type="monotone" 
-                  dataKey="value" 
-                  stroke="#f97316" 
+                <Area
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#f97316"
                   strokeWidth={3}
-                  fillOpacity={1} 
-                  fill="url(#colorValue)" 
+                  fillOpacity={1}
+                  fill="url(#colorValue)"
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -437,7 +437,7 @@ export default function EarningsPage() {
 
           <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
             <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-               أفضل الدورات
+              أفضل الدورات
             </h3>
             <div className="space-y-3">
               {Array.from(new Set(TRANSACTIONS.slice(0, 5).map(tx => tx.course))).slice(0, 3).map((course, idx) => {
@@ -469,13 +469,13 @@ export default function EarningsPage() {
         <div className="p-6 border-b border-gray-100 space-y-4">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <h3 className="font-bold text-gray-900 text-xl flex items-center gap-2">
-            جميع المعاملات
+              جميع المعاملات
               <span className="text-sm font-normal text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
                 {filteredTransactions.length} معاملة
               </span>
             </h3>
           </div>
-          
+
           <div className="flex flex-col md:flex-row gap-3">
             {/* Search */}
             <div className="flex-1 relative">
@@ -491,7 +491,7 @@ export default function EarningsPage() {
                 className="w-full pr-10 pl-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
               />
             </div>
-            
+
             {/* Month Filter */}
             <div className="relative">
               <Filter className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={18} />
@@ -577,7 +577,7 @@ export default function EarningsPage() {
               >
                 <ChevronRight size={20} />
               </button>
-              
+
               <div className="flex items-center gap-1">
                 {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                   let pageNum;
@@ -590,16 +590,15 @@ export default function EarningsPage() {
                   } else {
                     pageNum = currentPage - 2 + i;
                   }
-                  
+
                   return (
                     <button
                       key={i}
                       onClick={() => setCurrentPage(pageNum)}
-                      className={`w-10 h-10 rounded-lg font-medium transition-all ${
-                        currentPage === pageNum
+                      className={`w-10 h-10 rounded-lg font-medium transition-all ${currentPage === pageNum
                           ? 'bg-orange-500 text-white shadow-lg'
                           : 'border border-gray-200 hover:bg-gray-50'
-                      }`}
+                        }`}
                     >
                       {pageNum}
                     </button>

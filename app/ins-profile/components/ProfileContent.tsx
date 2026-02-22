@@ -1,17 +1,17 @@
 import React from 'react';
 import { Cairo } from 'next/font/google';
 import Link from 'next/link';
-import { 
-  Pencil, 
-  Mail, 
-  Phone, 
-  LayoutGrid, 
-  CalendarDays, 
-  BookOpen, 
-  GraduationCap, 
-  Star, 
-  DollarSign, 
-  Trophy ,
+import {
+  Pencil,
+  Mail,
+  Phone,
+  LayoutGrid,
+  CalendarDays,
+  BookOpen,
+  GraduationCap,
+  Star,
+  DollarSign,
+  Trophy,
   FilePlusCorner,
   FileBracesCorner
 } from 'lucide-react';
@@ -87,16 +87,16 @@ const AchievementCard = ({ title, description, Icon }: { title: string; descript
 // ==========================================
 export default function ProfileContent() {
   return (
-    <main dir="rtl" className={`${cairo.className} w-full max-w-7xl mx-auto p-4 md:p-6 lg:p-8 space-y-6 text-gray-800 mr-64`}>
-      
+    <main dir="rtl" className={`${cairo.className} w-full max-w-7xl mx-auto space-y-6 text-gray-800`}>
+
       {/* 1. Page Header */}
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">الملف الشخصي</h1>
           <p className="text-sm text-gray-500 mt-1">عرض وإدارة معلوماتك الشخصية</p>
         </div>
-        <Link 
-          href="/ins=settings" 
+        <Link
+          href="/ins=settings"
           className="inline-flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-6 py-2.5 rounded-lg font-semibold transition-colors duration-200 focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
           aria-label="تعديل الملف الشخصي"
         >
@@ -110,9 +110,9 @@ export default function ProfileContent() {
         <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
           {/* Avatar & Basic Info */}
           <div className="flex items-center gap-4 flex-1">
-            <img 
-              src="/profile.jpg" 
-              alt="صورة الملف الشخصي للمدرب" 
+            <img
+              src="/profile.jpg"
+              alt="صورة الملف الشخصي للمدرب"
               className="w-20 h-20 rounded-full object-cover border-2 border-gray-50"
               loading="lazy"
             />
@@ -171,8 +171,8 @@ export default function ProfileContent() {
           <h3 id="skills-title" className="text-lg font-bold text-gray-900 mb-4">المهارات</h3>
           <ul className="flex flex-wrap gap-2">
             {SKILLS_DATA.map((skill, index) => (
-              <li 
-                key={index} 
+              <li
+                key={index}
                 className="bg-orange-500 text-white text-xs font-semibold px-4 py-2 rounded-full cursor-default hover:bg-orange-600 transition-colors"
               >
                 {skill}
@@ -187,11 +187,11 @@ export default function ProfileContent() {
         <h3 id="achievements-title" className="text-lg font-bold text-gray-900 mb-6">الإنجازات</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {ACHIEVEMENTS_DATA.map((achievement) => (
-            <AchievementCard 
-              key={achievement.id} 
-              title={achievement.title} 
-              description={achievement.description} 
-              Icon={achievement.icon} 
+            <AchievementCard
+              key={achievement.id}
+              title={achievement.title}
+              description={achievement.description}
+              Icon={achievement.icon}
             />
           ))}
         </div>

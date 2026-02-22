@@ -92,13 +92,13 @@ const generateStudents = (count: number): Student[] => {
     const progress = Math.floor(Math.random() * 101);
     const daysAgo = Math.floor(Math.random() * 30);
     const lastActivityDays = daysAgo === 0 ? "اليوم" : daysAgo === 1 ? "أمس" : `منذ ${daysAgo} أيام`;
-    
+
     const enrolledDaysAgo = Math.floor(Math.random() * 180) + 1;
     const enrolledDate = new Date();
     enrolledDate.setDate(enrolledDate.getDate() - enrolledDaysAgo);
-    
+
     const activityOptions = ["منذ ساعة", "منذ ساعتين", "منذ 3 ساعات", "منذ يوم", "منذ يومين", "منذ 3 أيام", lastActivityDays];
-    
+
     return {
       id: `student-${index + 1}-${Date.now()}`,
       name: `${name.first} ${name.last}`,
@@ -124,7 +124,7 @@ const allStudents = generateStudents(50);
 
 const ProgressBar = ({ value }: { value: number }) => {
   const getColor = (progress: number) => {
-    
+
     return "bg-orange-600";
   };
 
@@ -140,8 +140,6 @@ const ProgressBar = ({ value }: { value: number }) => {
     </div>
   );
 };
-
-type StudentStatus = "نشط" | "معلق" | "غير نشط";
 
 const StatusBadge = ({ status }: { status: StudentStatus }) => {
   const styles = {
@@ -182,13 +180,13 @@ const StatusBadge = ({ status }: { status: StudentStatus }) => {
   );
 };
 
-const PaginationBtn = ({ 
-  children, 
-  active, 
+const PaginationBtn = ({
+  children,
+  active,
   onClick,
-  disabled 
-}: { 
-  children: React.ReactNode; 
+  disabled
+}: {
+  children: React.ReactNode;
   active?: boolean;
   onClick?: () => void;
   disabled?: boolean;
@@ -197,9 +195,9 @@ const PaginationBtn = ({
     onClick={onClick}
     disabled={disabled}
     className={`w-8 h-8 rounded-md text-sm font-medium border transition flex items-center justify-center
-      ${active 
-        ? "bg-orange-500 text-white border-orange-500" 
-        : disabled 
+      ${active
+        ? "bg-orange-500 text-white border-orange-500"
+        : disabled
           ? "bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed"
           : "bg-white text-gray-600 border-gray-200 hover:bg-orange-50 hover:border-orange-300"
       }`}
@@ -219,14 +217,14 @@ export default function StudentsContentView() {
   const [specializationFilter, setSpecializationFilter] = useState<string>("الكل");
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
-  
+
   const itemsPerPage = 9;
 
   // Filter students based on search and filters
   const filteredStudents = useMemo(() => {
     return allStudents.filter((student) => {
       // Search filter
-      const matchesSearch = 
+      const matchesSearch =
         student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         student.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
         student.course.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -277,7 +275,7 @@ export default function StudentsContentView() {
   const getPageNumbers = () => {
     const pages: (number | string)[] = [];
     const maxVisible = 5;
-    
+
     if (totalPages <= maxVisible) {
       for (let i = 1; i <= totalPages; i++) pages.push(i);
     } else {
@@ -303,14 +301,14 @@ export default function StudentsContentView() {
   const pageNumbers = getPageNumbers();
 
   return (
-    <main dir="rtl" className="min-h-screen bg-[#FCF8F4] p-4 md:p-6 space-y-4 md:space-y-6">
+    <main dir="rtl" className="min-h-0 space-y-4 md:space-y-6">
       {/* Header */}
       <header className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
         <div>
           <h1 className="text-xl md:text-2xl font-bold text-gray-800">الطلاب</h1>
           <p className="text-xs md:text-sm text-gray-500 mt-1">متابعة تقدم الطلاب في دوراتك</p>
         </div>
-        
+
       </header>
 
       {/* Filters */}
@@ -319,7 +317,7 @@ export default function StudentsContentView() {
         <div className="flex flex-col lg:flex-row gap-3 items-stretch lg:items-center justify-between">
           {/* Left side - Filter buttons */}
           <div className="flex gap-2 md:gap-3 flex-wrap order-2 lg:order-1">
-            <button 
+            <button
               onClick={() => setShowFilters(!showFilters)}
               className={`flex items-center gap-2 px-3 md:px-4 py-2 text-sm border rounded-lg transition
                 ${showFilters ? "bg-orange-500 text-white border-orange-500" : "bg-gray-50 hover:bg-orange-50"}`}
@@ -333,7 +331,7 @@ export default function StudentsContentView() {
 
             {showFilters && (
               <>
-                <select 
+                <select
                   value={statusFilter}
                   onChange={handleStatusFilter}
                   className="px-1 md:px-4 py-2 text-sm border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-300 min-w-[120px]"
@@ -344,7 +342,7 @@ export default function StudentsContentView() {
                   <option value="غير نشط">غير نشط</option>
                 </select>
 
-                <select 
+                <select
                   value={specializationFilter}
                   onChange={handleSpecializationFilter}
                   className="px-3 md:px-4 py-2 text-sm border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-300 min-w-[120px]"
@@ -425,10 +423,10 @@ export default function StudentsContentView() {
                 >
                   {/* Student Info */}
                   <div className="flex items-start gap-3 mb-3">
-                    <img 
-                      src={student.avatar} 
+                    <img
+                      src={student.avatar}
                       alt={student.name}
-                      className="w-12 h-12 rounded-full object-cover ring-2 ring-gray-100" 
+                      className="w-12 h-12 rounded-full object-cover ring-2 ring-gray-100"
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-bold text-gray-800 truncate">{student.name}</p>
@@ -436,13 +434,13 @@ export default function StudentsContentView() {
                     </div>
                     <StatusBadge status={student.status} />
                   </div>
-                  
+
                   {/* Course Info */}
                   <div className="mb-3">
                     <p className="text-sm text-gray-700">{student.course}</p>
                     <p className="text-xs text-gray-400">{student.specialization}</p>
                   </div>
-                  
+
                   {/* Progress */}
                   <div className="mb-3">
                     <div className="flex items-center gap-2 mb-1">
@@ -450,7 +448,7 @@ export default function StudentsContentView() {
                     </div>
                     <ProgressBar value={student.progress} />
                   </div>
-                  
+
                   {/* Last Activity */}
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-gray-400">آخر نشاط:</span>
@@ -468,10 +466,10 @@ export default function StudentsContentView() {
                   className="grid grid-cols-[2fr_1.5fr_1fr_1fr_1fr] p-4 items-center border-t hover:bg-gray-50 transition cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <img 
-                      src={student.avatar} 
+                    <img
+                      src={student.avatar}
                       alt={student.name}
-                      className="w-10 h-10 rounded-full object-cover ring-2 ring-gray-100" 
+                      className="w-10 h-10 rounded-full object-cover ring-2 ring-gray-100"
                     />
                     <div>
                       <p className="text-sm font-bold text-gray-800">{student.name}</p>
@@ -500,16 +498,16 @@ export default function StudentsContentView() {
       {filteredStudents.length > 0 && (
         <footer className="flex flex-col sm:flex-row justify-between items-center gap-3 text-sm text-gray-500">
           <div className="flex items-center gap-1 order-2 sm:order-1">
-            <PaginationBtn 
+            <PaginationBtn
               onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
               disabled={currentPage === 1}
             >
               <ChevronRight size={14} />
             </PaginationBtn>
-            
+
             {pageNumbers.map((page, index) => (
               typeof page === "number" ? (
-                <PaginationBtn 
+                <PaginationBtn
                   key={index}
                   active={currentPage === page}
                   onClick={() => setCurrentPage(page)}
@@ -520,8 +518,8 @@ export default function StudentsContentView() {
                 <span key={index} className="px-1 text-gray-400">...</span>
               )
             ))}
-            
-            <PaginationBtn 
+
+            <PaginationBtn
               onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
             >

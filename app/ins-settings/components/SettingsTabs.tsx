@@ -16,17 +16,16 @@ export default function SettingsTabs({ activeTab, onTabChange }: SettingsTabsPro
   ];
 
   return (
-    <div className="bg-white rounded-2xl p-3 sm:p-2 lg:p-0 mb-6 sm:mb-0">
-      <div className="flex flex-wrap justify-around gap-2 sm:gap-3">
+    <div className="bg-white rounded-2xl p-1 sm:p-2">
+      <div className="flex flex-wrap sm:flex-nowrap gap-1 sm:gap-2">
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
-            className={`px-4 sm:px-24 py-2.5 sm:py-3 rounded-xl font-cairo font-medium text-sm sm:text-base transition-all duration-200 ${
-              activeTab === tab.id
+            className={`flex-1 min-w-[7rem] px-3 sm:px-5 py-2.5 rounded-xl font-cairo font-medium text-sm transition-all duration-200 text-center ${activeTab === tab.id
                 ? 'bg-[#FF6400] text-white shadow-md'
                 : 'text-[#113555] hover:bg-gray-100'
-            }`}
+              }`}
           >
             {tab.label}
           </button>

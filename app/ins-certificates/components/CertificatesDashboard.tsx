@@ -381,13 +381,12 @@ const Pagination = ({ currentPage, totalPages, totalItems, itemsPerPage, onPageC
           <button
             key={idx}
             onClick={() => typeof page === "number" && onPageChange(page)}
-            className={`w-8 h-8 rounded flex items-center justify-center border transition-colors ${
-              page === currentPage
+            className={`w-8 h-8 rounded flex items-center justify-center border transition-colors ${page === currentPage
                 ? "bg-orange-500 text-white border-orange-500"
                 : page === "..."
-                ? "bg-white text-gray-400 border-gray-200 cursor-default"
-                : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
-            }`}
+                  ? "bg-white text-gray-400 border-gray-200 cursor-default"
+                  : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
+              }`}
             disabled={page === "..."}
           >
             {page}
@@ -560,7 +559,7 @@ export default function CertificatesDashboard() {
   }, [searchQuery, selectedStatus, selectedCategory, dateFrom, dateTo]);
 
   return (
-    <div className="p-6 mr-64 bg-[#fdfaf7] min-h-screen font-cairo" dir="rtl">
+    <div className="font-cairo" dir="rtl">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>

@@ -167,24 +167,26 @@ export default function InstructorSettingsPage() {
   return (
     <>
       <Sidebar />
-      <Navbar />
-      <main dir="rtl" className="p-4 sm:p-6 md:p-8 md:mr-64 min-h-screen bg-[#FCF9F4]">
-        {/* Page Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-cairo font-bold text-[#113555] mb-2">الإعدادات</h1>
-          <p className="text-sm font-cairo text-gray-500">إدارة حسابك وتفضيلاتك</p>
-        </div>
+      <div className="md:mr-64 min-h-screen bg-[#FCF9F4] flex flex-col">
+        <Navbar />
+        <main dir="rtl" className="flex-1 p-4 sm:p-6 lg:p-8">
+          {/* Page Header */}
+          <div className="mb-6">
+            <h1 className="text-2xl font-cairo font-bold text-[#113555] mb-2">الإعدادات</h1>
+            <p className="text-sm font-cairo text-gray-500">إدارة حسابك وتفضيلاتك</p>
+          </div>
 
-        {/* Tabs Navigation */}
-        <div className="mb-6">
-          <SettingsTabs activeTab={activeTab} onTabChange={setActiveTab} />
-        </div>
+          {/* Tabs Navigation */}
+          <div className="mb-6">
+            <SettingsTabs activeTab={activeTab} onTabChange={setActiveTab} />
+          </div>
 
-        {/* Content Area */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
-          {renderContent()}
-        </div>
-      </main>
+          {/* Content Area */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+            {renderContent()}
+          </div>
+        </main>
+      </div>
     </>
   );
 }
