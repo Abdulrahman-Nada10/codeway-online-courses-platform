@@ -1,3 +1,4 @@
+import Link from "next/link";
 export default function CTA() {
   return (
     <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 bg-[#FFF6ED]">
@@ -21,12 +22,17 @@ export default function CTA() {
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-6 sm:mb-10">
-          <button className="bg-white text-orange-500 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-bold hover:bg-gray-100 transition text-sm sm:text-base">
-            تصفح الدورات
-          </button>
+          <Link href="/list-of-courses">
+            <button className="bg-white text-orange-500 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-bold hover:bg-gray-100 transition text-sm sm:text-base">
+              تصفح الدورات
+            </button>
+          </Link>
+
+<Link href="/signup">
           <button className="border border-white text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-bold hover:bg-white/10 transition text-sm sm:text-base">
             ابدأ رحلتك الآن
           </button>
+</Link>
         </div>
 
         {/* Divider */}

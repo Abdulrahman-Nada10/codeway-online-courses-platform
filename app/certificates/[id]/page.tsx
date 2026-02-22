@@ -228,7 +228,7 @@ export default function CertificateDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF3EB]">
+    <div className="min-h-screen bg-[#FFF3EB]   mt-26">
       <Sidebar />
       <div className="lg:mr-70 xl:mr-70 md:mr-0">
         <Navbar />

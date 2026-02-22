@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Navbar from '../components/NavbarInstructor';
+import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import UserInfo from '../components/profile/UserInfo';
 import Stats from '../components/profile/Stats';
@@ -40,7 +40,7 @@ export default function Profile() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FFF3EB] overflow-x-hidden">
+    <div className="min-h-screen bg-[#FFF3EB] overflow-x-hidden mt-26">
       <Sidebar />
 
       <div className="lg:mr-75">

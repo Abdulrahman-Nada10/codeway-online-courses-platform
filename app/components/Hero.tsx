@@ -1,6 +1,6 @@
 import { PlayCircle, Award, Users, Video, Play } from "lucide-react";
 import Image from "next/image";
-
+import Link from "next/link";
 export default function Hero() {
   return (
     <section
@@ -65,15 +65,20 @@ export default function Hero() {
 
           {/* الأزرار */}
           <div className="flex gap-3 sm:gap-4 flex-wrap">
+            
+          <Link href="/list-of-courses">
             <button
+            
               className="bg-[#FF6400] hover:bg-[#FF7A33] transition-colors text-white font-bold rounded-lg text-sm sm:text-base px-6 sm:px-12 py-3 sm:py-3.5"
               style={{
                 boxShadow: "0px 8px 24px rgba(255, 100, 0, 0.4)",
               }}
             >
-              ابدأ رحلتك الآن
+              
+            ابدأ رحلتك الآن
             </button>
-
+            </Link>
+            
             <button
               className="flex items-center gap-2 text-white hover:text-[#FFB987] font-bold rounded-lg transition-colors text-sm sm:text-base px-6 sm:px-10 py-3 sm:py-3.5"
               style={{

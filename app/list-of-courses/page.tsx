@@ -8,7 +8,7 @@ import FavoriteCourseCard from "../components/FavoriteCourseCard";
 import CourseCardSkeleton from "../components/ui/CourseCardSkeleton";
 import ErrorState from "../components/ui/ErrorState";
 import CustomDropdown from "../components/ui/CustomDropdown";
-
+import Navbar from "../components/Navbar";
 const SORT_OPTIONS = [
   { value: "newest", label: "الأحدث" },
   { value: "oldest", label: "الأقدم" },
@@ -36,8 +36,8 @@ const ListOfCoursesPage = () => {
   }
 
   return (
-    <div dir="rtl" className="min-h-screen bg-[#fdf6ef] flex flex-col ">
-      
+    <div dir="rtl" className="min-h-screen bg-[#fdf6ef] flex flex-col  mt-26 ">
+      <Navbar />
       <section className="text-center pt-14 pb-10 px-4">
         <h1 className="text-4xl md:text-[40px] font-bold mb-3 text-[#FF6400]">
           الدورات التعليمية

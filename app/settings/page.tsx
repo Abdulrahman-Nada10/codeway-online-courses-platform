@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Navbar from '../components/NavbarInstructor';
+import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import ProfileSection from './components/ProfileSection';
 import NotificationsSection from './components/NotificationsSection';
@@ -136,7 +136,7 @@ export default function Settings() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF3EB] overflow-x-hidden">
+    <div className="min-h-screen bg-[#FFF3EB] overflow-x-hidden mt-26">
       <Sidebar />
       <div className="lg:mr-75">
         <Navbar />

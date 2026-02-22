@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Navbar from '../components/NavbarInstructor';
+import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import FavoriteCourseCard from '../components/FavoriteCourseCard';
 import { useSelector } from 'react-redux';
@@ -12,7 +12,7 @@ export default function Favorites() {
   const favoriteCourses = useSelector((state: RootState) => state.favorites.courses
 );
   return (
-    <div className="min-h-screen bg-[#FFF3EB] overflow-x-hidden">
+    <div className="min-h-screen bg-[#FFF3EB] overflow-x-hidden mt-26">
       
       <Sidebar />
 

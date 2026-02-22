@@ -1,9 +1,10 @@
 'use client';
 
 import React from 'react';
-import Navbar from '../components/NavbarInstructor';
+import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import CertificateCard from '../components/CertificateCard';
+import Link from 'next/link';
 
 export const certificates = [
   {
@@ -70,7 +71,7 @@ export const certificates = [
 
 export default function Certificates() {
   return (
-    <div className="min-h-screen bg-[#FFF3EB] overflow-x-hidden">
+    <div className="min-h-screen bg-[#FFF3EB] overflow-x-hidden  mt-26">
       <Sidebar />
 
       <div className="lg:mr-70 xl:mr-70 md:mr-0">
@@ -116,10 +117,11 @@ export default function Certificates() {
                   أكمل المزيد من الدورات للحصول على شهادات إضافية
                 </p>
               </div>
-
+                <Link href="/list-of-courses">
               <button className="py-2.5 sm:py-3 px-6 rounded-lg font-cairo font-semibold text-sm sm:text-base bg-[#FF6400] text-white hover:bg-[#E55A00] transition-colors">
                 استكشف الدورات
               </button>
+</Link>
             </div>
             </div>
         </main>

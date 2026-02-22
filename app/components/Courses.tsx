@@ -1,4 +1,5 @@
 import { Star, Clock, User } from "lucide-react";
+import Link from "next/link";
 
 interface Course {
   title: string;
@@ -100,10 +101,12 @@ export default function Courses() {
             اكتشف
           </h3>
         </div>
-
+<Link href="/list-of-courses">
         <button className="bg-orange-500 hover:bg-orange-600 transition text-white px-4 sm:px-6 py-2 rounded-lg font-bold text-sm sm:text-base w-full sm:w-auto">
           عرض جميع الدورات
         </button>
+</Link>
+
       </div>
 
       <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 md:gap-8">

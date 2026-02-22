@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Navbar from '../components/NavbarInstructor';
+import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import CourseCard from '../components/CourseCard';
 import FilterSection from '../components/FilterSection';
@@ -29,7 +29,7 @@ export default function MyCourses() {
   });
 
   return (
-    <div className="min-h-screen bg-[#FFF3EB] overflow-x-hidden">
+    <div className="min-h-screen bg-[#FFF3EB] overflow-x-hidden  mt-26">
       
       <Sidebar />
 

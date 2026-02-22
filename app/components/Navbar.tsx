@@ -8,7 +8,7 @@ import { Search, ShoppingCart, Bell, Menu, X, ArrowLeft, LogIn } from "lucide-re
 // روابط التنقل الأساسية
 const navLinks = [
   { name: "الرئيسية", href: "/" },
-  { name: "الدورات", href: "/courses" },
+  { name: "الدورات", href: "/list-of-courses" },
   { name: "المميزات", href: "/features" },
   { name: "تواصل معنا", href: "/contact" },
 ];
@@ -34,10 +34,10 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="w-full bg-[#FFF9F5] p-3 sm:p-5 font-cairo fixed top-0 z-50" dir="rtl">
+<header className="w-8/12 bg-transparent p-3 sm:p-5 font-cairo fixed top-0 left-1/2 -translate-x-1/2 z-50" dir="rtl">
       <nav 
         ref={navbarRef}
-        className="mx-auto max-w-7xl bg-white rounded-2xl sm:rounded-[2rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-orange-50/50 px-4 sm:px-8 py-3 transition-all duration-300"
+        className="mx-auto  max-w-7xl bg-white rounded-2xl sm:rounded-[2rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-orange-50/50 px-4 sm:px-8 py-3 transition-all duration-300"
       >
         <div className="flex items-center justify-between h-14">
 
@@ -111,7 +111,7 @@ export default function Navbar() {
                 <Link href="/profile" className="flex items-center gap-3 pr-2 group">
                   <span className="text-sm font-bold text-gray-700 hidden md:block group-hover:text-orange-600 transition">م. محمد محمود</span>
                   <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-orange-100 shadow-sm group-hover:border-orange-500 transition-all">
-                    <Image src="/profile.png" alt="Profile" fill className="object-cover" />
+                    <Image src="/profile.jpg" alt="Profile" fill className="object-cover" />
                   </div>
                 </Link>
               </div>

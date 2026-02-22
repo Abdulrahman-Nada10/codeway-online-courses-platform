@@ -1,6 +1,6 @@
 import { ICourseDetails } from "@/types";
 import CourseHeader from "./components/CourseHeader";
-
+import Navbar from "@/app/components/Navbar";
 import { CheckCircle, Circle } from "lucide-react";
 import CurriculumSection from "./components/CurriculumSection";
 import InstructorCard from "./components/InstructorCard";
@@ -136,7 +136,8 @@ if(isError)
     return <CourseErrorState/>
   }    
   return (
-    <div className="min-h-screen bg-[#FFF3EB] overflow-x-hidden">
+    <div className="min-h-screen bg-[#FFF3EB] overflow-x-hidden  mt-26">
+      <Navbar />
       {isLoading ? <CourseHeaderSkeleton /> : <CourseHeader course={courseDetails} />}
    
 
