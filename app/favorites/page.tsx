@@ -33,7 +33,7 @@ export default function Favorites() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
             {favoriteCourses.map((course) => (
-              <FavoriteCourseCard key={course.id} course={course} />
+              <FavoriteCourseCard key={course.id} course={course} isFav={true} />
             ))}
           </div>
 

@@ -19,8 +19,9 @@ interface FavoriteCourse {
   discountedPrice: number;
   discount: number;
 }
+  
 
-const FavoriteCourseCard = ({ course }: { course: FavoriteCourse }) => {
+const FavoriteCourseCard = ({ course, isFav = false}: { course: FavoriteCourse, isFav?: boolean; }) => {
   const dispatch = useDispatch()
   return (
     <div className="w-full max-w-86 h-96.25 bg-white rounded-[10px] overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
@@ -44,13 +45,16 @@ const FavoriteCourseCard = ({ course }: { course: FavoriteCourse }) => {
           </span>
         </div>
         
-        <button 
+        {
+          isFav &&
+          <button 
           className="absolute bottom-3 left-3 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:scale-110 transition-transform"
           aria-label="إزالة من المفضلة"
           onClick={() => dispatch(removeFromFavorites(course.id))}
         >
           <Heart className="w-5 h-5 text-red-500 fill-red-500" />
         </button>
+        }
       </div>
 
       <div className="p-4 flex flex-col gap-2.5">
@@ -96,7 +100,9 @@ const FavoriteCourseCard = ({ course }: { course: FavoriteCourse }) => {
           </div>
 
           <button className="w-20 h-8 rounded-lg font-cairo font-semibold text-sm border border-[#FF6400] text-black hover:bg-[#FF6400] hover:text-white transition-all duration-200">
-            سجل الآن
+            {
+              isFav?"سجل الآن":"عرض الدورة"
+            }
           </button>
         </div>
       </div>
