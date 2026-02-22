@@ -34,7 +34,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="w-full bg-[#FFF9F5] p-3 sm:p-5 font-cairo sticky top-0 z-50" dir="rtl">
+    <header className="w-full bg-[#FFF9F5] p-3 sm:p-5 font-cairo fixed top-0 z-50" dir="rtl">
       <nav 
         ref={navbarRef}
         className="mx-auto max-w-7xl bg-white rounded-2xl sm:rounded-[2rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-orange-50/50 px-4 sm:px-8 py-3 transition-all duration-300"

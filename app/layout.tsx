@@ -5,7 +5,9 @@ import ReduxProvider from "./components/ReduxProvider";
 
 const cairo = Cairo({
   variable: "--font-cairo",
-  subsets: ["arabic"],
+  subsets: ["arabic", "latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -63,7 +65,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl" suppressHydrationWarning>
+    <html lang="ar" dir="rtl" >
       <body
         className={`${cairo.variable} antialiased bg-white`}
       >

@@ -12,7 +12,7 @@ const Navbar = () => {
   return (
     <div className="p-3 sm:p-4 lg:p-6 pt-3 sm:pt-4 lg:pt-6">
       <nav className="bg-white rounded-2xl px-3 sm:px-4 lg:px-6 py-3 sm:py-4 flex items-center justify-between gap-2 sm:gap-3 lg:gap-4 shadow-sm">
-        <div className="flex-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl">
+        <div className="flex-1 mr-60 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl">
           <SearchBar />
         </div>
 
@@ -74,9 +74,12 @@ const Navbar = () => {
                 />
               </div>
             </Link>
-            <span className="hidden sm:block font-cairo font-bold text-sm sm:text-base text-[#113555] leading-none">
-              عمر محمد السيد
-            </span>
+            <div className="hidden sm:flex flex-col items-start">
+              <span className="font-cairo font-bold text-sm sm:text-base text-[#113555] leading-tight">
+                عمر محمد السيد
+              </span>
+              <span className="font-cairo font-light text-xs text-[#FF6400]">مدرب</span>
+            </div>
           </div>
         </div>
       </nav>

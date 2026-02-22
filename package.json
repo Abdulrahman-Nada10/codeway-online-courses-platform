@@ -15,13 +15,16 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-redux": "^9.2.0",
-    "redux-toolkit": "^1.1.2"
+    "recharts": "^3.7.0",
+    "redux-toolkit": "^1.1.2",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^25.2.3",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/xlsx": "^0.0.35",
     "eslint": "^10.0.0",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",

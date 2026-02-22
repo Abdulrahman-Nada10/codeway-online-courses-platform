@@ -12,7 +12,9 @@ import {
   Settings,
   LogOut,
   Menu,
-  X
+  X,
+  ChevronRight,
+  ChevronLeft
 } from "lucide-react";
 
 interface MenuItem {
@@ -26,6 +28,7 @@ const Sidebar = () => {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true); // حالة طي القائمة
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,77 +40,37 @@ const Sidebar = () => {
   }, []);
 
   const menuItems: MenuItem[] = [
-    {
-      id: 'profile',
-      label: 'الملف الشخصي',
-      href: '/profile',
-      icon: (
-        <User className="w-5 h-5" />
-      ),
-    },
-    {
-      id: 'courses',
-      label: 'دوراتي',
-      href: '/my-courses',
-      icon: (
-        <BookOpen className="w-5 h-5" />
-      ),
-    },
-    {
-      id: 'favorites',
-      label: 'المفضلة',
-      href: '/favorites',
-      icon: (
-        <Heart className="w-5 h-5" />
-      ),
-    },
-    {
-      id: 'certificates',
-      label: 'شهاداتي',
-      href: '/certificates',
-      icon: (
-        <Award className="w-5 h-5" />
-      ),
-    },
+    { id: 'profile', label: 'الملف الشخصي', href: '/profile', icon: <User className="w-5 h-5" /> },
+    { id: 'courses', label: 'دوراتي', href: '/my-courses', icon: <BookOpen className="w-5 h-5" /> },
+    { id: 'favorites', label: 'المفضلة', href: '/favorites', icon: <Heart className="w-5 h-5" /> },
+    { id: 'certificates', label: 'شهاداتي', href: '/certificates', icon: <Award className="w-5 h-5" /> },
   ];
 
   const bottomItems: MenuItem[] = [
-    {
-      id: 'settings',
-      label: 'الإعدادات',
-      href: '/settings',
-      icon: (
-        <Settings className="w-5 h-5" />
-      ),
-    },
-    {
-      id: 'logout',
-      label: 'تسجيل الخروج',
-      href: '/logout',
-      icon: (
-        <LogOut className="w-5 h-5" />
-      ),
-    },
+    { id: 'settings', label: 'الإعدادات', href: '/settings', icon: <Settings className="w-5 h-5" /> },
+    { id: 'logout', label: 'تسجيل الخروج', href: '/logout', icon: <LogOut className="w-5 h-5" /> },
   ];
 
-  const renderMenuItem = (item: MenuItem) => {
+  const renderMenuItem = (item: MenuItem, isMobile: boolean = false) => {
     const isActive = pathname === item.href;
+    const hideText = !isMobile && isCollapsed; // إخفاء النص فقط في الشاشات الكبيرة إذا كانت مطوية
     
     return (
       <li key={item.id}>
         <Link
           href={item.href}
           onClick={() => setIsMobileMenuOpen(false)}
-          className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+          className={`w-full flex items-center ${hideText ? 'justify-center' : 'gap-3'} px-4 py-3 rounded-xl transition-all duration-200 ${
             isActive
               ? 'bg-[#113555] text-white'
               : 'bg-white text-[#000000] hover:bg-gray-100'
           }`}
+          title={hideText ? item.label : undefined} // إظهار الاسم عند تمرير الماوس
         >
           <span className={isActive ? 'text-white' : 'text-[#000000]'}>
             {item.icon}
           </span>
-          <span className="font-cairo font-medium">{item.label}</span>
+          {!hideText && <span className="font-cairo font-medium">{item.label}</span>}
         </Link>
       </li>
     );
@@ -122,11 +85,7 @@ const Sidebar = () => {
         }`}
         aria-label="القائمة"
       >
-        {isMobileMenuOpen ? (
-          <X className="h-6 w-6" />
-        ) : (
-          <Menu className="h-6 w-6" />
-        )}
+        {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
       </button>
 
       {isMobileMenuOpen && (
@@ -136,73 +95,73 @@ const Sidebar = () => {
         />
       )}
 
-      <aside className={`
+      {/* القائمة الجانبية للشاشات الكبيرة */}
+      <div className={`
         hidden lg:flex flex-col
-        fixed right-6 top-6 bottom-12
-        w-56 sm:w-60 md:w-64
-        bg-white rounded-2xl
+        fixed right-0 top-0 bottom-0 /* لازق عاليمين ومارجن للناف بار */
+        ${isCollapsed ? 'w-20' : 'w-64'} /* تغيير العرض عند الطي */
+        bg-white
         py-6 px-2
         gap-2
-        z-40
+        z-999
         shadow-sm
+        border-l border-gray-100
+        transition-all duration-300 ease-in-out
       `}>
-        <div className="px-3 sm:px-4 pb-3 sm:pb-4 border-b border-gray-100">
-          <div className="flex items-center justify-start">
-            <div className="w-20 h-14 sm:w-22 sm:h-16 flex items-center justify-center overflow-hidden">
-              <Image
-                src="/logo.png"
-                alt="شعار الموقع"
-                width={64}
-                height={64}
-                className="w-full h-full object-contain"
-              />
-            </div>
-          </div>
+        {/* زر الطي والفتح */}
+        <button
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="absolute -left-3 top-8 bg-white border border-gray-200 text-gray-500 hover:text-gray-800 rounded-full p-1 z-50 shadow-sm transition-colors"
+        >
+          {isCollapsed ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+        </button>
+
+        <div className="px-3 pb-4 border-b border-gray-100 flex items-center justify-center">
+          <Link href="/">
+            <Image
+              src="/logo.png"
+              alt="شعار الموقع"
+              width={isCollapsed ? 40 : 64}
+              height={isCollapsed ? 40 : 64}
+              className="object-contain transition-all duration-300"
+            />
+          </Link>
         </div>
 
-        <nav className="flex-1 overflow-y-auto">
-          <ul className="space-y-1.5 sm:space-y-2 px-1">
-            {menuItems.map(renderMenuItem)}
+        <nav className="flex-1 overflow-y-auto mt-2">
+          <ul className="space-y-2 px-1">
+            {menuItems.map(item => renderMenuItem(item, false))}
           </ul>
         </nav>
 
-        <div className="pt-3 sm:pt-4 mt-auto border-t border-gray-100">
-          <ul className="space-y-1.5 sm:space-y-2 px-1">
-            {bottomItems.map(renderMenuItem)}
+        <div className="pt-4 mt-auto border-t border-gray-100">
+          <ul className="space-y-2 px-1">
+            {bottomItems.map(item => renderMenuItem(item, false))}
           </ul>
         </div>
-      </aside>
-
+      </div>
+      
+      {/* القائمة الجانبية للموبايل (بدون تغيير) */}
       <aside className={`
         lg:hidden
-        fixed top-0 right-0 h-screen w-56 sm:w-60 md:w-64
+        fixed top-0 right-0 h-screen w-64
         bg-white flex flex-col
         transform transition-transform duration-300 ease-in-out z-50
         ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}
       `}>
-        <div className="p-4 sm:p-6 border-b border-gray-100">
-          <div className="flex items-center">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center overflow-hidden">
-              <Image
-                src="/logo.png"
-                alt="شعار الموقع"
-                width={64}
-                height={64}
-                className="w-full h-full object-contain"
-              />
-            </div>
-          </div>
+        <div className="p-6 border-b border-gray-100 flex justify-center">
+          <Image src="/logo.png" alt="شعار الموقع" width={64} height={64} className="object-contain" />
         </div>
 
-        <nav className="flex-1 p-3 sm:p-4 overflow-y-auto">
-          <ul className="space-y-1.5 sm:space-y-2">
-            {menuItems.map(renderMenuItem)}
+        <nav className="flex-1 p-4 overflow-y-auto">
+          <ul className="space-y-2">
+            {menuItems.map(item => renderMenuItem(item, true))}
           </ul>
         </nav>
 
-        <div className="p-3 sm:p-4 border-t border-gray-100">
-          <ul className="space-y-1.5 sm:space-y-2">
-            {bottomItems.map(renderMenuItem)}
+        <div className="p-4 border-t border-gray-100">
+          <ul className="space-y-2">
+            {bottomItems.map(item => renderMenuItem(item, true))}
           </ul>
         </div>
       </aside>
@@ -211,4 +170,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-

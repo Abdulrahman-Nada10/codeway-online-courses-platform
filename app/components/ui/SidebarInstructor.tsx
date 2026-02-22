@@ -36,17 +36,17 @@ type NavItem = {
 // ─── Config ──────────────────────────────────────────────────────────────────
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "نظرة عامة",    href: "/dashboard",     icon: ChartArea, exact: true },
-  { label: "دوراتي",       href: "/courses",        icon: BookOpen                    },
-  { label: "الطلاب",       href: "/students",       icon: BookUser                       },
-  { label: "الأرباح",      href: "/earnings",       icon: CircleDollarSign                  },
-  { label: "الشهادات",     href: "/certificates",   icon: Award                       },
-  { label: "الملف الشخصي", href: "/profile",        icon: UserCircle                  },
+  { label: "نظرة عامة",    href: "/ins-dashboard",     icon: ChartArea, exact: true },
+  { label: "دوراتي",       href: "/ins-courses",        icon: BookOpen                    },
+  { label: "الطلاب",       href: "/ins-students",       icon: BookUser                       },
+  { label: "الأرباح",      href: "/ins-earnings",       icon: CircleDollarSign                  },
+  { label: "الشهادات",     href: "/ins-certificates",   icon: Award                       },
+  { label: "الملف الشخصي", href: "/ins-profile",        icon: UserCircle                  },
 ];
 
 const FOOTER_ITEMS: NavItem[] = [
-  { label: "الإعدادات",  href: "/settings", icon: Settings, exact: true },
-  { label: "تسجيل خروج", href: "/logout",   icon: LogOut,   exact: true },
+  { label: "الإعدادات",  href: "/ins-settings", icon: Settings, exact: true },
+  { label: "تسجيل خروج", href: "/ins-logout",   icon: LogOut,   exact: true },
 ];
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────

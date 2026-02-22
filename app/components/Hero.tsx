@@ -5,7 +5,7 @@ export default function Hero() {
   return (
     <section
       dir="rtl"
-      className="relative overflow-hidden font-[Cairo] bg-[#0A2540] min-h-screen py-12 sm:py-16 md:py-24"
+      className="relative overflow-hidden font-[Cairo] bg-[#0A2540] min-h-screen mt-32  py-12 sm:py-16 md:py-24"
     >
       {/* خلفية متدرجة منقحة */}
       <div
