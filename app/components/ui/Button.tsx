@@ -11,19 +11,19 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    "bg-gradient-to-r from-[#FF6400] to-[#F5A00F] hover:from-orange-500 hover:to-orange-600 text-white shadow-md hover:shadow-orange-300/50 hover:shadow-lg",
+    "bg-gradient-to-r from-[#FF6400] to-[#F5A00F] hover:from-orange-500 hover:to-orange-600 text-white shadow-md hover:shadow-orange-300/50 hover:shadow-lg transition-all duration-200",
   outline:
-    "border border-orange-400 text-orange-500 rounded-full py-2 flex items-center justify-center gap-2",
+    "border border-orange-400 text-orange-500 hover:bg-orange-50 rounded-full py-2 flex items-center justify-center gap-2 transition-all duration-200",
   ghost:
-    "text-orange-500 hover:bg-orange-50 bg-transparent",
+    "text-orange-500 hover:bg-orange-50 bg-transparent transition-all duration-200",
 
-  info: " bg-[#F3EAE2] text-[#113555] px-4 py-2 rounded-full text-sm hover:opacity-90 transition",
+  info: " bg-[#F3EAE2] text-[#113555] px-4 py-2 rounded-full text-sm hover:opacity-90 transition transition-all duration-200",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
-  sm: "px-4 py-1.5 text-sm rounded-lg",
-  md: "px-6 py-2.5 text-base rounded-xl",
-  lg: "px-7 py-2.5 text-lg rounded-3xl",
+  sm: "px-4 py-1 text-sm rounded-xl",
+  md: "px-6 py-2 text-base rounded-xl",
+  lg: "px-7 py-2 text-lg rounded-3xl",
 };
 
 const Button = ({

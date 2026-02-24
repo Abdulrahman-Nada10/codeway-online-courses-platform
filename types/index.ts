@@ -4,7 +4,7 @@ export interface Instructor {
   avatar: string;
   bio: string;
   rating: number;
-  studentsCount: number;
+  studentsCount: number; // معرف الكورس (ممكن يكون رقم أو uuid)
   yearsExperience: number;
   reviewsCount: number;
   profileUrl?: string;
@@ -69,61 +69,58 @@ export interface Course {
 // ICourseDetails.ts
 
 export interface ICourseDetails {
-  // معلومات أساسية عن الكورس
-  id: string | number;                    // معرف الكورس (ممكن يكون رقم أو uuid)
-  title: string;                          // العنوان الرئيسي
-  subtitle?: string;                      // وصف فرعي أو slogan
-  description: string;                    // وصف الكورس التفصيلي (عادةً فقرة أو أكثر)
-  slug?: string;                          // للـ URL (مثل: python-from-zero-to-pro)
 
-  // السعر والعروض
-  originalPrice: number;                  // السعر الأصلي (مثلاً 1800)
-  discountedPrice: number;                // السعر بعد الخصم (مثلاً 900)
-  currency: string;                       // EGP, USD, ...
-  discountPercentage?: number;            // النسبة المئوية للخصم (اختياري)
+  id: string | number;                   
+  title: string;                          
+  subtitle?: string;                     
+  description: string;                   
+  slug?: string;                         
+
+  
+  originalPrice: number;                  
+  discountedPrice: number;               
+  currency: string;                      
+  discountPercentage?: number;            
   hasDiscount: boolean;
 
-  // تفاصيل الدورة
   instructor: {
     name: string;
     bio?: string;
     experienceYears?: number;
     studentsCount?: number;
     ratingsCount?: number;
-    rating: number;                       // 4.9 مثلاً
+    rating: number;                        
     imageUrl?: string;
   };
 
   duration: {
-    hours: number;                        // 28 ساعة
-    lessonsCount: number;                 // 180 درس
+    hours: number;                        
+    lessonsCount: number;                
   };
 
-  level: 'مبتديء' | 'متوسط' | 'متقدم' | string;  // مستوى الدورة
-  language: string;                       // العربية
-  lastUpdated: string;                    // تاريخ آخر تحديث "2025-01-01"
+  level: 'مبتديء' | 'متوسط' | 'متقدم' | string;
+  language: string;                     
+  lastUpdated: string;                    
   publishedAt?: string;
 
-  // التقييمات والإحصائيات
-  rating: number;                         // 4.9
-  ratingsCount: number;                   // 1250 تقييم
-  studentsEnrolled: number;               // 4200 طالب
+  rating: number;                        
+  ratingsCount: number;                   
+  studentsEnrolled: number;               
 
-  // المحتوى
-  whatYouWillLearn: string[];             // قائمة "ماذا ستتعلم" (bullet points)
-  requirements: string[];                 // المتطلبات / الشروط المسبقة
-  targetAudience?: string[];              // لمن هذه الدورة؟
+  
+  whatYouWillLearn: string[];           
+  requirements: string[];                
+  targetAudience?: string[];              
 
-  // هيكل الدورة (المنهج)
   curriculum: {
     sections: {
       title: string;
       lecturesCount?: number;
-      duration?: string;                    // "02:30:00" أو "3 ساعات"
-      isExpanded?: boolean;                 // هل القسم مفتوح في الواجهة؟
+      duration?: string;                   
+      isExpanded?: boolean;                
       lessons: {
         title: string;
-        duration: string;                   // "12:30"
+        duration: string;                
         isFree?: boolean;
         previewAvailable?: boolean;
         type?: 'video' | 'article' | 'quiz' | 'coding-exercise' | string;
@@ -131,19 +128,42 @@ export interface ICourseDetails {
     }[];
   };
 
-  // ميزات إضافية
   includesCertificate?: boolean;
   hasLifetimeAccess?: boolean;
   hasMoneyBackGuarantee?: boolean;
-  guaranteeDays?: number;                 // 15 يوم ضمان استرداد
+  guaranteeDays?: number;                 
   isOnSale?: boolean;
   saleEndDate?: string | null;
 
-  // بيانات إدارية / عرضية
-  thumbnailUrl?: string;                  // صورة الغلاف الكبيرة
-  promoVideoUrl?: string;                 // رابط فيديو ترويجي
-  tags?: string[];                        // python, django, pandas, web-development, ...
-  category?: string;                      // برمجة وتطوير
+  thumbnailUrl?: string;                  
+  promoVideoUrl?: string;               
+  tags?: string[];                      
+  category?: string;                   
   createdAt?: string;
   updatedAt?: string;
+}
+
+export type PaymentMethod = 'card' | 'fawry' | 'paypal' | 'vodafone';
+
+export interface ITicketSummary {
+  title: string;
+  instructor: string;
+  originalPrice: number;
+  discountedPrice: number;
+  discountPercentage: number;
+}
+
+export interface IPaymentTabs {
+  label: string;
+  src: string;
+  method: PaymentMethod;
+}
+
+export interface IModalContent {
+  icon?: React.ReactNode;
+  paymentTypeSrc?: string;
+  title?: string;
+  desc: string;
+  primaryBtn?: string;
+  secondaryBtn?: string;
 }
