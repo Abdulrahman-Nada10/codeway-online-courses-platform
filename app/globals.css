@@ -9,16 +9,6 @@
   --page-bg: #FFF3EB;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-secondary: var(--secondary);
-  --color-input-bg: var(--input-bg);
-  --color-page-bg: var(--page-bg);
-  --font-sans: var(--font-cairo);
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
