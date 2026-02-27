@@ -80,23 +80,23 @@ namespace CourseOnline.Auth.Controllers
         }
         
 
-        [HttpPost("social-login")]
-        public IActionResult SocialLogin([FromBody] SocialLoginDto dto)
-        {
-            try
-            {
+        //[HttpPost("social-login")]
+        //public IActionResult SocialLogin([FromBody] SocialLoginDto dto)
+        //{
+        //    try
+        //    {
 
 
-                var result = _socialAuthService.SocialLogin(dto);
-                return Ok(result);
+        //        var result = _socialAuthService.SocialLogin(dto);
+        //        return Ok(result);
 
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error during social login");
-                return StatusCode(500, new { message = "Internal server error" });
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Error during social login");
+        //        return StatusCode(500, new { message = "Internal server error" });
+        //    }
+        //}
         [HttpGet("login/{provider}")]
         public IActionResult Login(string provider)
         {
@@ -153,7 +153,7 @@ namespace CourseOnline.Auth.Controllers
                 return BadRequest(new { message = result.Message });
 
             // توليد JWT
-            var token = _jwtService.GenerateToken(result.UserID.Value, dto.UserName, dto.Email);
+            var token = _jwtService.GenerateToken(result.UserID.Value, dto.UserName, dto.Email, result.Role);
 
             return Ok(new
             {
@@ -164,7 +164,19 @@ namespace CourseOnline.Auth.Controllers
 
         }
 
+        [HttpPost("forgot-password")]
+        public IActionResult ForgotPassword([FromBody] ForgotPasswordDto dto)
+        {
+            var result = _authService.ForgotPassword(dto.Login);
+            return Ok(new { Message = result });
+        }
 
+        [HttpPost("reset-password")]
+        public IActionResult ResetPassword([FromBody] ResetPasswordDto dto)
+        {
+            var result = _authService.ResetPassword(dto);
+            return Ok(new { Message = result });
+        }
 
 
 

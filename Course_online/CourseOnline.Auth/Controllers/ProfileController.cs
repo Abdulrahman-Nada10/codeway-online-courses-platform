@@ -2,12 +2,14 @@
 using CourseOnline.Auth.Models.Entities;
 using CourseOnline.Auth.Services.Implementation;
 using CourseOnline.Auth.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace CourseOnline.Auth.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProfileController : ControllerBase
@@ -18,27 +20,30 @@ namespace CourseOnline.Auth.Controllers
             _service = service;
         }
 
-        //private long GetUserIdFromToken()
-        //{
-        //    var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        //    if (string.IsNullOrEmpty(userIdClaim))
-        //        throw new UnauthorizedAccessException("User ID not found in token.");
+        private long GetUserIdFromToken()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim))
+                throw new UnauthorizedAccessException("User ID not found in token.");
 
-        //    return long.Parse(userIdClaim);
-        //}
+            return long.Parse(userIdClaim);
+        }
 
-        [HttpPut("{userId}")]
+        [HttpPut("me")]
 
-        public IActionResult UpdateProfile(long userId, [FromForm] UpdateProfileDto dto)
+        public IActionResult UpdateProfile( [FromForm] UpdateProfileDto dto)
         {
           
+            var userId = GetUserIdFromToken();
             var updatedProfile = _service.UpdateProfile(userId, dto);
             return Ok(updatedProfile);
         }
-        [HttpGet("{userId}/enrollments")]
+        [HttpGet("enrollments")]
        
-        public IActionResult GetEnrollments(long userId)
+        public IActionResult GetEnrollments()
+
         {
+            var userId = GetUserIdFromToken();
             var enrollments = _service.GetEnrollments(userId);
 
             return Ok(new
@@ -55,10 +60,11 @@ namespace CourseOnline.Auth.Controllers
 
 
 
-        [HttpGet("{userId}/certificates")]
+        [HttpGet("certificates")]
 
-        public IActionResult GetCertificates(long userId)
+        public IActionResult GetCertificates()
         {
+            var userId = GetUserIdFromToken();
             var certificates = _service.GetCertificates(userId);
 
             return Ok(new

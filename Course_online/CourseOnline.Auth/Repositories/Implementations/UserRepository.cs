@@ -64,6 +64,61 @@ namespace CourseOnline.Auth.Repositories.Implementations
             }
             return null;
         }
+        public List<User> GetAllUsers()
+        {
+            using var con = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
+            using var cmd = new SqlCommand("sp_GetAllUsers", con);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            con.Open();
+            using var reader = cmd.ExecuteReader();
+            var users = new List<User>();
+            while (reader.Read())
+            {
+                users.Add(new User
+                {
+                    UserID = Convert.ToInt64(reader["UserID"]),
+                    UserName = reader["UserName"]?.ToString(),
+                    Email = reader["Email"]?.ToString(),
+                    PhoneNumber = reader["PhoneNumber"]?.ToString(),
+                    Role = reader["Role"]?.ToString(),
+                    IsActive = Convert.ToBoolean(reader["IsActive"]),
+                    IsLocked = Convert.ToBoolean(reader["IsLocked"])
+                });
+            }
+            return users;
+        }
+
+        public User GetUserById(long userId)
+        {
+            using var con = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
+            using var cmd = new SqlCommand("sp_GetUserById", con);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@UserID", userId);
+            con.Open();
+            using var reader = cmd.ExecuteReader();
+            if (!reader.Read()) return null;
+            return new User
+            {
+                UserID = Convert.ToInt64(reader["UserID"]),
+                UserName = reader["UserName"]?.ToString(),
+                Email = reader["Email"]?.ToString(),
+                PhoneNumber = reader["PhoneNumber"]?.ToString(),
+                Role = reader["Role"]?.ToString(),
+                IsActive = Convert.ToBoolean(reader["IsActive"]),
+                IsLocked = Convert.ToBoolean(reader["IsLocked"])
+            };
+        }
+
+        public void UpdateRole(long userId, string role)
+        {
+            using var con = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
+            using var cmd = new SqlCommand("sp_UpdateUserRole", con);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@UserID", userId);
+            cmd.Parameters.AddWithValue("@Role", role);
+            con.Open();
+            cmd.ExecuteNonQuery();
+        }
     }
     }
 

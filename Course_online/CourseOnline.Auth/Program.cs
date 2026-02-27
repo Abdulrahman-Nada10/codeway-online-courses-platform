@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 var googleClientId = builder.Configuration["Google:ClientId"];
@@ -66,23 +67,27 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<ISocialAuthService, SocialAuthService>();
 builder.Services.AddScoped<ISocialAuthRepository, SocialAuthRepository>();
-// Program.cs
+builder.Services.AddScoped<IRoleService, RoleService>();
+
 
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddSingleton<FileHelper>();
-
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme; 
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; 
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;    
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; 
 })
-.AddCookie() // مهم للـ OAuth flow
+
+.AddCookie() // مطلوب للـ External Login (Google & GitHub) عشان يحفظ الـ state مؤقتاً أثناء الـ OAuth flow
 .AddGoogle(options =>
 {
-    options.ClientId = "";
-    options.ClientSecret = "";
-    options.CallbackPath = "";
+    options.ClientId = "920052219426-rc14kugnb3f5eg3motv3tb7ob1h2ub2i.apps.googleusercontent.com";
+    options.ClientSecret = "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";
+    options.CallbackPath = "/signin-google";
 })
 //.AddFacebook(options =>
 //{
@@ -92,9 +97,9 @@ builder.Services.AddAuthentication(options =>
 //})
 .AddGitHub(options =>
 {
-    options.ClientId = "";
-    options.ClientSecret = "";
-    options.CallbackPath = "";
+    options.ClientId = "Ov23lijT0a0BzqonYhmw";
+    options.ClientSecret = "5633436403701b5f7d868b2c5400602cc7559541";
+    options.CallbackPath = "/signin-github";
     options.Scope.Add("user:email");
 })
 .AddJwtBearer(options =>
@@ -111,7 +116,7 @@ builder.Services.AddAuthentication(options =>
             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
-   
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -120,7 +125,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+else
+{
+    // في الـ Production بس
+    app.UseExceptionHandler(appError => appError.Run(async context =>
+    {
+        context.Response.StatusCode = 500;
+        await context.Response.WriteAsJsonAsync(new
+        {
+            message = "Internal server error"
+        });
+    }));
+}
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

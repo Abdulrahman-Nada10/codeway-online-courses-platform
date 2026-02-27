@@ -15,7 +15,7 @@ namespace CourseOnline.Auth.Services.Implementation
             _socialAuthRepository = socialAuthRepository;
         }
 
-        public (bool Success, string Message, long? UserID) SocialLogin(SocialLoginDto dto)
+        public (bool Success, string Message, long? UserID,string Role) SocialLogin(SocialLoginDto dto)
         {
             return _socialAuthRepository.SocialLogin(
                 dto.Provider,

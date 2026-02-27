@@ -11,7 +11,7 @@ namespace CourseOnline.Auth.Repositories.Implementations
             _config = config;
         }
 
-        public (bool Success, string Message, long? UserID) SocialLogin(string provider, string providerUserId, string email, string userName)
+        public (bool Success, string Message, long? UserID, string Role) SocialLogin(string provider, string providerUserId, string email, string userName)
         {
             using var con = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
             using var cmd = new SqlCommand("sp_BasicUsers_SocialLogin", con);
@@ -24,12 +24,16 @@ namespace CourseOnline.Auth.Repositories.Implementations
 
             con.Open();
 
-            var result = cmd.ExecuteScalar();
+            using var reader = cmd.ExecuteReader();
 
-            if (result == null || result == DBNull.Value)
-                return (false, "هذا المستخدم موجود بالفعل. حاول تسجيل الدخول أو استخدم حساب Social.", null);
+            if (!reader.Read())
+                return (false, "هذا المستخدم موجود بالفعل. حاول تسجيل الدخول أو استخدم حساب Social.", null, null);
 
-            return (true, "Social login successful", Convert.ToInt64(result));
+            var userId = Convert.ToInt64(reader["UserID"]);
+            var role = reader["Role"]?.ToString() ?? "Student";
+
+            return (true, "Social login successful", userId, role); // ← أضفنا role
+
         }
     }
 }

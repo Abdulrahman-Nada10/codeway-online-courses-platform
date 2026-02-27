@@ -176,7 +176,7 @@ namespace CourseOnline.Auth.Services.Implementation
                 };
             }
 
-            var token = _jwtService.GenerateToken(user.UserID, user.UserName, user.Email);
+            var token = _jwtService.GenerateToken(user.UserID, user.UserName, user.Email,user.Role);
 
             return new
             {

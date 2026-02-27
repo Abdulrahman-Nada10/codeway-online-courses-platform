@@ -5,6 +5,6 @@ namespace CourseOnline.Auth.Services.Interfaces
     public interface ISocialAuthService
     {
 
-        (bool Success, string Message, long? UserID) SocialLogin(SocialLoginDto dto);
+        (bool Success, string Message, long? UserID,string Role) SocialLogin(SocialLoginDto dto);
     }
 }

@@ -48,7 +48,7 @@ namespace CourseOnline.Auth.Repositories.Implementations
                 LockoutEnd = reader["LockoutEnd"] == DBNull.Value
              ? (DateTime?)null
              : (DateTime?)reader["LockoutEnd"],
-
+                Role= reader["Role"]?.ToString()    
 
             };
         }
@@ -70,7 +70,7 @@ namespace CourseOnline.Auth.Repositories.Implementations
 
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@UserID", userId);
-
+            con.Open(); cmd.ExecuteNonQuery();
             con.Open();
             cmd.ExecuteNonQuery();
         }
