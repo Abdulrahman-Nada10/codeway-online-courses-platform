@@ -85,8 +85,8 @@ builder.Services.AddAuthentication(options =>
 .AddCookie() // مطلوب للـ External Login (Google & GitHub) عشان يحفظ الـ state مؤقتاً أثناء الـ OAuth flow
 .AddGoogle(options =>
 {
-    options.ClientId = "920052219426-rc14kugnb3f5eg3motv3tb7ob1h2ub2i.apps.googleusercontent.com";
-    options.ClientSecret = "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";
+    options.ClientId = "";
+    options.ClientSecret = "";
     options.CallbackPath = "/signin-google";
 })
 //.AddFacebook(options =>
@@ -97,8 +97,8 @@ builder.Services.AddAuthentication(options =>
 //})
 .AddGitHub(options =>
 {
-    options.ClientId = "Ov23lijT0a0BzqonYhmw";
-    options.ClientSecret = "5633436403701b5f7d868b2c5400602cc7559541";
+    options.ClientId = "";
+    options.ClientSecret = "";
     options.CallbackPath = "/signin-github";
     options.Scope.Add("user:email");
 })
