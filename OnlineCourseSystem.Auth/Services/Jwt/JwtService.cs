@@ -1,41 +1,35 @@
-﻿using OnlineCourseSystem.Auth.Models;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace OnlineCourseSystem.Auth.Services
-{
-    public class JwtService(IOptions<AuthOptions> opt) : IJwtService
-    {
-        private readonly AuthOptions _opt = opt.Value;
+namespace OnlineCourseSystem.Auth;
 
-        public string GenerateAccessToken(long userId, string? role = null)
+public class JwtService(IConfiguration config) : IJwtService
+{
+    private readonly IConfiguration _config = config;
+
+    public string GenerateToken(long userId, string userName, string email)
+    {
+        var claims = new[]
         {
-            var claims = new List<Claim>
-        {
-            new(JwtRegisteredClaimNames.Sub, userId.ToString()),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+            new Claim("username", userName ?? ""),
+            new Claim("email", email ?? "")
         };
 
-            if (!string.IsNullOrWhiteSpace(role))
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_opt.JwtKey));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var token = new JwtSecurityToken(
+            issuer: _config["Jwt:Issuer"],
+            audience: _config["Jwt:Audience"],
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(double.Parse(_config["Jwt:DurationInMinutes"])),
+            signingCredentials: creds
+        );
 
-            var token = new JwtSecurityToken(
-                issuer: _opt.JwtIssuer,
-                audience: _opt.JwtAudience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_opt.JwtExpireMinutes),
-                signingCredentials: creds
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }

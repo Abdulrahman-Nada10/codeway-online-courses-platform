@@ -1,123 +1,76 @@
-﻿using OnlineCourseSystem.Auth.DTOs.Role;
-using OnlineCourseSystem.Auth.Models;
-using OnlineCourseSystem.Auth.Services.Role;
-using GlobalResponse.Shared.Configuration;
-using GlobalResponse.Shared.Extensions;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace OnlineCourseSystem.Auth.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/roles")]
     [ApiController]
-    public class RolesController(LocalizedMessageService messageService, IRoleService roleService) : ControllerBase
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(Roles = "Admin")]
+    public class RolesController(IRoleService roleService) : ControllerBase
     {
-        private readonly LocalizedMessageService _messageService = messageService;
         private readonly IRoleService _roleService = roleService;
 
-        [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAllRoles([FromHeader] long requestUserId, [FromHeader] string languageCode = "ar")
+        [HttpGet("users")]
+        public IActionResult GetAllUsers()
         {
-            try
+            var users = _roleService.GetAllUsers();
+            return Ok(new
             {
-                var result = await _roleService.GetRolesAsync(requestUserId, languageCode);
-
-                if (result.Success == 0)
-                    return this.OkResponse<object>(1, result.Message, 204);
-                
-                if (result.Success == -1)
-                    return this.UnauthorizedResponse<object>(result.Message);
-
-                return this.OkResponse(result.Roles, result.Message);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequestResponse<object>($"{await _messageService.GetMessageAsync("SERVER_ERROR", languageCode)}: {ex.Message}");
-            }
+                message = "Users retrieved successfully",
+                data = users.Select(u => new
+                {
+                    u.UserID,
+                    u.UserName,
+                    u.Email,
+                    u.Role,
+                    u.IsActive,
+                    u.IsLocked
+                })
+            });
         }
 
-        [HttpGet("UserRoles/{userId}")]
-        public async Task<IActionResult> GetUserRoles([FromHeader] long userId, [FromHeader] string languageCode = "ar")
+        [HttpGet("{userId}")]
+        public IActionResult GetUserById(long userId)
         {
-            try
-            {
-                var result = await _roleService.GetUserRolesAsync(userId, languageCode);
+            var user = _roleService.GetUserById(userId);
+            if (user == null)
+                return NotFound(new { message = "User not found" });
 
-                if (result.Success == 0)
-                    return this.NotFoundResponse<object>(result.Message);
-
-                return this.OkResponse(result.Roles, result.Message);
-            }
-            catch (Exception ex)
+            return Ok(new
             {
-                return this.BadRequestResponse<object>($"{await _messageService.GetMessageAsync("SERVER_ERROR", languageCode)}: {ex.Message}");
-            }
+                user.UserID,
+                user.UserName,
+                user.Email,
+                user.Role,
+                user.IsActive,
+                user.IsLocked
+            });
         }
 
-        [HttpPost("create")]
-        public async Task<IActionResult> CreateRole([FromBody] RoleCreateRequest request, [FromHeader] long requestUserId, [FromHeader] string languageCode = "ar")
+        [HttpPut("{userId}/role")]
+        public IActionResult UpdateRole(long userId, [FromBody] UpdateRoleDto dto)
         {
-            try
-            {
-                var result = await _roleService.CreateAsync(request, requestUserId, languageCode);
+            // Admin ميغيرش رول نفسه
+            var adminId = long.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+            if (adminId == userId)
+                return BadRequest(new { message = "لا يمكنك تغيير صلاحياتك" });
 
-                if (result.Success == 0)
-                    return this.OkResponse(result.Success, result.Message, 409);
+            // Validation على الـ Role
+            var validRoles = new[] { "Admin", "Instructor", "Student" };
+            if (!validRoles.Contains(dto.Role))
+                return BadRequest(new { message = "Role غير صحيح، الـ Roles المتاحة: Admin, Instructor, Student" });
 
-                if (result.Success == -1)
-                    return this.UnauthorizedResponse<object>(result.Message);
+            // تأكد إن اليوزر موجود
+            var user = _roleService.GetUserById(userId);
+            if (user == null)
+                return NotFound(new { message = "User not found" });
 
+            _roleService.UpdateRole(userId, dto.Role);
 
-                return this.OkResponse(result.Success, result.Message, 201);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequestResponse<object>($"{await _messageService.GetMessageAsync("SERVER_ERROR", languageCode)}: {ex.Message}");
-            }
-        }
-
-        [HttpPost("assign")]
-        public async Task<IActionResult> AssignRole([FromBody] AssignRoleRequest req, [FromHeader] long requestUserId, [FromHeader] string languageCode = "ar")
-        {
-            try
-            {
-                var result = await _roleService.AssignRoleAsync(requestUserId, req, languageCode);
-                if (result.Success == 0)
-                    return this.NotFoundResponse<object>(result.Message);
-                
-                if (result.Success == -1)
-                    return this.UnauthorizedResponse<object>(result.Message);
-
-                return this.OkResponse(result.Success, result.Message);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequestResponse<object>($"{await _messageService.GetMessageAsync("SERVER_ERROR", languageCode)}: {ex.Message}");
-            }
-
-        }
-
-        [HttpDelete("Delete/{roleId:long}")]
-        public async Task<IActionResult> DeleteAsync([FromHeader] long requestUserId, long roleId, [FromHeader] string languageCode = "ar")
-        {
-            try
-            {
-                var result = await _roleService.DeleteAsync(requestUserId, roleId, languageCode);
-
-                if (result.Success == 0)
-                    return this.NotFoundResponse<object>(result.Message);
-
-                if (result.Success == -1)
-                    return this.UnauthorizedResponse<object>(result.Message);
-
-                if (result.Success == -2)
-                    return this.BadRequestResponse<object>(result.Message, 406);
-
-                return this.OkResponse(result.Success, result.Message);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequestResponse<object>($"{await _messageService.GetMessageAsync("SERVER_ERROR", languageCode)}: {ex.Message}");
-            }
+            return Ok(new { message = $"تم تغيير صلاحية {user.UserName} إلى {dto.Role} بنجاح" });
         }
     }
 }

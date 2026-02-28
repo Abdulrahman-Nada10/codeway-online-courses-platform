@@ -1,46 +1,85 @@
-using GlobalResponse.Shared;
+﻿using GlobalResponse.Shared;
 using GlobalResponse.Shared.Configuration;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using OnlineCourseSystem.Auth.Helper;
-using OnlineCourseSystem.Auth.Infrastructure;
+using OnlineCourseSystem.Auth;
 using OnlineCourseSystem.Auth.Models;
-using OnlineCourseSystem.Auth.Services;
-using OnlineCourseSystem.Auth.Services.Permission;
-using OnlineCourseSystem.Auth.Services.Role;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Social login configuration
+var googleClientId = builder.Configuration["Google:ClientId"];
+var googleClientSecret = builder.Configuration["Google:ClientSecret"];
+
+var fbAppId = builder.Configuration["Facebook:AppId"];
+var fbAppSecret = builder.Configuration["Facebook:AppSecret"];
+
+var gitHubClientId = builder.Configuration["GitHub:ClientId"];
+var gitHubClientSecret = builder.Configuration["GitHub:ClientSecret"];
 
 // Configuration
 builder.Services.Configure<AuthOptions>(builder.Configuration.GetSection("Auth"));
 builder.Services.Configure<PasswordPolicyOptions>(builder.Configuration.GetSection("PasswordPolicyOptions"));
 
-builder.Services.AddSingleton<PasswordValidationHelper>();
-builder.Services.AddSingleton<IPepperProvider, PepperProvider>();
-
-builder.Services.AddSingleton<IJwtService, JwtService>();
-builder.Services.AddSingleton<IAuthService, AuthService>();
-builder.Services.AddSingleton<IPermissionService, PermissionService>();
-builder.Services.AddSingleton<IRoleService, RoleService>();
 
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new() { Title = "Auth API", Version = "v1" });
+    c.SwaggerDoc("v1", new() { Title = "CourseOnline API", Version = "v1" });
+
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Description = "أدخل JWT Bearer token كالتالي: Bearer {token}",
+        Name = "Authorization",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
 });
 
 builder.Services.AddScoped<LocalizedMessageService>();
 builder.Services.Configure<DuplicateProtectionOptions>(builder.Configuration.GetSection("DuplicateProtection"));
 
+builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+builder.Services.AddScoped<IVerificationRepository, VerificationRepository>();
+builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+//builder.Services.AddSingleton<IPermissionService, PermissionService>();
+builder.Services.AddSingleton<IRoleService, RoleService>();
+builder.Services.AddScoped<ISocialService, SocialService>();
+builder.Services.AddScoped<ISocialRepository, SocialRepository>();
+
+builder.Services.AddScoped<IProfileService, ProfileService>();
+builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
+builder.Services.AddSingleton<FileHelper>();
+
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 })
-.AddJwtBearer(options =>
+.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme) // مهم للـ OAuth flow
+.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -48,11 +87,25 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Auth:JwtAudience"],
-        ValidAudience = builder.Configuration["JAuthwt:JwtIssuer"],
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(builder.Configuration["Auth:JwtKey"]!))
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
     };
+})
+//
+.AddGoogle(options =>
+{
+    options.ClientId = builder.Configuration["Auth:Google:ClientId"]!;
+    options.ClientSecret = builder.Configuration["Auth:Google:ClientSecret"]!;
+    options.CallbackPath = "/signin-google";
+})
+.AddGitHub(options =>
+{
+    options.ClientId = builder.Configuration["Auth:GitHub:ClientId"]!;
+    options.ClientSecret = builder.Configuration["Auth:GitHub:ClientSecret"]!;
+    options.CallbackPath = "/signin-github";
+    options.Scope.Add("user:email");
 });
 
 //Cors configuration

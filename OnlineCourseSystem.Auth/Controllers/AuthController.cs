@@ -1,136 +1,149 @@
-﻿using OnlineCourseSystem.Auth.DTOs;
-using OnlineCourseSystem.Auth.Services;
-using GlobalResponse.Shared.Configuration;
-using GlobalResponse.Shared.Extensions;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace OnlineCourseSystem.Auth.Controllers
 {
     [Route("api/auth")]
     [ApiController]
-    public class AuthController(LocalizedMessageService messageService, IAuthService authService) : ControllerBase
+    public class AuthController(IAuthService authService, IJwtService jwtService, ILogger<AuthController> logger, ISocialService socialAuthService) : ControllerBase
     {
-        private readonly LocalizedMessageService _messageService = messageService;
         private readonly IAuthService _authService = authService;
+        private readonly IJwtService _jwtService = jwtService;
+        private readonly ILogger<AuthController> _logger = logger;
+        private readonly ISocialService _socialAuthService = socialAuthService;
 
-        private async Task<IActionResult> RegisterWithRole(string roleName, RegisterRequest request, string languageCode)
+        [HttpPost("register")]
+        public IActionResult Register(RegisterRequest dto)
         {
-            var strategy = _authService.GetStrategy(roleName);
-            var result = await strategy.RegisterAsync(request, languageCode);
+            if (!ModelState.IsValid)
+            {
+                // جمع كل الرسائل في رسالة واحدة
+                var errors = ModelState.Values
+                               .SelectMany(v => v.Errors)
+                               .Select(e => e.ErrorMessage);
 
-            return result.Success == 1 ? this.OkResponse(result.Success, result.Message)
-                : result.Success == -2 ? this.BadRequestResponse<object>(result.Message, 409)
-                : this.NotFoundResponse<object>(result.Message);
+                var message = string.Join("; ", errors);
+                return BadRequest(new { message });
+            }
+            var result = _authService.Register(dto);
+
+            return Ok(result);
         }
 
-        [Authorize]
-        [HttpPost("admin")]
-        public Task<IActionResult> RegisterAdmin([FromBody] RegisterRequest request, [FromHeader] string languageCode = "ar") =>
-            RegisterWithRole("Admin", request, languageCode);
+        [HttpGet("verify-email")]
+        public IActionResult VerifyEmail([FromQuery] string code)
+        {
+            string result = _authService.VerifyEmail(code);
+            return Ok(new { Message = result });
+        }
 
-        [HttpPost("server")]
-        public Task<IActionResult> RegisterServer([FromBody] RegisterRequest request, [FromHeader] string languageCode = "ar") =>
-            RegisterWithRole("Server", request, languageCode);
-
-        [HttpPost("member")]
-        public Task<IActionResult> RegisterMember([FromBody] RegisterRequest request, [FromHeader] string languageCode = "ar") =>
-            RegisterWithRole("Member", request, languageCode);
+        [HttpPost("verify-phone")]
+        public IActionResult VerifyPhone([FromBody] VerifyOtpRequestDto dto)
+        {
+            string result = _authService.VerifyPhone(dto);
+            return Ok(new { Message = result });
+        }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequestDto request, [FromHeader] string languageCode ="ar")
+        public IActionResult Login(LoginRequestDto dto)
+        {
+            // نجيب المستخدم عن طريق الإيميل أو الموبايل
+            var result = _authService.Login(dto);
+
+            if (!(bool)result.GetType().GetProperty("Success")!.GetValue(result)!)
+                return Unauthorized(result);
+
+            return Ok(result);
+        }
+
+        [HttpPost("social-login")]
+        public IActionResult SocialLogin([FromBody] SocialLoginDto dto)
         {
             try
             {
-                var result = await _authService.LoginAsync(request);
 
-                if (result.Success == 0)
-                    return this.BadRequestResponse<object>(result.Message!);
 
-                return this.OkResponse(new LoginDto { UserId = result.UserId, AccessToken = result.AccessToken, RefreshToken = result.RefreshToken, RefreshTokenExpiresAt = result.RefreshTokenExpiresAt}, result.Message!);
+                var result = _socialAuthService.SocialLogin(dto);
+                return Ok(result);
+
             }
             catch (Exception ex)
             {
-                return this.BadRequestResponse<object>($"{await _messageService.GetMessageAsync("SERVER_ERROR", languageCode)}: {ex.Message}");
+                _logger.LogError(ex, "Error during social login");
+                return StatusCode(500, new { message = "Internal server error" });
             }
         }
 
-        [HttpPost("logout")]
-        public async Task<IActionResult> Logout([FromBody] AuthRequestDto request, [FromHeader] string languageCode = "ar")
+        [HttpGet("login/{provider}")]
+        public IActionResult Login(string provider)
         {
-            try
+            var properties = new AuthenticationProperties
             {
-                var result = await _authService.LogoutAsync(request, languageCode);
+                RedirectUri = "/external-callback"
+            };
 
-                if (result.Success == 0)
-                    return this.BadRequestResponse<object>(result.Message!);
-
-                return this.OkResponse(result.Success, result.Message!);
-            }
-            catch (Exception ex)
+            return provider.ToLower() switch
             {
-                return this.BadRequestResponse<object>($"{await _messageService.GetMessageAsync("SERVER_ERROR", languageCode)}: {ex.Message}");
-            }
+                "google" => Challenge(properties, "Google"),
+                //"facebook" => Challenge(properties, "Facebook"),
+                "github" => Challenge(properties, "GitHub"),
+                _ => BadRequest("Provider not supported")
+            };
         }
 
-        [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken([FromBody] AuthRequestDto request, [FromHeader] string languageCode = "ar")
+        [HttpGet("external-callback")]
+        public async Task<IActionResult> ExternalLoginCallback()
         {
-            try
+            var authenticateResult = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            if (!authenticateResult.Succeeded)
+                return Unauthorized();
+
+            var claims = authenticateResult.Principal.Identities.First().Claims;
+            var provider = authenticateResult.Properties?.Items[".AuthScheme"]
+               ?? authenticateResult.Ticket?.AuthenticationScheme;
+
+            var email = claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
             {
-                var result = await _authService.RefreshTokenAsync(request, languageCode);
+                _logger.LogWarning("Email not provided by external provider {Provider}", provider);
 
-                if (result.Success == 0)
-                    return this.BadRequestResponse<object>(result.Message!);
-
-                return this.OkResponse(new LoginDto { UserId = result.UserId, AccessToken = result.AccessToken, RefreshToken = result.RefreshToken, RefreshTokenExpiresAt = result.RefreshTokenExpiresAt }, result.Message!);
+                return BadRequest(new
+                {
+                    message = $"{provider} account does not have a public email. Please make your email public or use another login method."
+                });
             }
-            catch (Exception ex)
+
+            var name = claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+            var providerUserIdStr = claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+
+            var dto = new SocialLoginDto
             {
-                return this.BadRequestResponse<object>($"{await _messageService.GetMessageAsync("SERVER_ERROR", languageCode)}: {ex.Message}");
-            }
-        }
+                Provider = provider!,
+                ProviderUserID = providerUserIdStr,
+                Email = email,
+                UserName = name!
+            };
 
-        [HttpPost("change-password")]
-        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request, [FromHeader] string languageCode = "ar")
-        {
-            try
+            // الربط مع Service
+            var result = _socialAuthService.SocialLogin(dto);
+
+            if (!result.Success)
+                return BadRequest(new { message = result.Message });
+
+            // توليد JWT
+            var token = _jwtService.GenerateToken(result.UserID!.Value, dto.UserName, dto.Email);
+
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return Ok(new
             {
-                var result = await _authService.ChangePasswordAsync(request, languageCode);
-
-                if (result.Success == -1)
-                    return this.BadRequestResponse<object>(result.Message!);
-                
-                if (result.Success == 0)
-                    return this.NotFoundResponse<object>(result.Message!);
-
-                return this.OkResponse(result.Success, result.Message!);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequestResponse<object>($"{await _messageService.GetMessageAsync("SERVER_ERROR", languageCode)}: {ex.Message}");
-            }
-        }
-
-        [HttpPut("update")]
-        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserRequest request, [FromHeader] string languageCode = "ar")
-        {
-
-            try
-            {
-                var result = await _authService.UpdateUserAsync(request);
-                if (result.Success == -2)
-                    return this.UnauthorizedResponse<object>(result.Message!);
-
-                if (result.Success == 0)
-                    return this.NotFoundResponse<object>(result.Message!);
-
-                return this.OkResponse(result.Success, result.Message!);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequestResponse<object>($"{await _messageService.GetMessageAsync("SERVER_ERROR", languageCode)}: {ex.Message}");
-            }
+                UserID = result.UserID,
+                Token = token,
+                Message = result.Message
+            });
         }
     }
 }

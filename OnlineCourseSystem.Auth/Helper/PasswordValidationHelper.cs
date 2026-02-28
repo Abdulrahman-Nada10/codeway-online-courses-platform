@@ -1,7 +1,7 @@
 ﻿using OnlineCourseSystem.Auth.Models;
 using Microsoft.Extensions.Options;
 
-namespace OnlineCourseSystem.Auth.Helper
+namespace OnlineCourseSystem.Auth
 {
     public class PasswordValidationHelper
     {

@@ -1,5 +1,4 @@
-﻿using OnlineCourseSystem.Auth.Services.Permission;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.IdentityModel.Tokens.Jwt;
 using GlobalResponse.Shared.Extensions;
@@ -50,19 +49,19 @@ namespace OnlineCourseSystem.Auth.Attributes
                 return;
             }
 
-            var permissionService = context.HttpContext.RequestServices.GetService<IPermissionService>();
-            if (permissionService is not IPermissionService service)
-            {
-                context.Result = controller.BadRequestResponse<object>(await messageService.GetMessageAsync("UNAUTHORIZED", lang), 500);
-                return;
-            }
+            //var permissionService = context.HttpContext.RequestServices.GetService<IPermissionService>();
+            //if (permissionService is not IPermissionService service)
+            //{
+            //    context.Result = controller.BadRequestResponse<object>(await messageService.GetMessageAsync("UNAUTHORIZED", lang), 500);
+            //    return;
+            //}
 
-            var hasPermission = await service.CheckUserPermissionAsync(userId, _permissionKey);
-            if (!hasPermission)
-            {
-                context.Result = controller.UnauthorizedResponse<object>(await messageService.GetMessageAsync("UNAUTHORIZED", lang));
-                return;
-            }
+            //var hasPermission = await service.CheckUserPermissionAsync(userId, _permissionKey);
+            //if (!hasPermission)
+            //{
+            //    context.Result = controller.UnauthorizedResponse<object>(await messageService.GetMessageAsync("UNAUTHORIZED", lang));
+            //    return;
+            //}
 
             await next();
         }

@@ -1,7 +1,7 @@
-﻿namespace OnlineCourseSystem.Auth.Services
+﻿namespace OnlineCourseSystem.Auth
 {
     public interface IJwtService
     {
-        string GenerateAccessToken(long userId, string? role = null);
+        string GenerateToken(long userId, string userName, string email);
     }
 }

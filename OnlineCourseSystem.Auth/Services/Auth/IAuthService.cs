@@ -1,14 +1,15 @@
-﻿using OnlineCourseSystem.Auth.DTOs;
+﻿namespace OnlineCourseSystem.Auth;
 
-namespace OnlineCourseSystem.Auth.Services
+public interface IAuthService
 {
-    public interface IAuthService
-    {
-        Task<LoginResponse> LoginAsync(LoginRequestDto dto, string languageCode = "ar");
-        Task<RefreshTokenResponse> RefreshTokenAsync(AuthRequestDto dto, string languageCode = "ar");
-        Task<AuthResponse> LogoutAsync(AuthRequestDto request, string languageCode = "ar");
-        Task<AuthResponse> ChangePasswordAsync(ChangePasswordRequest request, string languageCode = "ar");
-        Task<AuthResponse> UpdateUserAsync(UpdateUserRequest request, string languageCode = "ar");
-        public IUserRegistrationStrategy GetStrategy(string roleName);
-    }
+    string Register(RegisterRequest dto);
+    object Login(LoginRequestDto dto);
+
+
+    void SendEmailVerification(long userId, string email);
+    void SendPhoneOtp(long userId, string phoneNumber);
+    string VerifyEmail(string code);
+    string VerifyPhone(VerifyOtpRequestDto dto);
+    string ForgotPassword(string login);
+    string ResetPassword(ResetPasswordDto dto);
 }

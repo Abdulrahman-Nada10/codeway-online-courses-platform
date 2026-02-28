@@ -1,10 +1,9 @@
-﻿namespace OnlineCourseSystem.Auth.DTOs
+﻿namespace OnlineCourseSystem.Auth;
+
+public class LoginDto
 {
-    public class LoginDto
-    {
-        public long UserId { get; set; }
-        public string AccessToken { get; set; } = string.Empty;
-        public string RefreshToken { get; set; } = string.Empty;
-        public DateTime RefreshTokenExpiresAt { get; set; }
-    }
+    public long UserId { get; set; }
+    public string AccessToken { get; set; } = string.Empty;
+    public string RefreshToken { get; set; } = string.Empty;
+    public DateTime RefreshTokenExpiresAt { get; set; }
 }
