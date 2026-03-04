@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="../CourseMangment.MicroService/CourseMangment.MicroService.csproj" />
+  <Project Path="../GlobalResponse.Shared/GlobalResponse.Shared.csproj" />
+  <Project Path="CourseContentMicroService/CourseContentMicroService.csproj" />
+</Solution>
