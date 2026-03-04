@@ -1,5 +1,6 @@
 ﻿using GlobalResponse.Shared.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineCourseSystem.Notifications.Features.Notifications.Commands.MarkAsRead;
 using OnlineCourseSystem.Notifications.Features.Notifications.DTOs;
@@ -13,6 +14,7 @@ namespace OnlineCourseSystem.Notifications.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class NotificationsController : ControllerBase
     {
         private readonly INotificationService _notificationService;
@@ -37,6 +39,7 @@ namespace OnlineCourseSystem.Notifications.Controllers
         /// <response code="400">The request payload is invalid.</response>
         /// <response code="500">An unexpected error occurred while creating the notification.</response>
         [HttpPost]
+        [Authorize(Roles = "Admin,Instructor")]
         public async Task<IActionResult> Create(CreateNotificationDto request)
         {
             var userNotificationIds = await _notificationService.CreateNotificationAsync(request);
@@ -44,7 +47,7 @@ namespace OnlineCourseSystem.Notifications.Controllers
             return this.OkResponse(userNotificationIds, "Notification created successfully");
         }
 
-
+        // هيبقي افضل لو جبنا ال USerID من التوكن لان كدا ممكن يوزر يجيب نوتيفيكيشن بتاع يوزر تاني ودي مش حاجة كويسة
         /// <summary>
         /// Retrieves a paginated list of notifications for the specified user.
         /// </summary>
@@ -86,6 +89,7 @@ namespace OnlineCourseSystem.Notifications.Controllers
         /// Retrieves all available notification types.
         /// </summary>
         [HttpGet("Types")]
+        [AllowAnonymous]
         public IActionResult GetNotificationTypes()
         {
             var types = Enum.GetValues(typeof(NotificationType))

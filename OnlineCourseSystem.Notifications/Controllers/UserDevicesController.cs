@@ -1,5 +1,6 @@
 using GlobalResponse.Shared.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineCourseSystem.Notifications.Features.UserDevices.Commands;
 using OnlineCourseSystem.Notifications.Features.UserDevices.DTOs;
@@ -11,6 +12,7 @@ namespace OnlineCourseSystem.Notifications.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserDevicesController : ControllerBase
     {
         private readonly IMediator _mediator;
