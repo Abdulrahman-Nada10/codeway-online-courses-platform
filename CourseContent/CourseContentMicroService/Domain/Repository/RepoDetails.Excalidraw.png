@@ -1,6 +1,0 @@
-﻿namespace CourseContentMicroService.Domain.Repository
-{
-    public class RepoDetails
-    {
-    }
-}
