@@ -9,7 +9,6 @@ namespace CourseContentMicroService.Controllers
 {
     [ApiController]
     [Authorize]
-
     [Route("api/[controller]")]
     public class ModuleController : ControllerBase
     {

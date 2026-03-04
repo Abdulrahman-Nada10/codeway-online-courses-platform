@@ -3,11 +3,13 @@ using CourseMangment.MicroService.Application.DTO_s;
 using CourseMangment.MicroService.Application.interfaces;
 using CourseMangment.MicroService.Domain.Enums;
 using GlobalResponse.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseMangment.MicroService.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class CourseController : ControllerBase
     {

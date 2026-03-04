@@ -3,11 +3,13 @@ using CourseMangment.MicroService.Application.DTO_s;
 using CourseMangment.MicroService.Domain.Entities;
 using CourseMangment.MicroService.Domain.UnitOfWork;
 using GlobalResponse.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseMangment.MicroService.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class CategoryController : ControllerBase
     {

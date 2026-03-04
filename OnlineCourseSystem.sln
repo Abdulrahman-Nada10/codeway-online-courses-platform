@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36518.9
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11520.95 d18.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineCourseSystem.Auth", "OnlineCourseSystem.Auth\OnlineCourseSystem.Auth.csproj", "{EBBB211B-4949-468A-BFC5-86648D2E27C6}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineCourseSystem.Contracts.Messaging", "OnlineCourseSystem.Contracts.Messaging\OnlineCourseSystem.Contracts.Messaging.csproj", "{E0AC7074-BE7C-1793-2EBB-DCDE63F05AB1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineCourseSystem.Notifications", "OnlineCourseSystem.Notifications\OnlineCourseSystem.Notifications.csproj", "{458107FE-E1F2-DEC1-095D-8858ADC21366}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CertificateGenerationMicroService", "D:\Road to full stack\BackEnd\CodeWay Internship\LMS System\Repo\codeway-online-courses-platform\CourseContent\CertificateGenerationMicroService\CertificateGenerationMicroService.csproj", "{7F57893C-A354-7C85-1389-781E9CF45E3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{458107FE-E1F2-DEC1-095D-8858ADC21366}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{458107FE-E1F2-DEC1-095D-8858ADC21366}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{458107FE-E1F2-DEC1-095D-8858ADC21366}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F57893C-A354-7C85-1389-781E9CF45E3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F57893C-A354-7C85-1389-781E9CF45E3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F57893C-A354-7C85-1389-781E9CF45E3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F57893C-A354-7C85-1389-781E9CF45E3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
