@@ -2,11 +2,14 @@
 using CourseContentMicroService.Application.DTO_s.QuizQuestionsDTO_s;
 using CourseContentMicroService.Application.Interfaces;
 using GlobalResponse.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseContentMicroService.Controllers
 {
     [ApiController]
+    [Authorize]
+
     [Route("api/quiz-question")]
     public class QuizQuestionController : ControllerBase
     {

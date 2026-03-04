@@ -3,11 +3,13 @@ using CourseContentMicroService.Application.DTO_s.FileUploadDto;
 using CourseContentMicroService.Application.Interfaces;
 using CourseContentMicroService.Domain.Entities.Enums;
 using GlobalResponse.Shared.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseContentMicroService.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/file-upload")]
     public class FileUploadController : ControllerBase
     {
