@@ -2,11 +2,13 @@
 using CertificateGenerationMicroService.Application.Interfaces;
 using CertificateGenerationMicroService.Domain.Entities;
 using CertificateGenerationMicroService.Domain.UnitOfWork;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CertificateGenerationMicroService.Controllers
 {
     [ApiController]
+    //[Authorize]
     [Route("api/[controller]")]
     public class CertificatesTestController : ControllerBase
     {
