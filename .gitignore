@@ -25,3 +25,4 @@ frontend/.next/
 # General
 bin/
 obj/
+/OnlineCourseSystem.Notifications/firebase-test.html
