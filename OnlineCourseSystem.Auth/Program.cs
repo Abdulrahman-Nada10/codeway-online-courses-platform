@@ -64,8 +64,7 @@ builder.Services.AddScoped<IVerificationRepository, VerificationRepository>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-//builder.Services.AddSingleton<IPermissionService, PermissionService>();
-builder.Services.AddSingleton<IRoleService, RoleService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<ISocialService, SocialService>();
 builder.Services.AddScoped<ISocialRepository, SocialRepository>();
 
