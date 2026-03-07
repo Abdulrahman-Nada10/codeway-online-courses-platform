@@ -1,55 +1,37 @@
-using Microsoft.EntityFrameworkCore;
-using OnlineCourse.Payment.Core.Repository;
-using OnlineCourse.Payment.Core.UnitOfWork;
-using OnlineCourse.Payment.Infrastracture.Persistence;
-
-namespace OnlineCourse.Payment
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
-
-            // DbContext
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-            // Repositories
-            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-            builder.Services.AddScoped<IPaymentTransactionRepository, PaymentTransactionRepository>();
-
-            // Unit of Work
-            builder.Services.AddScoped<IUOW, UnitOfWork>();
-
-            // TODO: Register AutoMapper
-            // builder.Services.AddAutoMapper(cfg => cfg.AddProfile<PaymentMappingProfile>());
-
-            // TODO: Register Application Services
-            // builder.Services.AddScoped<IOrderService, OrderService>();
-            // builder.Services.AddScoped<IPaymobService, PaymobService>();
-
-            // TODO: Add JWT Authentication
-            // builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //     .AddJwtBearer(options => { ... });
-
-            builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
-            var app = builder.Build();
-
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.MapControllers();
-            app.Run();
-        }
-    }
-}
+// ============================================================
+// Program.cs - Entry point for OnlineCourse.Payment Web API
+// ============================================================
+// TODO: Register all services here in this order:
+//
+// 1. AddDbContext<ApplicationDbContext>()
+//    - Use builder.Configuration.GetConnectionString("DefaultConnection")
+//
+// 2. Register Repositories (Scoped):
+//    - AddScoped<IOrderRepository, OrderRepository>()
+//    - AddScoped<IPaymentTransactionRepository, PaymentTransactionRepository>()
+//
+// 3. Register Unit of Work (Scoped):
+//    - AddScoped<IUOW, UnitOfWork>()
+//
+// 4. Register Application Services (Scoped):
+//    - AddScoped<IOrderService, OrderService>()
+//    - AddScoped<IPaymobService, PaymobService>()
+//
+// 5. Register HttpClient for Paymob:
+//    - AddHttpClient("Paymob", client => {
+//        client.BaseAddress = new Uri(builder.Configuration["Paymob:BaseUrl"]);
+//      })
+//
+// 6. Register AutoMapper:
+//    - AddAutoMapper(typeof(PaymentMappingProfile))
+//
+// 7. Register JWT Authentication:
+//    - AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//      .AddJwtBearer(options => { ... read key from config ... })
+//
+// 8. AddControllers(), AddEndpointsApiExplorer(), AddSwaggerGen()
+//
+// 9. Middleware pipeline:
+//    - UseSwagger(), UseSwaggerUI()
+//    - UseAuthentication() BEFORE UseAuthorization()
+//    - MapControllers()
