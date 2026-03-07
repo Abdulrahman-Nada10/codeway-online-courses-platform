@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>FCM Token Test</title>
+</head>
+<body>
+  <h2>FCM Web Token Test</h2>
+  <button onclick="getToken()">Get Token</button>
+  <pre id="out"></pre>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDvX9x_1pFun76i2TCK9x5sysGE1iGInM8",
+      authDomain: "notification-firebase-39a4a.firebaseapp.com",
+      projectId: "notification-firebase-39a4a",
+      messagingSenderId: "948413404534",
+      appId: "1:948413404534:web:18e637f59f84e627559657"
+    };
+
+    const vapidKey = "BEnKs-iPRyqOIufa-UHgr4C1LZzXklVwl06cuIqjK3pVmTL7zupsuv6t940b9o85lvPqgS_NyiEYClUwHeUzjuA";
+
+    const app = initializeApp(firebaseConfig);
+    const messaging = getMessaging(app);
+
+    window.getToken = async () => {
+      const out = document.getElementById("out");
+
+      try {
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+          out.textContent = "Notification permission denied.";
+          return;
+        }
+
+        const token = await getToken(messaging, { vapidKey });
+        out.textContent = token ? token : "No token returned.";
+      } catch (e) {
+        out.textContent = "Error: " + e;
+      }
+    };
+  </script>
+</body>
+</html>
