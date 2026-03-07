@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.1.11312.151 d18.0
+VisualStudioVersion = 18.1.11312.151
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineCourseSystem.Auth", "OnlineCourseSystem.Auth\OnlineCourseSystem.Auth.csproj", "{EBBB211B-4949-468A-BFC5-86648D2E27C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalResponse.Shared", "GlobalResponse.Shared\GlobalResponse.Shared.csproj", "{AE8BC13D-98B9-4C6D-A6A7-D56240DBC50B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineCourse.Payment", "OnlineCourse.Payment\OnlineCourse.Payment.csproj", "{B2905318-1F92-47FA-9AEA-025BFE01CC78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineCourseSystem.Presentation", "OnlineCourseSystem.Presentation\OnlineCourseSystem.Presentation.csproj", "{AF580AC9-15EB-4743-A97E-881267B520F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{B2905318-1F92-47FA-9AEA-025BFE01CC78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2905318-1F92-47FA-9AEA-025BFE01CC78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2905318-1F92-47FA-9AEA-025BFE01CC78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF580AC9-15EB-4743-A97E-881267B520F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF580AC9-15EB-4743-A97E-881267B520F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF580AC9-15EB-4743-A97E-881267B520F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF580AC9-15EB-4743-A97E-881267B520F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
