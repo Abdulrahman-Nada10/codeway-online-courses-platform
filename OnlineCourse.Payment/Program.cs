@@ -1,10 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using OnlineCourse.Payment.Application.Interfaces;
-using OnlineCourse.Payment.Application.Mapping;
-using OnlineCourse.Payment.Application.Services;
-using OnlineCourse.Payment.Core.Repository;
-using OnlineCourse.Payment.Core.UnitOfWork;
-using OnlineCourse.Payment.Infrastracture.Persistence;
+using Microsoft.IdentityModel.Tokens;
+using OnlineCourse.Payment.Data;
+using OnlineCourse.Payment.Services;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,25 +11,32 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Repositories
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IPaymentTransactionRepository, PaymentTransactionRepository>();
-
-// Unit of Work
-builder.Services.AddScoped<IUOW, UnitOfWork>();
-
-// Application Services
+// Services - inject DbContext directly, no Repo/UoW needed
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IPaymobService, PaymobService>();
 
-// AutoMapper
-builder.Services.AddAutoMapper(typeof(PaymentMappingProfile));
-
-// HttpClient for Paymob
+// Named HttpClient for Paymob API calls
 builder.Services.AddHttpClient("Paymob", client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["Paymob:BaseUrl"]!);
 });
+
+// JWT - validates token locally using the shared secret key
+// No need to call Auth service - JWT is self-contained
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["Jwt:Audience"]
+        };
+    });
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -40,10 +46,7 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

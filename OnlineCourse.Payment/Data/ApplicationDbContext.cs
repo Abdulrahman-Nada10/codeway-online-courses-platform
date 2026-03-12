@@ -22,6 +22,7 @@ namespace OnlineCourse.Payment.Data
             modelBuilder.Entity<OrderItem>(e =>
             {
                 e.Property(o => o.Price).HasColumnType("decimal(18,2)");
+                e.Property(o => o.CourseName).IsRequired().HasMaxLength(300);
             });
 
             modelBuilder.Entity<PaymentTransaction>(e =>

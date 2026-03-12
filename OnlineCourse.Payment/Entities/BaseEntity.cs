@@ -1,8 +1,8 @@
 namespace OnlineCourse.Payment.Entities
 {
-    public class BaseEntity<T>
+    public abstract class BaseEntity
     {
-        public T Id { get; set; } = default!;
+        public int Id { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
     }

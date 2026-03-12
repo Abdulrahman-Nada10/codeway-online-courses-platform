@@ -2,6 +2,7 @@ namespace OnlineCourse.Payment.DTOs
 {
     public class CreateOrderDto
     {
+        // Course IDs to purchase - prices fetched from CourseManagement service
         public List<int> CourseIds { get; set; } = [];
         public BillingDataDto BillingData { get; set; } = null!;
     }
