@@ -12,19 +12,20 @@ namespace OnlineCourse.Payment.Controllers
     public class PaymentController(IOrderService orderService, ILogger<PaymentController> logger) : ControllerBase
     {
         // POST api/payment/create
-        [Authorize]
+        //[Authorize]
         [HttpPost("create")]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto dto)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId == null)
-                return Unauthorized(ApiResponse<string>.UnauthorizedResponse());
+            //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            //if (userId == null)
+            //    return Unauthorized(ApiResponse<string>.UnauthorizedResponse());
+            var userId = "test-user-123";
 
             // Strip "Bearer " prefix - raw token forwarded to CourseManagement
             var authHeader = Request.Headers["Authorization"].ToString();
             var userToken = authHeader.StartsWith("Bearer ")
-                ? authHeader["Bearer ".Length..]
-                : authHeader;
+        ? authHeader["Bearer ".Length..]
+        : "test-token";
 
             var result = await orderService.CreateOrderAsync(dto, userId, userToken);
             return Ok(ApiResponse<PaymentIntentionResponseDto>.SuccessResponse(
@@ -32,7 +33,7 @@ namespace OnlineCourse.Payment.Controllers
         }
 
         // GET api/payment/orders
-        [Authorize]
+        //[Authorize]
         [HttpGet("orders")]
         public async Task<IActionResult> GetUserOrders()
         {
@@ -45,13 +46,14 @@ namespace OnlineCourse.Payment.Controllers
         }
 
         // GET api/payment/orders/{id}
-        [Authorize]
+        //[Authorize]
         [HttpGet("orders/{id}")]
         public async Task<IActionResult> GetOrderById(int id)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId == null)
-                return Unauthorized(ApiResponse<string>.UnauthorizedResponse());
+            //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            //if (userId == null)
+            //    return Unauthorized(ApiResponse<string>.UnauthorizedResponse());
+            var userId = "test-user-123";
 
             var order = await orderService.GetOrderByIdAsync(id, userId);
             if (order == null)

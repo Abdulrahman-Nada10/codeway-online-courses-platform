@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CourseMangment.MicroService.Controllers
 {
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     public class CourseController : ControllerBase
     {
