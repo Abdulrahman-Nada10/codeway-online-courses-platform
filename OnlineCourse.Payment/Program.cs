@@ -11,17 +11,26 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Services - inject DbContext directly, no Repo/UoW needed
+// Services - DbContext injected directly, no Repo/UoW needed
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IPaymobService, PaymobService>();
+builder.Services.AddScoped<ICourseManagementService, CourseManagementService>();
 
 // Named HttpClient for Paymob API calls
+// BaseUrl = https://accept.paymob.com
 builder.Services.AddHttpClient("Paymob", client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["Paymob:BaseUrl"]!);
 });
 
-// JWT - validates token locally using the shared secret key
+// Named HttpClient for calling CourseManagement microservice
+// JWT is forwarded per-request in CourseManagementService - not set globally here
+builder.Services.AddHttpClient("CourseManagement", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["Services:CourseManagement"]!);
+});
+
+// JWT - validates token locally using shared secret key
 // No need to call Auth service - JWT is self-contained
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
