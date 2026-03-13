@@ -8,5 +8,7 @@ namespace OnlineCourse.Payment.DTOs
         // Frontend also needs this for the Paymob JS SDK
         public string PublicKey { get; set; } = string.Empty;
         public decimal TotalAmount { get; set; }
+        // Frontend redirects user to this URL to complete payment
+        public string PaymentUrl { get; set; } = string.Empty;
     }
 }
