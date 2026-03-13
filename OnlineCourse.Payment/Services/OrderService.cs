@@ -46,8 +46,6 @@ namespace OnlineCourse.Payment.Services
             context.Orders.Add(order);
             await context.SaveChangesAsync();
 
-            // payment_methods should be integer integration IDs from your Paymob dashboard
-            // e.g. the card integration ID you see in Paymob Accept > Integrations
             var paymentMethodIds = config.GetSection("Paymob:PaymentMethodIds").Get<int[]>()
                 ?? throw new InvalidOperationException("Paymob:PaymentMethodIds not configured");
 
@@ -78,10 +76,15 @@ namespace OnlineCourse.Payment.Services
             order.PaymobIntentionId = clientSecret;
             await context.SaveChangesAsync();
 
+            var publicKey = config["Paymob:PublicKey"]!;
+
             return new PaymentIntentionResponseDto
             {
+                OrderId = order.Id,
                 ClientSecret = clientSecret,
-                PublicKey = config["Paymob:PublicKey"]!
+                PublicKey = publicKey,
+                TotalAmount = totalAmount,
+                PaymentUrl = $"https://accept.paymob.com/unifiedcheckout/?publicKey={publicKey}&clientSecret={clientSecret}"
             };
         }
 
@@ -111,8 +114,6 @@ namespace OnlineCourse.Payment.Services
 
         public async Task HandlePaymobCallbackAsync(string rawJson, string hmac)
         {
-            // Validate HMAC on the RAW original JSON from Paymob
-            // Never re-serialize a DTO - field order and values must be identical to what Paymob sent
             var isValid = paymobService.ValidateHmac(rawJson, hmac);
             if (!isValid)
                 throw new UnauthorizedAccessException("Invalid HMAC - not from Paymob");
@@ -150,10 +151,6 @@ namespace OnlineCourse.Payment.Services
                 : OrderStatus.Failed;
 
             await context.SaveChangesAsync();
-
-            // RabbitMQ enrollment event - left for team lead
-            // if (order.Status == OrderStatus.Paid)
-            //     await messageBus.PublishAsync(new OrderPaidEvent { UserId = order.UserId, CourseIds = ... });
         }
 
         private static OrderResponseDto MapToDto(Order order) => new()
