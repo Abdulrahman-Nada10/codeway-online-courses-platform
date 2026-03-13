@@ -9,22 +9,17 @@ namespace OnlineCourse.Payment.Services
     {
         public async Task<string> CreateIntentionAsync(CreateIntentionRequest request)
         {
-            // TODO:
-            // 1. var client = httpClientFactory.CreateClient("Paymob")
-            // 2. Add header: Authorization: Token {config["Paymob:SecretKey"]}
-
             var client = httpClientFactory.CreateClient("Paymob");
 
-            // Source: Paymob docs - Authorization header must be "Token {secret_key}"
-            // NOT "Bearer" — Paymob uses "Token" keyword specifically
+            // Paymob uses "Token" keyword, NOT "Bearer"
             client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Token", config["Paymob:SecretKey"]);
-            // 3. POST to /v1/intention/ with request body
+
             var body = new
             {
                 amount = request.AmountCents,           // must be in cents e.g. 15000 = 150 EGP
                 currency = request.Currency,            // "EGP"
-                payment_methods = new[] { "card" },     // card payments only for now
+                payment_methods = request.PaymentMethodIds, // integer IDs from Paymob dashboard
                 items = request.Items.Select(i => new
                 {
                     name = i.Name,
@@ -39,12 +34,8 @@ namespace OnlineCourse.Payment.Services
                     email = request.BillingData.Email,
                     phone_number = request.BillingData.PhoneNumber
                 },
-                merchant_order_id = request.MerchantOrderId // your DB Order.Id
+                merchant_order_id = request.MerchantOrderId // our DB Order.Id
             };
-
-            // 4. Read response and return client_secret string
-
-
 
             var response = await client.PostAsJsonAsync("/v1/intention/", body);
 
@@ -53,28 +44,22 @@ namespace OnlineCourse.Payment.Services
                 var error = await response.Content.ReadAsStringAsync();
                 throw new Exception($"Paymob CreateIntention failed: {error}");
             }
+
             // Paymob response shape: { "client_secret": "...", ... }
-            // Source: Paymob docs response body
             var json = await response.Content.ReadFromJsonAsync<JsonElement>();
             return json.GetProperty("client_secret").GetString()
                    ?? throw new Exception("Paymob returned no client_secret");
         }
 
-        public bool ValidateHmac(string callbackJson, string receivedHmac)
+        public bool ValidateHmac(string rawCallbackJson, string receivedHmac)
         {
-            // TODO:
-            // 1. Extract fields from callbackJson in exact Paymob-defined order
-            // 2. Concatenate all values
-            // 3. HMACSHA512(key: config["Paymob:HmacSecret"], data: concatenated)
-            // 4. Compare hex result with receivedHmac
-            // Parse the full callback JSON
+            // Parse the RAW original JSON from Paymob
+            // Fields must be in EXACT order Paymob defines - changing order = wrong hash
+            var json = JsonDocument.Parse(rawCallbackJson).RootElement;
 
-
-            var json = JsonDocument.Parse(callbackJson).RootElement;
+            // Paymob wraps the transaction object under "obj"
             var obj = json.GetProperty("obj");
 
-            // Fields in EXACT order Paymob defines - changing order = wrong hash
-            // Source: https://developers.paymob.com/egypt/payment-feedback/transaction-webhook
             var fields = new[]
             {
                 obj.GetProperty("amount_cents").ToString(),
@@ -101,7 +86,6 @@ namespace OnlineCourse.Payment.Services
 
             var concatenated = string.Concat(fields);
 
-            // HMAC-SHA512 with your HmacSecret from appsettings
             var keyBytes = Encoding.UTF8.GetBytes(config["Paymob:HmacSecret"]!);
             var dataBytes = Encoding.UTF8.GetBytes(concatenated);
             var hash = HMACSHA512.HashData(keyBytes, dataBytes);
@@ -109,46 +93,5 @@ namespace OnlineCourse.Payment.Services
 
             return computedHmac == receivedHmac.ToLower();
         }
-        public async Task<string> UpdateIntentionAsync(string clientSecret, CreateIntentionRequest request)
-        {
-            var client = httpClientFactory.CreateClient("Paymob");
-            client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Token", config["Paymob:SecretKey"]);
-
-            // Same body shape as CreateIntention
-            var body = new
-            {
-                amount = request.AmountCents,
-                currency = request.Currency,
-                items = request.Items.Select(i => new
-                {
-                    name = i.Name,
-                    amount = i.AmountCents,
-                    description = i.Description,
-                    quantity = i.Quantity
-                }),
-                billing_data = new
-                {
-                    first_name = request.BillingData.FirstName,
-                    last_name = request.BillingData.LastName,
-                    email = request.BillingData.Email,
-                    phone_number = request.BillingData.PhoneNumber
-                }
-            };
-
-            // PATCH not POST — updates the existing intention by client_secret
-            var response = await client.PatchAsJsonAsync($"/v1/intention/{clientSecret}/", body);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                var error = await response.Content.ReadAsStringAsync();
-                throw new Exception($"Paymob UpdateIntention failed: {error}");
-            }
-
-            var json = await response.Content.ReadFromJsonAsync<JsonElement>();
-            return json.GetProperty("client_secret").GetString()
-                   ?? throw new Exception("Paymob returned no client_secret");
-        }
-
     }
 }

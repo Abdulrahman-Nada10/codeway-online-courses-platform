@@ -46,10 +46,16 @@ namespace OnlineCourse.Payment.Services
             context.Orders.Add(order);
             await context.SaveChangesAsync();
 
+            // payment_methods should be integer integration IDs from your Paymob dashboard
+            // e.g. the card integration ID you see in Paymob Accept > Integrations
+            var paymentMethodIds = config.GetSection("Paymob:PaymentMethodIds").Get<int[]>()
+                ?? throw new InvalidOperationException("Paymob:PaymentMethodIds not configured");
+
             var intention = new CreateIntentionRequest
             {
                 AmountCents = (long)(totalAmount * 100),
                 Currency = "EGP",
+                PaymentMethodIds = paymentMethodIds,
                 MerchantOrderId = order.Id.ToString(),
                 BillingData = new PaymobBillingData
                 {
@@ -103,14 +109,25 @@ namespace OnlineCourse.Payment.Services
             return MapToDto(order);
         }
 
-        public async Task HandlePaymobCallbackAsync(PaymobCallbackDto callbackDto)
+        public async Task HandlePaymobCallbackAsync(string rawJson, string hmac)
         {
-            var rawJson = JsonSerializer.Serialize(new { obj = callbackDto.Obj });
-            var isValid = paymobService.ValidateHmac(rawJson, callbackDto.Hmac!);
+            // Validate HMAC on the RAW original JSON from Paymob
+            // Never re-serialize a DTO - field order and values must be identical to what Paymob sent
+            var isValid = paymobService.ValidateHmac(rawJson, hmac);
             if (!isValid)
                 throw new UnauthorizedAccessException("Invalid HMAC - not from Paymob");
 
-            var orderId = int.Parse(callbackDto.Obj!.MerchantOrderId!);
+            var callbackDto = JsonSerializer.Deserialize<PaymobCallbackDto>(
+                rawJson,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+            ) ?? throw new Exception("Failed to deserialize Paymob callback");
+
+            var obj = callbackDto.Obj
+                ?? throw new Exception("Paymob callback has no obj");
+
+            var orderId = int.Parse(obj.MerchantOrderId
+                ?? throw new Exception("MerchantOrderId missing from callback"));
+
             var order = await context.Orders
                 .Include(o => o.OrderItems)
                 .FirstOrDefaultAsync(o => o.Id == orderId)
@@ -119,16 +136,16 @@ namespace OnlineCourse.Payment.Services
             var transaction = new PaymentTransaction
             {
                 OrderId = order.Id,
-                PaymobTransactionId = callbackDto.Obj.Id,
-                Amount = callbackDto.Obj.AmountCents / 100m,
-                Status = callbackDto.Obj.Success ? PaymentStatus.Success : PaymentStatus.Failed,
-                PaymentMethod = callbackDto.Obj.SourceDataType ?? "unknown",
-                PaidAt = callbackDto.Obj.Success ? DateTime.UtcNow : null,
+                PaymobTransactionId = obj.Id,
+                Amount = obj.AmountCents / 100m,
+                Status = obj.Success ? PaymentStatus.Success : PaymentStatus.Failed,
+                PaymentMethod = obj.SourceData?.Type ?? "unknown",
+                PaidAt = obj.Success ? DateTime.UtcNow : null,
                 RawCallbackData = rawJson
             };
             context.PaymentTransactions.Add(transaction);
 
-            order.Status = callbackDto.Obj.Success
+            order.Status = obj.Success
                 ? OrderStatus.Paid
                 : OrderStatus.Failed;
 

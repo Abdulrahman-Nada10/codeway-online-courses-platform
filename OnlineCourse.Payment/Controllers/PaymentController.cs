@@ -9,7 +9,7 @@ namespace OnlineCourse.Payment.Controllers
 {
     [ApiController]
     [Route("api/payment")]
-    public class PaymentController(IOrderService orderService) : ControllerBase
+    public class PaymentController(IOrderService orderService, ILogger<PaymentController> logger) : ControllerBase
     {
         // POST api/payment/create
         [Authorize]
@@ -60,15 +60,27 @@ namespace OnlineCourse.Payment.Controllers
             return Ok(ApiResponse<OrderResponseDto>.SuccessResponse(order));
         }
 
-        // POST api/payment/callback
+        // POST api/payment/callback?hmac=xxx
         // AllowAnonymous - Paymob calls this directly, no JWT
+        // Paymob sends HMAC as query param, NOT in the JSON body
         [AllowAnonymous]
         [HttpPost("callback")]
-        public async Task<IActionResult> PaymobCallback([FromBody] PaymobCallbackDto dto)
+        public async Task<IActionResult> PaymobCallback([FromQuery] string hmac)
         {
+            // Read raw body - MUST validate HMAC on the original JSON, not re-serialized DTO
+            using var reader = new StreamReader(Request.Body);
+            var rawBody = await reader.ReadToEndAsync();
+
             // ALWAYS return 200 — Paymob retries endlessly on anything else
-            try { await orderService.HandlePaymobCallbackAsync(dto); }
-            catch { /* silent - never expose errors to Paymob */ }
+            try
+            {
+                await orderService.HandlePaymobCallbackAsync(rawBody, hmac);
+            }
+            catch (Exception ex)
+            {
+                // Log but never expose to Paymob — still return 200
+                logger.LogError(ex, "Paymob callback processing failed. Body: {Body}", rawBody);
+            }
             return Ok();
         }
     }
