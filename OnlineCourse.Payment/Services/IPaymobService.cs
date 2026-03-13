@@ -9,6 +9,12 @@ namespace OnlineCourse.Payment.Services
         // Validates HMAC-SHA512 from Paymob callback
         // Returns true = genuine Paymob request
         bool ValidateHmac(string callbackJson, string receivedHmac);
+
+
+        // PATCH https://accept.paymob.com/v1/intention/{clientSecret}/
+        // Used to update amount/items/billing BEFORE the user pays
+        // Returns updated client_secret
+        Task<string> UpdateIntentionAsync(string clientSecret, CreateIntentionRequest request);
     }
 
     // Maps to Paymob's Create Intention request body

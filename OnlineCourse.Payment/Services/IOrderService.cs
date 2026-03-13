@@ -6,7 +6,10 @@ namespace OnlineCourse.Payment.Services
     {
         // Creates Order in DB then calls Paymob Create Intention API
         // Returns ClientSecret + PublicKey for frontend to open Paymob popup
-        Task<PaymentIntentionResponseDto> CreateOrderAsync(CreateOrderDto dto, string userId);
+        Task<PaymentIntentionResponseDto> CreateOrderAsync(
+                                                            CreateOrderDto dto,
+                                                            string userId,
+                                                            string userToken);
 
         // Returns all orders for a user (order history)
         Task<IEnumerable<OrderResponseDto>> GetUserOrdersAsync(string userId);

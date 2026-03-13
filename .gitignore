@@ -1,7 +1,9 @@
 ################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
-
+# Local secrets - never commit
+**/appsettings.json
+**/appsettings.Development.json
 # Backend folders
 backend/bin/
 backend/obj/

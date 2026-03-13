@@ -16,6 +16,10 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IPaymobService, PaymobService>();
 builder.Services.AddScoped<ICourseManagementService, CourseManagementService>();
 
+//builder.Services.AddScoped<IPaymobService, PaymobService>();
+//builder.Services.AddScoped<IOrderService, OrderService>();
+//builder.Services.AddScoped<ICourseManagementService, CourseManagementService>();
+
 // Named HttpClient for Paymob API calls
 // BaseUrl = https://accept.paymob.com
 builder.Services.AddHttpClient("Paymob", client =>
