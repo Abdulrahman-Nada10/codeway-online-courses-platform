@@ -11,7 +11,8 @@ namespace OnlineCourse.Payment.DTOs
 
     public class OrderItemResponseDto
     {
-        public int CourseId { get; set; }
+        // Guid because OrderItem.CourseId is Guid (CourseManagement uses Guid PKs)
+        public Guid CourseId { get; set; }
         public string CourseName { get; set; } = string.Empty;
         public decimal Price { get; set; }
     }
