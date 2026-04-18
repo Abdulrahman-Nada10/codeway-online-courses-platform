@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import Navbar from '../../components/NavbarInstructor';
@@ -76,156 +75,6 @@ export default function CertificateDetail() {
   
   const certificateData = certificatesData.find(cert => cert.id === id) || certificatesData[0];
 
-  const handleDownload = () => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 1200;
-    canvas.height = 900;
-    
-    if (ctx) {
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      gradient.addColorStop(0, '#FF6400');
-      gradient.addColorStop(1, '#F59F00');
-      ctx.strokeStyle = gradient;
-      ctx.lineWidth = 25;
-      ctx.strokeRect(15, 15, canvas.width - 30, canvas.height - 30);
-      
-      ctx.strokeStyle = '#FFE0C2';
-      ctx.lineWidth = 3;
-      ctx.strokeRect(30, 30, canvas.width - 60, canvas.height - 60);
-      
-      const centerX = canvas.width / 2;
-      const iconY = 100;
-      
-      const iconGradient = ctx.createLinearGradient(centerX - 60, iconY - 60, centerX + 60, iconY + 60);
-      iconGradient.addColorStop(0, '#FF6400');
-      iconGradient.addColorStop(1, '#F59F00');
-      ctx.fillStyle = iconGradient;
-      ctx.beginPath();
-      ctx.arc(centerX, iconY, 55, 0, Math.PI * 2);
-      ctx.fill();
-      
-      ctx.fillStyle = '#FFFFFF';
-      ctx.beginPath();
-      ctx.moveTo(centerX - 25, iconY - 35);
-      ctx.lineTo(centerX + 25, iconY - 35);
-      ctx.lineTo(centerX + 25, iconY + 20);
-      ctx.lineTo(centerX, iconY + 30);
-      ctx.lineTo(centerX - 25, iconY + 20);
-      ctx.closePath();
-      ctx.fill();
-      
-      ctx.strokeStyle = '#FF6400';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(centerX - 15, iconY - 10);
-      ctx.lineTo(centerX + 15, iconY - 10);
-      ctx.moveTo(centerX - 15, iconY + 5);
-      ctx.lineTo(centerX + 5, iconY + 5);
-      ctx.stroke();
-      
-      ctx.fillStyle = '#666666';
-      ctx.font = 'bold 28px Arial';
-      ctx.textAlign = 'center';
-      ctx.fillText('شهادة إتمام', centerX, 195);
-      
-      ctx.fillStyle = '#113555';
-      ctx.font = 'bold 40px Arial';
-      ctx.fillText(certificateData.courseName, centerX, 255);
-      
-      ctx.strokeStyle = '#FF6400';
-      ctx.lineWidth = 4;
-      ctx.beginPath();
-      ctx.moveTo(centerX - 80, 275);
-      ctx.lineTo(centerX + 80, 275);
-      ctx.stroke();
-      
-      ctx.fillStyle = '#666666';
-      ctx.font = 'bold 26px Arial';
-      ctx.fillText('تم منحها إلى', centerX, 325);
-      
-      ctx.fillStyle = '#113555';
-      ctx.font = 'bold 36px Arial';
-      ctx.fillText(certificateData.studentName, centerX, 370);
-      
-      ctx.fillStyle = '#666666';
-      ctx.font = '20px Arial';
-      ctx.fillText(`لإتمامه بنجاح دورة "${certificateData.courseName}"`, centerX, 415);
-      ctx.fillText(`بإجمالي ${certificateData.totalHours} ساعة تعليمية و ${certificateData.units} وحدات دراسية`, centerX, 445);
-      
-      const cardWidth = 260;
-      const cardHeight = 80;
-      const cardY1 = 490;
-      const cardY2 = 585;
-      const startX = 220;
-      const gap = 30;
-      
-      ctx.fillStyle = '#FFF3EB';
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.1)';
-      ctx.shadowBlur = 8;
-      ctx.fillRect(startX, cardY1, cardWidth, cardHeight);
-      ctx.fillRect(startX + cardWidth + gap, cardY1, cardWidth, cardHeight);
-      ctx.fillRect(startX, cardY2, cardWidth, cardHeight);
-      ctx.fillRect(startX + cardWidth + gap, cardY2, cardWidth, cardHeight);
-      ctx.shadowBlur = 0;
-      
-      ctx.fillStyle = '#888888';
-      ctx.font = '14px Arial';
-      ctx.fillText('تاريخ الإصدار', startX + cardWidth/2, cardY1 + 25);
-      ctx.fillStyle = '#113555';
-      ctx.font = 'bold 16px Arial';
-      ctx.fillText(certificateData.issueDate, startX + cardWidth/2, cardY1 + 50);
-      
-      ctx.fillStyle = '#888888';
-      ctx.font = '14px Arial';
-      ctx.fillText('المدرب', startX + cardWidth + gap + cardWidth/2, cardY1 + 25);
-      ctx.fillStyle = '#113555';
-      ctx.font = 'bold 16px Arial';
-      ctx.fillText(certificateData.instructor, startX + cardWidth + gap + cardWidth/2, cardY1 + 50);
-      
-      ctx.fillStyle = '#888888';
-      ctx.font = '14px Arial';
-      ctx.fillText('رقم الشهادة', startX + cardWidth/2, cardY2 + 25);
-      ctx.fillStyle = '#113555';
-      ctx.font = 'bold 12px Arial';
-      ctx.fillText(certificateData.certificateNumber, startX + cardWidth/2, cardY2 + 50);
-      
-      ctx.fillStyle = '#888888';
-      ctx.font = '14px Arial';
-      ctx.fillText('الحالة', startX + cardWidth + gap + cardWidth/2, cardY2 + 25);
-      ctx.fillStyle = '#FF6400';
-      ctx.font = 'bold 18px Arial';
-      ctx.fillText(certificateData.status, startX + cardWidth + gap + cardWidth/2, cardY2 + 50);
-      
-      const sigY = 720;
-      ctx.strokeStyle = '#FFC6A1';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(280, sigY);
-      ctx.lineTo(520, sigY);
-      ctx.moveTo(680, sigY);
-      ctx.lineTo(920, sigY);
-      ctx.stroke();
-      
-      ctx.fillStyle = '#666666';
-      ctx.font = '16px Arial';
-      ctx.fillText('إدارة المنصة', 400, sigY - 10);
-      ctx.fillText('المدرب', 800, sigY - 10);
-      ctx.fillStyle = '#113555';
-      ctx.font = 'bold 18px Arial';
-      ctx.fillText('التوقيع', 400, sigY + 30);
-      ctx.fillText(certificateData.instructor, 800, sigY + 30);
-      
-      const dataUrl = canvas.toDataURL('image/png', 1.0);
-      const link = document.createElement('a');
-      link.download = `certificate-${certificateData.certificateNumber.replace(/\s+/g, '-')}.png`;
-      link.href = dataUrl;
-      link.click();
-    }
-  };
 
   return (
     <div className="min-h-screen bg-[#FFF3EB]   mt-26">
@@ -316,7 +165,7 @@ export default function CertificateDetail() {
 
           </div>
           <div className="flex flex-wrap justify-center gap-4 mt-8">
-            <button onClick={handleDownload} className="flex items-center gap-2 py-3 px-6 rounded-lg font-cairo font-semibold text-sm bg-[#FF6400] text-white hover:bg-[#E55A00] transition-colors">
+            <button className="flex items-center gap-2 py-3 px-6 rounded-lg font-cairo font-semibold text-sm bg-[#FF6400] text-white hover:bg-[#E55A00] transition-colors">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M19.001 15.5C19.1562 15.4996 19.2646 15.5469 19.3594 15.6416C19.4541 15.7363 19.5007 15.8443 19.5 15.998V18C19.5 18.4163 19.3579 18.7606 19.0596 19.0596C18.7616 19.358 18.4176 19.5004 18.001 19.5H6C5.58354 19.5 5.23963 19.3578 4.94141 19.0596C4.68039 18.7986 4.53854 18.5021 4.50684 18.1523L4.5 17.999V16C4.5 15.8431 4.54766 15.7354 4.64062 15.6426C4.73479 15.5487 4.84403 15.5004 5.00098 15.5C5.15618 15.4996 5.26463 15.5469 5.35938 15.6416C5.45407 15.7363 5.50073 15.8443 5.5 15.998V18.5H18.5V16C18.5 15.8431 18.5477 15.7354 18.6406 15.6426C18.7348 15.5487 18.844 15.5004 19.001 15.5ZM12.001 4.5C12.1562 4.49963 12.2646 4.54686 12.3594 4.6416C12.4541 4.73629 12.5007 4.84425 12.5 4.99805V13.3574L15.2285 10.6289C15.3341 10.5234 15.4397 10.4825 15.5732 10.4863C15.714 10.4904 15.8287 10.5385 15.9385 10.6465C16.0374 10.7576 16.0833 10.8751 16.0879 11.0166C16.0917 11.1353 16.0564 11.2369 15.9473 11.3457L12.3467 14.9463C12.2915 15.0015 12.2443 15.0292 12.2061 15.043C12.1486 15.0636 12.0819 15.0755 12.0029 15.0752H12C11.9192 15.0752 11.851 15.0629 11.792 15.042C11.7557 15.0291 11.7092 15.0025 11.6543 14.9473L8.05371 11.3467C7.94459 11.2376 7.90851 11.1345 7.91211 11.0146C7.91641 10.8735 7.96246 10.7568 8.0625 10.6455C8.17238 10.539 8.28733 10.4914 8.42773 10.4873C8.56177 10.4835 8.66696 10.5244 8.77148 10.6289L11.5 13.3574V5C11.5 4.84307 11.5477 4.73538 11.6406 4.64258C11.7348 4.54874 11.844 4.50041 12.001 4.5Z" fill="black" stroke="white"/>
                 </svg>

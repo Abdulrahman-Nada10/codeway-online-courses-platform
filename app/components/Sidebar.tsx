@@ -14,8 +14,9 @@ import {
   Menu,
   X,
   ChevronRight,
-  ChevronLeft
-} from "lucide-react";
+  ChevronLeft,
+  PlaySquare }
+from "lucide-react";
 
 interface MenuItem {
   id: string;
@@ -28,7 +29,7 @@ const Sidebar = () => {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(true); // حالة طي القائمة
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,10 +41,46 @@ const Sidebar = () => {
   }, []);
 
   const menuItems: MenuItem[] = [
-    { id: 'profile', label: 'الملف الشخصي', href: '/profile', icon: <User className="w-5 h-5" /> },
-    { id: 'courses', label: 'دوراتي', href: '/my-courses', icon: <BookOpen className="w-5 h-5" /> },
-    { id: 'favorites', label: 'المفضلة', href: '/favorites', icon: <Heart className="w-5 h-5" /> },
-    { id: 'certificates', label: 'شهاداتي', href: '/certificates', icon: <Award className="w-5 h-5" /> },
+    {
+      id: 'profile',
+      label: 'الملف الشخصي',
+      href: '/profile',
+      icon: (
+        <User className="w-5 h-5" />
+      ),
+    },
+    {
+      id: 'courses',
+      label: 'دوراتي',
+      href: '/my-courses',
+      icon: (
+        <BookOpen className="w-5 h-5" />
+      ),
+    },
+    {
+      id: 'favorites',
+      label: 'المفضلة',
+      href: '/favorites',
+      icon: (
+        <Heart className="w-5 h-5" />
+      ),
+    },
+    {
+      id: 'certificates',
+      label: 'شهاداتي',
+      href: '/certificates',
+      icon: (
+        <Award className="w-5 h-5" />
+      ),
+    },
+    {
+      id: 'liveSession',
+      label: 'حصة مباشرة',
+      href: '/liveSession', 
+      icon: (
+        <PlaySquare className="w-5 h-5" />
+      ),
+    },
   ];
 
   const bottomItems: MenuItem[] = [
@@ -95,7 +132,6 @@ const Sidebar = () => {
         />
       )}
 
-      {/* القائمة الجانبية للشاشات الكبيرة */}
       <div className={`
         hidden lg:flex flex-col
         fixed right-0 top-0 bottom-0 /* لازق عاليمين ومارجن للناف بار */
@@ -108,7 +144,6 @@ const Sidebar = () => {
         border-l border-gray-100
         transition-all duration-300 ease-in-out
       `}>
-        {/* زر الطي والفتح */}
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className="absolute -left-3 top-8 bg-white border border-gray-200 text-gray-500 hover:text-gray-800 rounded-full p-1 z-50 shadow-sm transition-colors"
@@ -141,7 +176,6 @@ const Sidebar = () => {
         </div>
       </div>
       
-      {/* القائمة الجانبية للموبايل (بدون تغيير) */}
       <aside className={`
         lg:hidden
         fixed top-0 right-0 h-screen w-64
