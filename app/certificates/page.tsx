@@ -92,12 +92,10 @@ export default function Certificates() {
           </div>
 
           <div 
-            className="mt-8 sm:mt-12 bg-white rounded-3xl p-2.5 sm:p-6 shadow-sm flex flex-col items-center justify-center" 
-            style={{ width: '100%', maxWidth: '1092px', height: '341px', margin: '32px auto 0', border: '1px solid rgba(0,0,0,1)' }}
+            className="w-full max-w-273 h-85.25 border border-solid mt-8 sm:mt-12 bg-white rounded-3xl p-2.5 sm:p-6 shadow-sm flex flex-col items-center justify-center" 
           >
             <div 
-              className="flex flex-col items-center justify-center gap-6" 
-              style={{ width: '449px', height: '306px' }}
+              className="w-112.25 height-76.5 flex flex-col items-center justify-center gap-6" 
             >
               <div className="w-17.5 h-17 sm:w-22.5 sm:h-22.5 rounded-full bg-[#113555] flex items-center justify-center shrink-0">
                 <svg width="30" height="44" viewBox="0 0 30 44" fill="none" xmlns="http://www.w3.org/2000/svg">

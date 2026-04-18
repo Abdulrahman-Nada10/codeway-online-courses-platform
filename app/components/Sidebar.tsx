@@ -12,7 +12,8 @@ import {
   Settings, 
   LogOut, 
   Menu, 
-  X 
+  X ,
+  PlaySquare
 } from "lucide-react";
 
 interface MenuItem {
@@ -57,6 +58,14 @@ const Sidebar = () => {
       href: '/certificates',
       icon: (
         <Award className="w-5 h-5" />
+      ),
+    },
+    {
+      id: 'liveSession',
+      label: 'حصة مباشرة',
+      href: '/liveSession', 
+      icon: (
+        <PlaySquare className="w-5 h-5" />
       ),
     },
   ];
