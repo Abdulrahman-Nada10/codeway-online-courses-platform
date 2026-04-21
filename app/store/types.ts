@@ -6,7 +6,7 @@ export interface Lesson {
   id: string;
   title: string;
   description: string;
-  duration: string; // "15:00"
+  duration: string;
   videoUrl: string;
   attachments: string[];
   exercises: Exercise[];
@@ -30,7 +30,7 @@ export interface Course {
   rating: number;
   studentsCount: number;
   lessonsCount: number;
-  duration: string; // "12 ساعة"
+  duration: string;
   revenue: number;
   thumbnail: string | null;
   lessons: Lesson[];

@@ -113,14 +113,6 @@ const mockCourse: Course = {
 };
 
 export async function getCourseById(courseId: string): Promise<Course | null> {
-  // Simulate network delay
-  await new Promise((resolve) => setTimeout(resolve, 300));
-
-  // In production, replace with actual API call:
-  // const res = await fetch(`${process.env.API_URL}/courses/${courseId}`)
-  // if (!res.ok) return null
-  // return res.json()
-
   if (courseId === mockCourse.id || courseId) {
     return mockCourse;
   }

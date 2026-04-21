@@ -6,11 +6,9 @@ export default function Loading() {
   return (
     <div className="min-h-screen bg-[#FFF3EB] overflow-x-hidden mt-26">
       <div className="lg:mr-75">
-        {/* Navbar skeleton */}
         <div className="h-16 bg-white border-b border-gray-100 animate-pulse" />
 
         <main className="p-3 sm:p-4 lg:p-3">
-          {/* Header skeleton */}
           <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
             <div className="text-right">
               <div className="h-7 w-32 bg-gray-200 rounded-lg animate-pulse mb-2" />
@@ -20,7 +18,6 @@ export default function Loading() {
           </div>
 
           <div className="space-y-6 sm:space-y-6">
-            {/* UserInfo skeleton */}
             <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
               <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
                 <div className="w-24 h-24 sm:w-28 sm:h-28 bg-gray-200 rounded-full animate-pulse" />
@@ -33,7 +30,6 @@ export default function Loading() {
               </div>
             </div>
 
-            {/* Stats skeleton */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {[1, 2, 3, 4].map((i) => (
                 <div key={i} className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
@@ -44,7 +40,6 @@ export default function Loading() {
               ))}
             </div>
 
-            {/* CertificateList skeleton */}
             <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm">
               <div className="h-6 w-32 bg-gray-200 rounded-lg animate-pulse mb-4" />
               <div className="space-y-3">

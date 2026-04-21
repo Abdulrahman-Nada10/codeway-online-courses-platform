@@ -4,7 +4,7 @@ export interface Instructor {
   avatar: string;
   bio: string;
   rating: number;
-  studentsCount: number; // معرف الكورس (ممكن يكون رقم أو uuid)
+  studentsCount: number;
   yearsExperience: number;
   reviewsCount: number;
   profileUrl?: string;
@@ -65,8 +65,6 @@ export interface Course {
   reviews: Review[];
   ratingBreakdown: RatingBreakdown[];
 }
-
-// ICourseDetails.ts
 
 export interface ICourseDetails {
 

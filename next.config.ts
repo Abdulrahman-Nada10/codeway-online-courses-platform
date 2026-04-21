@@ -8,8 +8,7 @@ const nextConfig: NextConfig = {
         hostname: "example.com",
       },
     ],
-  },
-  /* config options here */
+  }
 };
 
 export default nextConfig;
