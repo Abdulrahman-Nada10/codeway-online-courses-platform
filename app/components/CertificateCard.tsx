@@ -57,7 +57,7 @@ export default function CertificateCard({ certificate }: { certificate: Certific
         </div>
         <div className="flex items-center gap-2 mt-2">
           <Link 
-            href={`/certificates/${certificate.id}`}
+            href={`/userDashboard/certificates/${certificate.id}`}
             className="flex-1 py-2.5 rounded-lg font-cairo font-semibold text-sm bg-[#FF6400] text-white hover:bg-[#E55A00] transition-all duration-200 flex items-center justify-center gap-2"
           >
             <EyeIcon className="w-4 h-4" />

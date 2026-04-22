@@ -37,11 +37,10 @@ export default function Navbar() {
 <header className="w-8/12 bg-transparent p-3 sm:p-5 font-cairo fixed top-0 left-1/2 -translate-x-1/2 z-50" dir="rtl">
       <nav 
         ref={navbarRef}
-        className="mx-auto  max-w-7xl bg-white rounded-2xl sm:rounded-[2rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-orange-50/50 px-4 sm:px-8 py-3 transition-all duration-300"
+        className="mx-auto  max-w-7xl bg-white rounded-2xl sm:rounded-4xl shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-orange-50/50 px-4 sm:px-8 py-3 transition-all duration-300"
       >
         <div className="flex items-center justify-between h-14">
 
-          {/* --- القسم الأيمن: اللوجو (ثابت دائماً) --- */}
           <div className="flex items-center gap-2 shrink-0 group">
             <div className={`flex items-center gap-2 transition-all duration-300 ${isSearchOpen ? 'hidden sm:flex' : 'flex'}`}>
             <Link href="/" className="shrink-0 hover:scale-105 transition-transform">
@@ -95,6 +94,7 @@ export default function Navbar() {
                 {!isSearchOpen && (
                   <button 
                     onClick={() => setIsSearchOpen(true)}
+                    aria-label="Search"
                     className="p-2.5 text-gray-500 hover:text-orange-600 hover:bg-orange-50 rounded-full transition-all"
                   >
                     <Search size={22} />

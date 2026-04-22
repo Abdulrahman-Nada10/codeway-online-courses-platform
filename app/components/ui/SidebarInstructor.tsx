@@ -152,11 +152,11 @@ export default function Sidebar() {
       {/* ── Desktop sidebar — fixed on the right ────────────────────────── */}
       <aside
         className={`
-          fixed inset-y-0 right-0 z-[60] hidden flex-col
+          fixed inset-y-0 right-0 z-60 hidden flex-col
           border-l border-gray-100 bg-white font-cairo
           shadow-[-4px_0_24px_-8px_rgba(0,0,0,0.1)]
           transition-all duration-200 ease-in-out md:flex
-          ${isCollapsed ? "w-[72px]" : "w-64"}
+          ${isCollapsed ? "w-18" : "w-64"}
         `}
         dir="rtl"
         aria-label="القائمة الجانبية"
@@ -179,7 +179,7 @@ export default function Sidebar() {
           onClick={toggle}
           aria-label={isCollapsed ? "توسيع القائمة" : "طي القائمة"}
           className="
-            absolute -left-3 top-[72px] z-10
+            absolute -left-3 top-18 z-10
             flex h-6 w-6 items-center justify-center
             rounded-full border border-gray-100 bg-white
             shadow-sm
@@ -222,7 +222,7 @@ export default function Sidebar() {
               isCollapsed ? "justify-center" : ""
             }`}
           >
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-orange-500 text-sm font-bold text-white shadow-sm">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-orange-400 to-orange-500 text-sm font-bold text-white shadow-sm">
               م
             </div>
             <div

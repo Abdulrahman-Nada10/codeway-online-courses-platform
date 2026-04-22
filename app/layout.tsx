@@ -67,7 +67,7 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl" >
       <body
-        className={`${cairo.variable} antialiased bg-white`}
+        className={`${cairo.variable} antialiased bg-[#FFF3EB]`}
       >
         <ReduxProvider>
           {children}

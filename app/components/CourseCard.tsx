@@ -70,7 +70,7 @@ const CourseCard = ({ course }: { course: Course }) => {
         )}
 
         <Link
-          href={`/my-courses/${course.id}`}
+          href={`/userDashboard/my-courses/${course.id}`}
           className={`mt-2 w-full rounded-lg py-2 text-center font-cairo text-sm font-semibold transition-all duration-200 sm:py-3 sm:text-base ${
             course.isCompleted
               ? 'mb-0 mt-12 border border-[#FF6400] bg-white text-black hover:bg-gray-50'
