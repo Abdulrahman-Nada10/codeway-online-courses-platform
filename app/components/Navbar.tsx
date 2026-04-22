@@ -108,7 +108,7 @@ export default function Navbar() {
                 
                 <div className="h-8 w-px bg-gray-100 mx-1 hidden sm:block"></div>
 
-                <Link href="/profile" className="flex items-center gap-3 pr-2 group">
+                <Link href="/userDashboard/profile" className="flex items-center gap-3 pr-2 group">
                   <span className="text-sm font-bold text-gray-700 hidden md:block group-hover:text-orange-600 transition">م. محمد محمود</span>
                   <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-orange-100 shadow-sm group-hover:border-orange-500 transition-all">
                     <Image src="/profile.jpg" alt="Profile" fill className="object-cover" />
