@@ -41,7 +41,7 @@ export function AssistantComposer({
               className="flex max-w-full items-center gap-2 rounded-full border border-[#f4d3bf] bg-[#fff7f2] px-3 py-2 text-xs text-[#5f6368]"
             >
               <FileText className="h-4 w-4 shrink-0 text-[#ff6400]" />
-              <span className="max-w-[40vw] truncate sm:max-w-[180px]">{attachment.file.name}</span>
+              <span className="max-w-[40vw] truncate sm:max-w-45">{attachment.file.name}</span>
               <button
                 type="button"
                 onClick={() => onRemoveAttachment(attachment.id)}

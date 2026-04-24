@@ -21,7 +21,7 @@ export function MessageBubble({ message, contextTitle, disabled, onAction }: Mes
             isAssistant ? 'bg-white text-[#1f2937]' : 'bg-[#ff6b00] text-white'
           }`}
         >
-          <p className="whitespace-pre-wrap break-words">{message.content}</p>
+          <p className="whitespace-pre-wrap wrap-break-word">{message.content}</p>
 
           {message.attachments?.length ? (
             <div className="mt-3 space-y-2">

@@ -15,9 +15,9 @@ export function AssistantEmptyState({
   onSuggestionClick,
 }: AssistantEmptyStateProps) {
   return (
-    <div className="flex h-full min-h-[320px] flex-col items-center justify-center text-center sm:min-h-[380px]">
+    <div className="flex h-full min-h-80 flex-col items-center justify-center text-center sm:min-h-95">
       <div
-        className={`flex max-w-[440px] flex-col items-center transition-all duration-500 ${
+        className={`flex max-w-110 flex-col items-center transition-all duration-500 ${
           introPhase === 'suggestions' ? '-translate-y-10' : 'translate-y-5'
         }`}
       >
@@ -25,7 +25,7 @@ export function AssistantEmptyState({
       </div>
 
       <div
-        className={`mt-8 grid w-full max-w-[460px] grid-cols-1 gap-3 transition-all duration-500 min-[420px]:grid-cols-2 ${
+        className={`mt-8 grid w-full max-w-115 grid-cols-1 gap-3 transition-all duration-500 min-[420px]:grid-cols-2 ${
           introPhase === 'suggestions' ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-6 opacity-0'
         }`}
       >

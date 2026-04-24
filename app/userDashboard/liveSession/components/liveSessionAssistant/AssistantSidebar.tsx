@@ -24,7 +24,7 @@ export function AssistantSidebar({
   onToggleHistory,
 }: AssistantSidebarProps) {
   return (
-    <aside className="order-1 flex min-h-0 flex-col rounded-[24px] bg-white p-3 shadow-[0_12px_35px_rgba(17,53,85,0.06)] sm:p-4 lg:order-2 lg:min-h-[68vh] lg:rounded-[28px]">
+    <aside className="order-1 flex min-h-0 flex-col rounded-3xl bg-white p-3 shadow-[0_12px_35px_rgba(17,53,85,0.06)] sm:p-4 lg:order-2 lg:min-h-[68vh] lg:rounded-[28px]">
       <div className="flex items-center justify-between gap-3 lg:justify-end">
         <button
           type="button"
@@ -51,7 +51,7 @@ export function AssistantSidebar({
         </button>
 
         {isHistoryOpen ? (
-          <div className="custom-scrollbar mt-3 max-h-52 overflow-y-auto rounded-2xl bg-[#113555] p-1.5 sm:max-h-72 lg:max-h-[420px]">
+          <div className="custom-scrollbar mt-3 max-h-52 overflow-y-auto rounded-2xl bg-[#113555] p-1.5 sm:max-h-72 lg:max-h-105">
             {historyConversations.length ? (
               <div className="space-y-1">
                 {historyConversations.map((conversation) => (
