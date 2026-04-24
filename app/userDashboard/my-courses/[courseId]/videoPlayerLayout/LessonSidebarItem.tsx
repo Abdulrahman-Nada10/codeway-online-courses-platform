@@ -45,9 +45,9 @@ export default function LessonSidebarItem({
     <button
       type="button"
       onClick={onClick}
-      className={`grid w-full grid-cols-[1fr_68px_18px] items-center gap-1.5 border-b border-[#E7D8CC] px-2 py-2 text-right transition hover:bg-[#FFF3EB] min-[360px]:grid-cols-[1fr_78px_20px] min-[360px]:gap-2 min-[360px]:px-2.5 sm:grid-cols-[1fr_84px_22px] sm:px-3 lg:grid-cols-[1fr_66px_18px] lg:px-2 xl:grid-cols-[1fr_72px_18px] ${bgClass}`}
+      className={`grid w-full grid-cols-[1fr_68px_18px] items-center gap-1.5 border-b border-[#E7D8CC] px-4 py-2 text-right transition hover:bg-[#FFF3EB] min-[360px]:grid-cols-[1fr_78px_20px] min-[360px]:gap-2 min-[360px]:px-2.5 sm:grid-cols-[1fr_84px_22px] sm:px-3 lg:grid-cols-[1fr_66px_18px] lg:px-2 xl:grid-cols-[1fr_72px_18px] ${bgClass}`}
     >
-      <div className="min-w-0">
+      <div className="min-w-0 ">
         <p className="line-clamp-2 text-[9px] leading-3.5 text-[#5B5B5B] min-[360px]:text-[10px] min-[360px]:leading-4 sm:text-[11px] lg:text-[9px] xl:text-[10px]">{lesson.title}</p>
 
         <div className="mt-1 flex items-center justify-start gap-1.5 text-[8px] text-[#6B7280] min-[360px]:gap-2 min-[360px]:text-[9px] sm:text-[10px] lg:text-[8px] xl:text-[9px]">

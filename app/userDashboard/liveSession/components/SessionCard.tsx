@@ -72,9 +72,9 @@ export function SessionCard({ session }: { session: LiveSession }) {
       <div className="space-y-4 p-5 text-right">
         <div>
           <h3 className="line-clamp-2 text-xl font-bold leading-9 text-[#113555]">{session.title}</h3>
-          <p className="mt-2 flex items-center justify-end gap-2 text-sm text-[#6b7280]">
-            <span>{session.instructor}</span>
+          <p className="mt-2 flex items-center justify-start gap-2 text-sm text-[#6b7280]">
             <User className="h-4 w-4" />
+            <span>{session.instructor}</span>
           </p>
         </div>
 
@@ -94,16 +94,16 @@ export function SessionCard({ session }: { session: LiveSession }) {
         ) : null}
 
         {session.category === 'past' ? (
-          <div className="grid grid-cols-3 gap-2 text-xs sm:text-sm">
-            <div className="flex items-center justify-center gap-2 rounded-full border border-[#ff6400] bg-[#fff3eb] px-3 py-3 text-[#113555]">
-              <span>{session.viewers ?? 0} مشاهدة</span>
+          <div className="grid grid-cols-3 gap-2  text-xs sm:text-sm">
+            <div className="flex items-center p-1 justify-rounded gap-2 rounded-full border border-[#ff6400] bg-[#fff3eb] text-[#113555] ">
+              <span>  {session.viewers ?? 0}مشاهدة </span>
               <Eye className="h-4 w-4" />
             </div>
             <div className="flex items-center justify-center gap-2 rounded-full border border-[#ff6400] bg-[#fff3eb] px-3 py-3 text-[#113555]">
               <span>{formatDuration(session.startTime, session.endTime)}</span>
               <Clock3 className="h-4 w-4" />
             </div>
-            <div className="flex items-center justify-center rounded-full border border-[#717171] bg-[#e6e6e6] px-3 py-3 text-black">
+            <div className="flex items-center justify-center rounded-full border border-[#717171] bg-[#e6e6e6] text-black">
               <span>{formatEndedSince(session.endTime)}</span>
             </div>
           </div>

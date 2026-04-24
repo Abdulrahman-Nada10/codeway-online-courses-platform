@@ -3,8 +3,6 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import Navbar from '@/app/components/Navbar';
-import Sidebar from '@/app/components/SidebarUser';
 import AssignmentsPanel from './AssignmentsPanel';
 import CommentsPanel from './CommentsPanel';
 import { VideoPlayerCourse, VideoPlayerPanel, VideoPlayerTab, LessonInteractionState, VideoPlayerLesson } from './types';
@@ -105,8 +103,8 @@ export default function VideoPlayerLayout({ course }: { course: VideoPlayerCours
     <div className="min-h-screen overflow-x-hidden overflow-y-auto bg-[#FFF3EB] pt-22 lg:h-screen lg:overflow-hidden lg:pt-14">
       <div className="min-h-[calc(100vh-5.5rem)] md:mr-0 lg:h-[calc(100vh-6.5rem)] lg:min-h-0 lg:mr-24 xl:mr-28">
         <main className="h-full w-full overflow-visible p-2.5 sm:p-4 lg:overflow-hidden lg:px-5 lg:py-0 xl:px-6" dir="rtl">
-          <div className="mx-auto flex h-full max-w-269 flex-col gap-2 pt-4 lg:gap-2.5 lg:pt-6 xl:pt-7">
-            <div className="flex w-full flex-col items-start gap-1 text-right xl:max-w-175.5">
+          <div className="mx-auto flex h-full max-w-269 flex-col gap-2 pt-4 lg:gap-2.5 lg:pt-6 xl:pt-7 lg:mr-21">
+            <div className="flex w-full flex-col items-start gap-1 text-right xl:max-w-175.5 lg:mr-12">
               <Link
                 href="/userDashboard/my-courses"
                 className="inline-flex items-center justify-end gap-1.5 text-[15px] font-bold  transition hover:text-[#FF6400]"
@@ -184,7 +182,7 @@ export default function VideoPlayerLayout({ course }: { course: VideoPlayerCours
                 </div>
               </section>
 
-              <div className="order-2 w-full lg:h-full lg:w-75 xl:w-89.5 lg:shrink-0">
+              <div className="order-2 w-full lg:h-full lg:w-75 xl:w-89.5">
                 <LessonSidebar
                   lessons={sidebarLessons}
                   activeLessonId={activeLesson.id}

@@ -1,5 +1,7 @@
 export type SessionTab = 'upcoming' | 'live' | 'past';
 
+export type SessionAuthorRole = 'student' | 'instructor';
+
 export interface SessionResource {
   id: string;
   name: string;
@@ -8,16 +10,36 @@ export interface SessionResource {
 
 export interface SessionMessage {
   id: string;
+  authorId: string;
   author: string;
   avatar: string;
   text: string;
-  role?: string;
+  role: SessionAuthorRole;
+  createdAt: string;
+}
+
+export interface SessionQuestion extends SessionMessage {
+  addressedTo: 'instructor';
+  status?: 'open' | 'answered';
 }
 
 export interface SessionPollOption {
   id: string;
   label: string;
-  percentage: number;
+  votes: number;
+}
+
+export interface SessionPoll {
+  id: string;
+  authorId: string;
+  author: string;
+  avatar: string;
+  question: string;
+  role: SessionAuthorRole;
+  createdAt: string;
+  status: 'live' | 'ended';
+  votedOptionId?: string | null;
+  options: SessionPollOption[];
 }
 
 export interface LiveSession {
@@ -42,8 +64,6 @@ export interface LiveSession {
     role: string;
   }>;
   messages?: SessionMessage[];
-  poll?: {
-    question: string;
-    options: SessionPollOption[];
-  };
+  questions?: SessionQuestion[];
+  polls?: SessionPoll[];
 }

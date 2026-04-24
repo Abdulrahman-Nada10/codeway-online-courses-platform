@@ -40,9 +40,9 @@ const Sidebar = () => {
   const menuItems: MenuItem[] = [
     { id: 'profile', label: 'الملف الشخصي', href: '/userDashboard/profile', icon: <User className="w-5 h-5" /> },
     { id: 'courses', label: 'دوراتي', href: '/userDashboard/my-courses', icon: <BookOpen className="w-5 h-5" /> },
+    { id: 'liveSession', label: 'حصة مباشرة', href: '/userDashboard/liveSession', icon: <PlaySquare className="w-5 h-5" /> },
     { id: 'favorites', label: 'المفضلة', href: '/userDashboard/favorites', icon: <Heart className="w-5 h-5" /> },
     { id: 'certificates', label: 'شهاداتي', href: '/userDashboard/certificates', icon: <Award className="w-5 h-5" /> },
-    { id: 'liveSession', label: 'حصة مباشرة', href: '/userDashboard/liveSession', icon: <PlaySquare className="w-5 h-5" /> },
   ];
 
   const bottomItems: MenuItem[] = [
@@ -87,7 +87,7 @@ const Sidebar = () => {
 
       {isMobileMenuOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/50 z-30"
+          className="lg:hidden fixed inset-0 bg-black/50 z-60"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
@@ -99,7 +99,7 @@ const Sidebar = () => {
         bg-white
         py-8 px-2
         gap-2
-        z-50
+        z-60
         shadow-sm
         rounded-xl
         border-l border-gray-100
