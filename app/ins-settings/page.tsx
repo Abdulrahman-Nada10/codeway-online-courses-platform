@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Sidebar from "../components/ui/SidebarInstructor";
 import Navbar from "../components/NavbarInstructor";
 import SettingsTabs, { SettingsTab } from './components/SettingsTabs';
@@ -8,22 +8,39 @@ import ProfileSection from './components/ProfileSection';
 import NotificationsSection from './components/NotificationsSection';
 import SecuritySection from './components/SecuritySection';
 import PaymentsSection from './components/PaymentsSection';
+import ProtectedRoute from "@/app/components/auth/ProtectedRoute";
+import { useAuth } from "../hooks/useAuth";
+import { Instructor } from '@/types/auth';
+
+type InstructorFormState = {
+  fullName: string;
+  email: string;
+  phone: string;
+  specialty: string;
+  bio: string;
+};
+
+function getDefaultInstructorData(user: Instructor | null): InstructorFormState {
+  return {
+    fullName: user?.name ?? '',
+    email: user?.email ?? '',
+    phone: user?.phoneNumber ?? '',
+    specialty: user?.field ?? '',
+    bio: 'مدرب متخصص في مجال البرمجة وتطوير البرمجيات. خبرة أكثر من 10 سنوات في التدريس والتطوير.',
+  };
+}
 
 export default function InstructorSettingsPage() {
+  const { user, updateProfile } = useAuth();
+  const authUser = user?.role === 'instructor' ? user : null;
+
   const [activeTab, setActiveTab] = useState<SettingsTab>('profile');
-
-  // Profile state
-  const [previewUrl, setPreviewUrl] = useState('/profile.jpg');
+  const [previewUrl, setPreviewUrl] = useState(authUser?.avatar ?? '/profile.jpg');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [userData, setUserData] = useState({
-    fullName: 'م. محمد أحمد',
-    email: 'mohamedahmed@gmail.com',
-    phone: '0101234568',
-    specialty: 'البرمجة وتطوير البرمجيات',
-    bio: 'مدرب متخصص في مجال البرمجة وتطوير البرمجيات. خبرة أكثر من 10 سنوات في التدريس والتطوير.'
-  });
+  const [userData, setUserData] = useState<InstructorFormState>(() =>
+    getDefaultInstructorData(authUser)
+  );
 
-  // Notifications state
   const [notificationSettings, setNotificationSettings] = useState({
     emailNotifications: true,
     studentMessages: true,
@@ -31,66 +48,86 @@ export default function InstructorSettingsPage() {
     newEnrollments: true
   });
 
-  // Security state
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  // Payments state
   const [bankData, setBankData] = useState({
-    accountHolderName: 'محمد محمود',
+    accountHolderName: authUser?.name ?? '',
     bankName: 'البنك الاهلي المصري',
     iban: '0000 0000 0000 0000',
     swiftCode: '000'
   });
 
-  // Profile handlers
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
+  useEffect(() => {
+    setUserData(getDefaultInstructorData(authUser));
+    setPreviewUrl(authUser?.avatar ?? '/profile.jpg');
+    setSelectedFile(null);
+    setBankData((current) => ({
+      ...current,
+      accountHolderName: authUser?.name ?? current.accountHolderName,
+    }));
+  }, [authUser]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
       setSelectedFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      setPreviewUrl(String(reader.result));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target;
+    setUserData((current) => ({ ...current, [name]: value }));
+  };
+
+  const handleProfileSave = async () => {
+    try {
+      await updateProfile({
+        name: userData.fullName.trim(),
+        email: userData.email.trim(),
+        phoneNumber: userData.phone.trim(),
+        field: userData.specialty.trim(),
+        avatar: previewUrl,
+      });
+
+      alert('تم حفظ التغييرات بنجاح');
+    } catch (saveError) {
+      alert(
+        saveError instanceof Error
+          ? saveError.message
+          : 'تعذر حفظ التغييرات.'
+      );
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setUserData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleProfileSave = () => {
-    console.log('Saving profile:', userData);
-    // Add your save logic here
-  };
-
   const handleProfileCancel = () => {
-    console.log('Canceling profile changes');
-    // Reset to original values
+    setUserData(getDefaultInstructorData(authUser));
+    setPreviewUrl(authUser?.avatar ?? '/profile.jpg');
+    setSelectedFile(null);
   };
 
-  // Notifications handlers
   const handleNotificationToggle = (key: 'emailNotifications' | 'studentMessages' | 'courseUpdates' | 'newEnrollments') => {
-    setNotificationSettings(prev => ({ ...prev, [key]: !prev[key] }));
+    setNotificationSettings((current) => ({ ...current, [key]: !current[key] }));
   };
 
   const handleNotificationsSave = () => {
     console.log('Saving notifications:', notificationSettings);
-    // Add your save logic here
   };
 
   const handleNotificationsCancel = () => {
     console.log('Canceling notifications changes');
-    // Reset to original values
   };
 
-  // Security handlers
   const handleSecuritySave = () => {
     console.log('Changing password');
-    // Add your password change logic here
   };
 
   const handleSecurityCancel = () => {
@@ -99,19 +136,16 @@ export default function InstructorSettingsPage() {
     setConfirmPassword('');
   };
 
-  // Payments handlers
   const handleBankDataChange = (field: string, value: string) => {
-    setBankData(prev => ({ ...prev, [field]: value }));
+    setBankData((current) => ({ ...current, [field]: value }));
   };
 
   const handlePaymentsSave = () => {
     console.log('Saving bank data:', bankData);
-    // Add your save logic here
   };
 
   const handlePaymentsCancel = () => {
     console.log('Canceling payments changes');
-    // Reset to original values
   };
 
   const renderContent = () => {
@@ -165,28 +199,27 @@ export default function InstructorSettingsPage() {
   };
 
   return (
-    <>
+    <ProtectedRoute allowedRoles={["instructor"]}>
+      <>
       <Sidebar />
       <div className="md:mr-64 min-h-screen bg-[#FCF9F4] flex flex-col">
         <Navbar />
         <main dir="rtl" className="flex-1 p-4 sm:p-6 lg:p-8">
-          {/* Page Header */}
           <div className="mb-6">
             <h1 className="text-2xl font-cairo font-bold text-[#113555] mb-2">الإعدادات</h1>
             <p className="text-sm font-cairo text-gray-500">إدارة حسابك وتفضيلاتك</p>
           </div>
 
-          {/* Tabs Navigation */}
           <div className="mb-6">
             <SettingsTabs activeTab={activeTab} onTabChange={setActiveTab} />
           </div>
 
-          {/* Content Area */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
             {renderContent()}
           </div>
         </main>
       </div>
-    </>
+      </>
+    </ProtectedRoute>
   );
 }

@@ -1,16 +1,37 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useAuth } from '@/app/hooks/useAuth';
 import ProfileSection from './components/ProfileSection';
 import NotificationsSection from './components/NotificationsSection';
 import SecuritySection from './components/SecuritySection';
 import PaymentsSection from './components/PaymentsSection';
 import SettingsTabs, { SettingsTab } from './components/SettingsTabs';
+import { User } from '@/types/auth';
+
+type UserFormState = {
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+};
+
+function getDefaultUserData(user: User | null): UserFormState {
+  return {
+    fullName: user?.name ?? '',
+    email: user?.email ?? '',
+    phone: user?.phoneNumber ?? '',
+    address: user?.address ?? '',
+  };
+}
 
 export default function Settings() {
+  const { user, updateProfile } = useAuth();
+  const authUser = user?.role === 'user' ? user : null;
   const [activeTab, setActiveTab] = useState<SettingsTab>('profile');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string>('/profile.jpg');
+  const [previewUrl, setPreviewUrl] = useState<string>(authUser?.avatar ?? '/profile.jpg');
+  const [userData, setUserData] = useState<UserFormState>(() => getDefaultUserData(authUser));
 
   const [notificationSettings, setNotificationSettings] = useState({
     emailNotifications: true,
@@ -19,12 +40,11 @@ export default function Settings() {
     offersAndDiscounts: true,
   });
 
-  const [userData, setUserData] = useState({
-    fullName: 'عمر محمد السيد',
-    email: 'omar@example.com',
-    phone: '+20 100 123 4567',
-    address: 'القاهرة، مصر',
-  });
+  useEffect(() => {
+    setUserData(getDefaultUserData(authUser));
+    setPreviewUrl(authUser?.avatar ?? '/profile.jpg');
+    setSelectedFile(null);
+  }, [authUser]);
 
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -37,48 +57,69 @@ export default function Settings() {
     swiftCode: '',
   });
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        alert('حجم الملف يجب أن لا يتجاوز 2 ميجابايت');
-        return;
-      }
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-      if (!allowedTypes.includes(file.type)) {
-        alert('صيغة الملف يجب أن تكون jpg أو png أو gif');
-        return;
-      }
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      alert('حجم الملف يجب ألا يتجاوز 2 ميجابايت');
+      return;
+    }
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('صيغة الملف يجب أن تكون jpg أو png أو gif');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
       setSelectedFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
+      setPreviewUrl(String(reader.result));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setUserData((current) => ({ ...current, [name]: value }));
+  };
+
+  const handleProfileSave = async () => {
+    try {
+      await updateProfile({
+        name: userData.fullName.trim(),
+        email: userData.email.trim(),
+        phoneNumber: userData.phone.trim(),
+        address: userData.address.trim(),
+        avatar: previewUrl,
+      });
+
+      alert('تم حفظ التغييرات بنجاح');
+    } catch (saveError) {
+      alert(
+        saveError instanceof Error
+          ? saveError.message
+          : 'تعذر حفظ التغييرات.'
+      );
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUserData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleProfileSave = () => {
-    console.log('Saving data:', userData);
-    alert('تم حفظ التغييرات بنجاح');
-  };
-
   const handleProfileCancel = () => {
-    setUserData({
-      fullName: 'عمر محمد السيد',
-      email: 'omar@example.com',
-      phone: '+20 100 123 4567',
-      address: 'القاهرة، مصر',
-    });
-    setPreviewUrl('/profile.jpg');
+    setUserData(getDefaultUserData(authUser));
+    setPreviewUrl(authUser?.avatar ?? '/profile.jpg');
     setSelectedFile(null);
   };
 
-  const handleNotificationToggle = (key: 'emailNotifications' | 'newCourses' | 'studyReminders' | 'offersAndDiscounts') => {
-    setNotificationSettings(prev => ({
-      ...prev,
-      [key]: !prev[key]
+  const handleNotificationToggle = (
+    key: 'emailNotifications' | 'newCourses' | 'studyReminders' | 'offersAndDiscounts'
+  ) => {
+    setNotificationSettings((current) => ({
+      ...current,
+      [key]: !current[key],
     }));
   };
 
@@ -101,10 +142,12 @@ export default function Settings() {
       alert('كلمات المرور غير متطابقة');
       return;
     }
+
     if (newPassword.length < 6) {
       alert('كلمة المرور يجب أن تكون 6 أحرف على الأقل');
       return;
     }
+
     console.log('Saving password:', { currentPassword, newPassword });
     alert('تم تغيير كلمة المرور بنجاح');
   };
@@ -116,7 +159,7 @@ export default function Settings() {
   };
 
   const handleBankDataChange = (field: string, value: string) => {
-    setBankData(prev => ({ ...prev, [field]: value }));
+    setBankData((current) => ({ ...current, [field]: value }));
   };
 
   const handlePaymentsSave = () => {
@@ -201,4 +244,3 @@ export default function Settings() {
     </div>
   );
 }
-

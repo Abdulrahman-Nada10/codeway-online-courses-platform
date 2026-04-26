@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { useAuth } from '@/app/hooks/useAuth';
 import {
   User,
   BookOpen,
@@ -21,10 +22,12 @@ interface MenuItem {
   label: string;
   icon: React.ReactNode;
   href: string;
+  action?: () => void;
 }
 
 const Sidebar = () => {
   const pathname = usePathname();
+  const { logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -37,6 +40,11 @@ const Sidebar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleLogout = () => {
+    logout();
+    window.location.href = '/';
+  };
+
   const menuItems: MenuItem[] = [
     { id: 'profile', label: 'الملف الشخصي', href: '/userDashboard/profile', icon: <User className="w-5 h-5" /> },
     { id: 'courses', label: 'دوراتي', href: '/userDashboard/my-courses', icon: <BookOpen className="w-5 h-5" /> },
@@ -47,11 +55,25 @@ const Sidebar = () => {
 
   const bottomItems: MenuItem[] = [
     { id: 'settings', label: 'الإعدادات', href: '/userDashboard/settings', icon: <Settings className="w-5 h-5" /> },
-    { id: 'logout', label: 'تسجيل الخروج', href: '/logout', icon: <LogOut className="w-5 h-5" /> },
+    { id: 'logout', label: 'تسجيل الخروج', href: '#', icon: <LogOut className="w-5 h-5" />, action: handleLogout },
   ];
 
   const renderMenuItem = (item: MenuItem, isMobile: boolean = false) => {
     const isActive = pathname === item.href;
+
+    if (item.action) {
+      return (
+        <li key={item.id}>
+          <button
+            onClick={() => { item.action?.(); setIsMobileMenuOpen(false); }}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 bg-white text-[#000000] hover:bg-gray-100 text-right"
+          >
+            <span className="text-[#000000]">{item.icon}</span>
+            <span className="font-cairo font-medium">{item.label}</span>
+          </button>
+        </li>
+      );
+    }
 
     return (
       <li key={item.id}>
@@ -105,7 +127,7 @@ const Sidebar = () => {
         border-l border-gray-100
       ">
 
-        <div className="px-3 pb-4 border-b border-gray-100 justify-start">
+        <div className="px-3 pb-4 border-b border-gray-100 justify-start z-140">
           <Link href="/">
             <Image
               src="/logo.png"
@@ -158,3 +180,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+

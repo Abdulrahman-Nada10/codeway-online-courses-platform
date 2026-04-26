@@ -1,0 +1,356 @@
+import type {
+  ButtonHTMLAttributes,
+  InputHTMLAttributes,
+  ReactNode,
+  SelectHTMLAttributes,
+  TextareaHTMLAttributes,
+} from "react";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  ChevronDown,
+  Facebook,
+  Instagram,
+  Linkedin,
+  Youtube,
+} from "lucide-react";
+
+function cn(...classes: Array<string | false | null | undefined>) {
+  return classes.filter(Boolean).join(" ");
+}
+
+const baseFieldClasses =
+  "h-10 w-full rounded-[4px] border border-[#E7E7E7] bg-white text-right text-[13px] text-[#6B7280] placeholder:text-[#D6D6D6] outline-none transition focus:border-[#FF6A00]";
+
+type AuthShellProps = {
+  title: string;
+  subtitle?: string;
+  icon?: ReactNode;
+  children: ReactNode;
+  footer?: ReactNode;
+  cardClassName?: string;
+};
+
+type AuthInputProps = InputHTMLAttributes<HTMLInputElement> & {
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
+};
+
+type AuthTextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
+  rightIcon?: ReactNode;
+};
+
+type AuthSelectProps = SelectHTMLAttributes<HTMLSelectElement> & {
+  children: ReactNode;
+};
+
+export function AuthShell({
+  title,
+  subtitle,
+  icon,
+  children,
+  footer,
+  cardClassName,
+}: AuthShellProps) {
+  return (
+    <div
+      className="min-h-screen bg-[#FFF6F0] px-4 py-10 sm:flex sm:items-center sm:justify-center"
+      dir="rtl"
+    >
+      <div
+        className={cn(
+          "mx-auto w-full max-w-108 rounded-[14px] border border-white/80 bg-white px-4 py-7 shadow-[0_16px_34px_rgba(255,106,0,0.14)] sm:px-6",
+          cardClassName
+        )}
+      >
+        <div className="text-center">
+          <div className="flex justify-center">
+            <Image
+              src="/logo.png"
+              alt="EGC"
+              width={86}
+              height={38}
+              className="h-auto w-21.5"
+              priority
+            />
+          </div>
+
+          {icon ? <div className="mt-6 flex justify-center">{icon}</div> : null}
+
+          <h1 className="mt-6 text-[18px] font-bold leading-8 text-[#FF6A00] sm:text-[19px]">
+            {title}
+          </h1>
+
+          {subtitle ? (
+            <p className="mt-1 text-[11px] font-medium text-[#FF8D45]">
+              {subtitle}
+            </p>
+          ) : null}
+        </div>
+
+        <div className="mt-5">{children}</div>
+
+        {footer ? <div className="mt-5">{footer}</div> : null}
+      </div>
+    </div>
+  );
+}
+
+export function AuthGoogleButton(
+  props: ButtonHTMLAttributes<HTMLButtonElement>
+) {
+  return (
+    <button
+      type="button"
+      {...props}
+      className={cn(
+        "flex h-10 w-full items-center justify-center gap-2 rounded-sm border border-[#E7E7E7] bg-white text-[12px] font-semibold text-[#222] transition hover:bg-[#FFF8F2]",
+        props.className
+      )}
+    >
+      <GoogleIcon />
+      <span>Continue with Google</span>
+    </button>
+  );
+}
+
+export function AuthDivider({ text }: { text: string }) {
+  return (
+    <div className="my-4 flex items-center gap-3 text-[10px] text-[#B6B6B6]">
+      <span className="h-px flex-1 bg-[#C7D2E0]" />
+      <span>{text}</span>
+      <span className="h-px flex-1 bg-[#C7D2E0]" />
+    </div>
+  );
+}
+
+export function AuthInput({
+  leftIcon,
+  rightIcon,
+  className,
+  ...props
+}: AuthInputProps) {
+  return (
+    <div className="relative">
+      <input
+        {...props}
+        className={cn(
+          baseFieldClasses,
+          rightIcon ? "pr-10" : "pr-3",
+          leftIcon ? "pl-10" : "pl-3",
+          className
+        )}
+      />
+
+      {rightIcon ? (
+        <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[#B6BCC5]">
+          {rightIcon}
+        </span>
+      ) : null}
+
+      {leftIcon ? (
+        <span className="absolute inset-y-0 left-3 flex items-center text-[#B6BCC5]">
+          {leftIcon}
+        </span>
+      ) : null}
+    </div>
+  );
+}
+
+export function AuthSelect({ className, children, ...props }: AuthSelectProps) {
+  return (
+    <div className="relative">
+      <select
+        {...props}
+        className={cn(
+          baseFieldClasses,
+          "appearance-none pr-3 pl-9 text-[#A1A1AA]",
+          className
+        )}
+      >
+        {children}
+      </select>
+
+      <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-[#7C7C7C]">
+        <ChevronDown className="h-4 w-4" />
+      </span>
+    </div>
+  );
+}
+
+export function AuthTextarea({
+  rightIcon,
+  className,
+  ...props
+}: AuthTextareaProps) {
+  return (
+    <div className="relative">
+      <textarea
+        {...props}
+        className={cn(
+          "min-h-21.5 w-full resize-none rounded-sm border border-[#E7E7E7] bg-white px-3 py-3 text-right text-[13px] text-[#6B7280] placeholder:text-[#D6D6D6] outline-none transition focus:border-[#FF6A00]",
+          rightIcon ? "pr-10" : "",
+          className
+        )}
+      />
+
+      {rightIcon ? (
+        <span className="pointer-events-none absolute right-3 top-3 text-[#B6BCC5]">
+          {rightIcon}
+        </span>
+      ) : null}
+    </div>
+  );
+}
+
+export function AuthPrimaryButton(
+  props: ButtonHTMLAttributes<HTMLButtonElement>
+) {
+  return (
+    <button
+      {...props}
+      className={cn(
+        "h-10 w-full rounded-sm bg-[#FF6A00] text-[13px] font-bold text-white transition hover:bg-[#F06100] disabled:cursor-not-allowed disabled:opacity-70",
+        props.className
+      )}
+    />
+  );
+}
+
+export function AuthSecondaryLinkButton({
+  href,
+  children,
+}: {
+  href: string;
+  children: ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className="flex h-10 w-full items-center justify-center rounded-sm border border-[#FFB07E] bg-white text-[13px] font-bold text-[#5D5D5D] transition hover:bg-[#FFF8F2]"
+    >
+      {children}
+    </Link>
+  );
+}
+
+export function AuthMessage({
+  tone,
+  children,
+}: {
+  tone: "error" | "success";
+  children: ReactNode;
+}) {
+  return (
+    <div
+      className={cn(
+        "rounded-md px-3 py-2 text-right text-[12px]",
+        tone === "error"
+          ? "bg-red-50 text-red-600"
+          : "bg-green-50 text-green-700"
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
+export function AuthFooterLine({
+  text,
+  linkLabel,
+  href,
+  linkColor = "orange",
+}: {
+  text: string;
+  linkLabel: string;
+  href: string;
+  linkColor?: "orange" | "blue";
+}) {
+  return (
+    <p className="text-center text-[12px] text-[#8E8E8E]">
+      {text}{" "}
+      <Link
+        href={href}
+        className={cn(
+          "font-semibold hover:underline",
+          linkColor === "blue" ? "text-[#4C8BFF]" : "text-[#FF6A00]"
+        )}
+      >
+        {linkLabel}
+      </Link>
+    </p>
+  );
+}
+
+export function AuthSocialLinks() {
+  const iconClassName = "h-4 w-4 stroke-[2.2px]";
+
+  return (
+    <div className="mt-3 flex items-center justify-center gap-4 text-[#FF6A00]">
+      <a
+        target="_blank"
+        rel="noopener"
+        aria-label="LinkedIn"
+      >
+        <Linkedin className={iconClassName} />
+      </a>
+      <a
+        target="_blank"
+        rel="noopener"
+        aria-label="Facebook"
+      >
+        <Facebook className={iconClassName} />
+      </a>
+      <a
+        target="_blank"
+        rel="noopener"
+        aria-label="Youtube"
+      >
+        <Youtube className={iconClassName} />
+      </a>
+      <a
+        target="_blank"
+        rel="noopener"
+        aria-label="Instagram"
+      >
+        <Instagram className={iconClassName} />
+      </a>
+    </div>
+  );
+}
+
+export function AuthBadge({ children }: { children: ReactNode }) {
+  return (
+    <div className="flex h-8 w-8 items-center justify-center rounded-[9px] bg-[#FF6A00] text-[#10365A] shadow-[0_8px_18px_rgba(255,106,0,0.26)]">
+      {children}
+    </div>
+  );
+}
+
+function GoogleIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-4 w-4"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M21.6 12.23c0-.78-.07-1.53-.2-2.23H12v4.23h5.4a4.62 4.62 0 0 1-2 3.03v2.52h3.24c1.9-1.75 2.96-4.33 2.96-7.55Z"
+        fill="#4285F4"
+      />
+      <path
+        d="M12 22c2.7 0 4.96-.9 6.62-2.44l-3.24-2.52c-.9.6-2.05.96-3.38.96-2.6 0-4.8-1.75-5.58-4.1H3.08v2.6A10 10 0 0 0 12 22Z"
+        fill="#34A853"
+      />
+      <path
+        d="M6.42 13.9A5.98 5.98 0 0 1 6.1 12c0-.66.12-1.3.32-1.9V7.5H3.08A10 10 0 0 0 2 12c0 1.61.39 3.14 1.08 4.5l3.34-2.6Z"
+        fill="#FBBC05"
+      />
+      <path
+        d="M12 5.98c1.47 0 2.78.5 3.82 1.47l2.87-2.87C16.95 2.96 14.7 2 12 2A10 10 0 0 0 3.08 7.5l3.34 2.6C7.2 7.73 9.4 5.98 12 5.98Z"
+        fill="#EA4335"
+      />
+    </svg>
+  );
+}

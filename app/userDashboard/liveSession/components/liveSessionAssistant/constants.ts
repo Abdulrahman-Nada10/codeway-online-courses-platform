@@ -1,10 +1,11 @@
 import { AssistantFollowUpAction, AssistantSuggestion } from './types';
 
 export const DEFAULT_STORAGE_KEY = 'live-session-ai-history-v1';
-export const CHAT_ENDPOINT = process.env.NEXT_PUBLIC_AI_CHAT_URL ?? 'http://localhost:5500/ai/chat';
 export const INTRO_DELAY_MS = 280;
 export const MAX_ATTACHMENTS = 5;
 export const MAX_TEXT_ATTACHMENT_SIZE = 150_000;
+export const RECENT_HISTORY_LIMIT = 10;
+export const SEND_DEBOUNCE_MS = 400;
 
 export const TEXT_ATTACHMENT_EXTENSIONS = new Set([
   'txt',

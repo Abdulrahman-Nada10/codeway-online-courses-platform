@@ -34,7 +34,7 @@ export default function NotFound() {
         {/* Icon */}
         <div className="flex justify-center mb-8">
           <div className="relative">
-            <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-2xl shadow-orange-200">
+            <div className="w-28 h-28 rounded-3xl bg-linear-to-br from-orange-400 to-orange-600 flex items-center justify-center shadow-2xl shadow-orange-200">
               <BookOpen size={52} className="text-white" aria-hidden="true" />
             </div>
             {/* Floating badge */}

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/app/hooks/useAuth";
 import {
   LayoutDashboard,
   BookOpen,
@@ -61,9 +62,19 @@ export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const pathname = usePathname();
+  const { user, logout } = useAuth();
 
   const toggle = () => setIsCollapsed((prev) => !prev);
   const closeMobile = () => setIsMobileOpen(false);
+
+  const handleLogout = () => {
+    logout();
+    window.location.href = "/";
+  };
+
+  const instructorName = user?.name ?? "المدرّس";
+  const instructorEmail = user?.email ?? "instructor@egc.com";
+  const initials = instructorName.charAt(0);
 
   const renderNavItems = (items: NavItem[], collapsed: boolean) =>
     items.map((item) => (
@@ -74,6 +85,31 @@ export default function Sidebar() {
         isCollapsed={collapsed}
       />
     ));
+
+  const renderFooterItems = (items: NavItem[], collapsed: boolean) =>
+    items.map((item) => {
+      if (item.href === "/ins-logout") {
+        return (
+          <button
+            key={item.href}
+            onClick={handleLogout}
+            className={`flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all duration-200 text-gray-600 hover:bg-gray-100 w-full text-right ${collapsed ? "justify-center" : ""}`}
+            title={item.label}
+          >
+            <item.icon size={20} strokeWidth={1.75} />
+            {!collapsed && <span className="text-sm font-medium">{item.label}</span>}
+          </button>
+        );
+      }
+      return (
+        <SidebarItem
+          key={item.href}
+          {...item}
+          isActive={isItemActive(pathname, item.href, item.exact)}
+          isCollapsed={collapsed}
+        />
+      );
+    });
 
   return (
     <>
@@ -143,9 +179,9 @@ export default function Sidebar() {
           {renderNavItems(NAV_ITEMS, false)}
         </nav>
 
-        {/* Mobile footer - simplified */}
+        {/* Mobile footer */}
         <div className="flex flex-col gap-1 border-t border-gray-100 p-4 mt-auto">
-          {renderNavItems(FOOTER_ITEMS, false)}
+          {renderFooterItems(FOOTER_ITEMS, false)}
         </div>
       </aside>
 
@@ -212,7 +248,7 @@ export default function Sidebar() {
 
         {/* Footer - with visual separation */}
         <div className="flex flex-col gap-1 border-t border-gray-100 px-3 py-4 mt-2">
-          {renderNavItems(FOOTER_ITEMS, isCollapsed)}
+          {renderFooterItems(FOOTER_ITEMS, isCollapsed)}
         </div>
 
         {/* User avatar area */}
@@ -223,7 +259,7 @@ export default function Sidebar() {
             }`}
           >
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-orange-400 to-orange-500 text-sm font-bold text-white shadow-sm">
-              م
+              {initials}
             </div>
             <div
               className={`overflow-hidden transition-all duration-200 ${
@@ -231,10 +267,10 @@ export default function Sidebar() {
               }`}
             >
               <p className="whitespace-nowrap text-sm font-medium text-gray-800">
-                المدرّس
+                {instructorName}
               </p>
               <p className="whitespace-nowrap text-xs text-gray-400">
-                instructor@egc.com
+                {instructorEmail}
               </p>
             </div>
           </div>

@@ -22,6 +22,7 @@ import { updateCourse } from '../../../store/courseSlice';
 import { selectAllCourses } from '../../../store/selectors';
 import type { Course, LessonFormData, ExerciseFormData } from '../../../store/types';
 import CourseThumbnail from '@/app/components/CourseThumbnail';
+import ProtectedRoute from '@/app/components/auth/ProtectedRoute';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -148,8 +149,9 @@ export default function CourseEditPage() {
   }
 
   return (
-    <main className="min-h-screen bg-stone-50">
-      <div className="max-w-3xl mx-auto px-3 sm:px-6 py-6 sm:py-10 pb-28">
+    <ProtectedRoute allowedRoles={['instructor']}>
+      <main className="min-h-screen bg-stone-50">
+        <div className="max-w-3xl mx-auto px-3 sm:px-6 py-6 sm:py-10 pb-28">
 
         {/* Breadcrumb */}
         <nav aria-label="مسار التنقل" className="flex items-center gap-2 text-xs sm:text-sm text-stone-500 mb-4 sm:mb-6">
@@ -318,7 +320,8 @@ export default function CourseEditPage() {
           </button>
         </div>
       </div>
-    </main>
+      </main>
+    </ProtectedRoute>
   );
 }
 

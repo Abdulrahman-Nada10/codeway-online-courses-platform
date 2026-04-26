@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Cairo } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "./components/ReduxProvider";
+import AuthProvider from "./providers/AuthProvider";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -69,9 +70,11 @@ export default function RootLayout({
       <body
         className={`${cairo.variable} antialiased bg-[#FFF3EB]`}
       >
-        <ReduxProvider>
-          {children}
-        </ReduxProvider>
+        <AuthProvider>
+          <ReduxProvider>
+            {children}
+          </ReduxProvider>
+        </AuthProvider>
       </body>
     </html>
   );

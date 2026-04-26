@@ -39,11 +39,20 @@ export function LiveSessionRoom({ session }: { session: LiveSession }) {
 
               <RoomInteractionPanel session={session} />
             </div>
-          </div>
+            </div>
+
         </main>
       </div>
 
-      <LiveSessionAssistant contextTitle={session.title} />
+      <LiveSessionAssistant
+        contextTitle={session.title}
+        sessionSlug={session.slug}
+        sessionContextData={{
+          title: session.title,
+          description: session.description,
+          instructor: session.instructor,
+        }}
+      />
     </div>
   );
 }

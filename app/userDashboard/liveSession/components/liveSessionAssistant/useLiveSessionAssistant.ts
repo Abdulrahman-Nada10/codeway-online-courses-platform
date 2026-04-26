@@ -1,28 +1,96 @@
 'use client';
 
+import { useParams, useSearchParams } from 'next/navigation';
 import { ChangeEvent, FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { sendAiChatMessage } from '@/services/aiChat';
+import {
+  isValidCourseId,
+  loadSessionContext,
+  resolveCourseId,
+  saveSessionContext,
+  type AiSessionContext,
+} from '@/services/aiCourseResolver';
+import { useAppSelector } from '@/app/store/hooks';
 import { getAttachmentContext } from './attachments';
-import { CHAT_ENDPOINT, DEFAULT_STORAGE_KEY, INTRO_DELAY_MS, MAX_ATTACHMENTS } from './constants';
+import { DEFAULT_STORAGE_KEY, INTRO_DELAY_MS, MAX_ATTACHMENTS, RECENT_HISTORY_LIMIT, SEND_DEBOUNCE_MS } from './constants';
 import { getSpeechRecognitionApi } from './speech';
-import { ConversationRecord, InputMode, LiveSessionAssistantProps, PendingAttachment, SpeechRecognitionLike } from './types';
+import {
+  ConversationMessage,
+  ConversationRecord,
+  InputMode,
+  LiveSessionAssistantProps,
+  PendingAttachment,
+  SpeechRecognitionLike,
+} from './types';
 import {
   createConversation,
   createId,
-  getAssistantReply,
   getAttachmentMeta,
   getConversationTitle,
   parseStoredConversations,
 } from './utils';
 
+function getOptionalParamValue(value?: string | string[]) {
+  if (Array.isArray(value)) {
+    return value[0]?.trim() || undefined;
+  }
+
+  return value?.trim() || undefined;
+}
+
+function buildHistory(messages: ConversationMessage[], limit: number) {
+  return messages
+    .filter((message) => message.content.trim())
+    .slice(-limit)
+    .map((message) => ({
+      role: message.role,
+      content: message.content.trim(),
+    }));
+}
+
+function isDuplicateAssistantMessage(
+  messages: ConversationMessage[],
+  content: string,
+  windowMs = 2000,
+): boolean {
+  const lastMessage = messages[messages.length - 1];
+
+  if (!lastMessage) {
+    return false;
+  }
+
+  if (lastMessage.role !== 'assistant') {
+    return false;
+  }
+
+  if (lastMessage.content !== content) {
+    return false;
+  }
+
+  return Date.now() - lastMessage.createdAt < windowMs;
+}
+
 export function useLiveSessionAssistant({
   contextTitle,
   storageKey = DEFAULT_STORAGE_KEY,
+  courseId,
+  lessonId,
+  sessionSlug,
+  sessionContextData,
 }: LiveSessionAssistantProps) {
   const initialConversationRef = useRef<ConversationRecord>(createConversation());
   const listEndRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const hasLoadedRef = useRef(false);
+  const isSendingRef = useRef(false);
+  const lastSendRef = useRef<{ signature: string; sentAt: number } | null>(null);
+  const routeParams = useParams<Record<string, string | string[]>>();
+  const searchParams = useSearchParams();
+
+  // Redux state for course resolution
+  const reduxSelectedCourse = useAppSelector((state) => state.courses.selectedCourse);
+  const reduxCourses = useAppSelector((state) => state.courses.courses);
 
   const [isOpen, setIsOpen] = useState(false);
   const [conversations, setConversations] = useState<ConversationRecord[]>([initialConversationRef.current]);
@@ -35,6 +103,22 @@ export function useLiveSessionAssistant({
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [introPhase, setIntroPhase] = useState<'idle' | 'title' | 'suggestions'>('idle');
   const [composerError, setComposerError] = useState<string | null>(null);
+
+  // Session context from localStorage for persistence across chats
+  const [sessionContext, setSessionContext] = useState<AiSessionContext>(getDefaultSessionContext);
+
+  function getDefaultSessionContext(): AiSessionContext {
+    if (typeof window === 'undefined') {
+      return {
+        courseId: null,
+        lessonId: null,
+        lastMessages: [],
+        detectedTopics: [],
+        lastResolvedAt: 0,
+      };
+    }
+    return loadSessionContext();
+  }
 
   const activeConversation = useMemo(
     () => conversations.find((conversation) => conversation.id === activeConversationId) ?? conversations[0],
@@ -50,6 +134,66 @@ export function useLiveSessionAssistant({
   );
 
   const activeMessages = activeConversation?.messages ?? [];
+
+  /**
+   * INTELLIGENT COURSE RESOLUTION
+   * Multi-source priority resolution with debug logging.
+   */
+  const resolvedCourseId = useMemo(() => {
+    const resolved = resolveCourseId({
+      directCourseId: courseId,
+      searchCourseId: searchParams.get('courseId'),
+      routeCourseId: getOptionalParamValue(routeParams.courseId),
+      routeSessionId: getOptionalParamValue(routeParams.sessionId) ?? sessionSlug,
+      reduxSelectedCourse,
+      reduxCourses,
+      contextTitle: contextTitle ?? sessionContextData?.title,
+      sessionContext,
+    });
+
+    // eslint-disable-next-line no-console
+    console.log('[AI DEBUG] Resolved courseId:', resolved);
+    // eslint-disable-next-line no-console
+    console.log('[AI DEBUG] Resolution sources:', {
+      directCourseId: courseId,
+      searchCourseId: searchParams.get('courseId'),
+      routeCourseId: getOptionalParamValue(routeParams.courseId),
+      routeSessionId: getOptionalParamValue(routeParams.sessionId) ?? sessionSlug,
+      reduxSelectedCourseId: reduxSelectedCourse?.id,
+      reduxCoursesCount: reduxCourses?.length,
+      contextTitle,
+      sessionContextCourseId: sessionContext.courseId,
+    });
+
+    return resolved;
+  }, [
+    courseId,
+    searchParams,
+    routeParams.courseId,
+    routeParams.sessionId,
+    sessionSlug,
+    reduxSelectedCourse,
+    reduxCourses,
+    contextTitle,
+    sessionContextData?.title,
+    sessionContext,
+  ]);
+
+  const resolvedLessonId = useMemo(() => {
+    const directLessonId = lessonId?.trim();
+
+    if (directLessonId) {
+      return directLessonId;
+    }
+
+    const searchLessonId = searchParams.get('lessonId')?.trim();
+
+    if (searchLessonId) {
+      return searchLessonId;
+    }
+
+    return getOptionalParamValue(routeParams.lessonId);
+  }, [lessonId, routeParams, searchParams]);
 
   useEffect(() => {
     const storedConversations = parseStoredConversations(window.localStorage.getItem(storageKey));
@@ -169,7 +313,7 @@ export function useLiveSessionAssistant({
     attachments?: PendingAttachment[];
     inputMode?: InputMode;
   }) => {
-    if (isLoading || !activeConversation) {
+    if (isLoading || isSendingRef.current || !activeConversation) {
       return;
     }
 
@@ -180,9 +324,56 @@ export function useLiveSessionAssistant({
       return;
     }
 
+    // INTELLIGENT COURSE RESOLUTION WITH MESSAGE CONTEXT
+    // Try to infer from message if still not resolved
+    const messageInferredCourseId = resolveCourseId({
+      directCourseId: courseId,
+      searchCourseId: searchParams.get('courseId'),
+      routeCourseId: getOptionalParamValue(routeParams.courseId),
+      routeSessionId: getOptionalParamValue(routeParams.sessionId) ?? sessionSlug,
+      reduxSelectedCourse,
+      reduxCourses,
+      contextTitle: contextTitle ?? sessionContextData?.title,
+      message: textPrompt,
+      sessionContext,
+    });
+
+    const finalCourseId = messageInferredCourseId ?? resolvedCourseId;
+
+    // eslint-disable-next-line no-console
+    console.log('[AI DEBUG] Final courseId before send:', finalCourseId);
+
+    if (!isValidCourseId(finalCourseId)) {
+      setComposerError('حدد الكورس أولاً');
+      // eslint-disable-next-line no-console
+      console.warn('[AI DEBUG] Blocked send: no valid courseId resolved.');
+      return;
+    }
+
+    const selectedInputMode = inputMode ?? pendingInputMode;
+    const requestSignature = JSON.stringify({
+      conversationId: activeConversation.id,
+      textPrompt,
+      inputMode: selectedInputMode,
+      attachments: selectedAttachments.map((attachment) => `${attachment.file.name}-${attachment.file.size}`),
+    });
+    const now = Date.now();
+
+    if (
+      lastSendRef.current &&
+      lastSendRef.current.signature === requestSignature &&
+      now - lastSendRef.current.sentAt < SEND_DEBOUNCE_MS
+    ) {
+      return;
+    }
+
+    lastSendRef.current = { signature: requestSignature, sentAt: now };
+    isSendingRef.current = true;
+
     const visibleMessage =
       displayText?.trim() || textPrompt || (selectedAttachments[0] ? `مرفق: ${selectedAttachments[0].file.name}` : 'رسالة جديدة');
-    const selectedInputMode = inputMode ?? pendingInputMode;
+    const conversationId = activeConversation.id;
+    const previousMessages = activeConversation.messages;
     const userMessage = {
       id: createId(),
       role: 'user' as const,
@@ -192,7 +383,7 @@ export function useLiveSessionAssistant({
       inputMode: selectedInputMode,
     };
 
-    updateConversationMessages(activeConversation.id, (conversation) => {
+    updateConversationMessages(conversationId, (conversation) => {
       const nextMessages = [...conversation.messages, userMessage];
 
       return {
@@ -230,48 +421,75 @@ export function useLiveSessionAssistant({
         messageParts.push(`المرفقات:\n${attachmentContext}`);
       }
 
-      const response = await fetch(CHAT_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: messageParts.join('\n\n'),
-        }),
+      const reply = await sendAiChatMessage({
+        message: messageParts.join('\n\n') || visibleMessage,
+        courseId: finalCourseId!,
+        history: buildHistory(previousMessages, RECENT_HISTORY_LIMIT),
       });
 
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`);
+      // Persist resolved courseId to session context
+      saveSessionContext({
+        courseId: finalCourseId,
+        lessonId: resolvedLessonId,
+        lastMessages: [...(sessionContext.lastMessages.slice(-4)), textPrompt].slice(-5),
+      });
+      setSessionContext((prev) => ({
+        ...prev,
+        courseId: finalCourseId,
+        lessonId: resolvedLessonId ?? prev.lessonId,
+        lastMessages: [...(prev.lastMessages.slice(-4)), textPrompt].slice(-5),
+        lastResolvedAt: Date.now(),
+      }));
+
+      if (isDuplicateAssistantMessage(activeConversation.messages, reply)) {
+        // eslint-disable-next-line no-console
+        console.warn('[useLiveSessionAssistant] Duplicate assistant message detected; skipping append.');
+      } else {
+        const assistantMessage = {
+          id: createId(),
+          role: 'assistant' as const,
+          content: reply,
+          createdAt: Date.now(),
+        };
+
+        updateConversationMessages(conversationId, (conversation) => ({
+          ...conversation,
+          updatedAt: Date.now(),
+          messages: [...conversation.messages, assistantMessage],
+        }));
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('[useLiveSessionAssistant] AI chat error:', error);
+
+      let errorText = 'حصل خطأ في الاتصال بالـ AI، حاول تاني';
+
+      if (error instanceof TypeError) {
+        errorText = 'تعذر الاتصال بالخادم. تأكد من تشغيل خدمة الـ AI (localhost:5500).';
+      } else if (error instanceof Error) {
+        const msg = error.message.toLowerCase();
+
+        if (msg.includes('not valid json')) {
+          errorText = 'رد الـ AI غير مفهوم. تحقق من خدمة الـ Backend.';
+        } else if (msg.includes('did not include a valid "reply"') || msg.includes('empty')) {
+          errorText = 'رد الـ AI فارغ أو غير مكتمل. حاول مرة تانية.';
+        } else if (msg.includes('status 404')) {
+          errorText = 'نقطة النهاية غير موجودة (404). تحقق من إعدادات الـ Backend.';
+        } else if (msg.includes('status 5')) {
+          errorText = 'الخادم واجه مشكلة داخلية. حاول مرة تانية بعد لحظات.';
+        } else if (msg.includes('status 4')) {
+          errorText = 'طلب غير صالح. تحقق من البيانات المرسلة.';
+        } else if (msg.includes('no lessons found')) {
+          errorText = 'لم يتم العثور على دروس لهذا الكورس. تحقق من معرف الكورس.';
+        } else {
+          errorText = error.message;
+        }
       }
 
-      const data = (await response.json()) as unknown;
-      const assistantMessage = {
-        id: createId(),
-        role: 'assistant' as const,
-        content: getAssistantReply(data),
-        createdAt: Date.now(),
-      };
-
-      updateConversationMessages(activeConversation.id, (conversation) => ({
-        ...conversation,
-        updatedAt: Date.now(),
-        messages: [...conversation.messages, assistantMessage],
-      }));
-    } catch {
-      const assistantMessage = {
-        id: createId(),
-        role: 'assistant' as const,
-        content: 'حصل خطأ في الاتصال بالمساعد الذكي. حاول مرة تانية.',
-        createdAt: Date.now(),
-      };
-
-      updateConversationMessages(activeConversation.id, (conversation) => ({
-        ...conversation,
-        updatedAt: Date.now(),
-        messages: [...conversation.messages, assistantMessage],
-      }));
+      setComposerError(errorText);
     } finally {
       setIsLoading(false);
+      isSendingRef.current = false;
     }
   };
 
