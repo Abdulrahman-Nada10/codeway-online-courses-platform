@@ -152,9 +152,9 @@ export default function Navbar() {
               <div className="flex items-center gap-2">
                 <Link
                   href="/login"
-                  className="hidden sm:flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-gray-600 hover:text-[#1D3E61] transition-all"
+                  className="hidden sm:flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-gray-600 hover:text-orange-600 hover:bg-orange-50 rounded-md transition-all active:scale-95 group"
                 >
-                  <LogIn size={18} />
+                  <LogIn size={18} className="group-hover:translate-x-1 transition-transform"/>
                   <span>تسجيل الدخول</span>
                 </Link>
                 <Link
