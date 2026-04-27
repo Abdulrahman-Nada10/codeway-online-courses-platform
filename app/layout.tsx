@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Cairo } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "./components/ReduxProvider";
+import I18nProvider from "../providers/I18nProvider";
+import { ThemeProvider } from "../providers/ThemeProvider";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -13,6 +15,12 @@ const cairo = Cairo({
 export const metadata: Metadata = {
   title: "منصة التعلم الإلكترونية",
   description: "منصة تعليمية لتطوير مهاراتك",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "EGC",
+  },
   keywords: [
     "تعلم عبر الإنترنت",
     "دورات تعليمية",
@@ -57,6 +65,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
+  //themeColor: "#ff6400",
 };
 
 export default function RootLayout({
@@ -65,15 +74,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl" >
+    <html lang="ar" dir="rtl" suppressHydrationWarning>
       <body
-        className={`${cairo.variable} antialiased bg-[#FFF3EB]`}
+        className={`${cairo.variable} antialiased bg-page-bg  transition-colors duration-300`}
       >
-        <ReduxProvider>
-          {children}
-        </ReduxProvider>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <I18nProvider>
+            <ReduxProvider>
+              {children}
+            </ReduxProvider>
+          </I18nProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
 }
-

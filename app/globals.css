@@ -1,48 +1,44 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
-/* ===============================
-   Root Design Tokens
-   =============================== */
-:root {
+
+html {
   --background: #ffffff;
   --foreground: #171717;
-
   --primary: #ff6400;
   --secondary: #113555;
-
+  --main-text:#113555;
+  --sub-text:#1E3A8A;
   --input-bg: #fff3eb;
   --page-bg: #fff3eb;
-
-  /* Semantic colors */
-  --color-primary: var(--primary);
-  --color-primary-light: #fed7aa;
-  --color-primary-dark: #ea580c;
-
-  --color-success: #22c55e;
-  --color-warning: #f59e0b;
-  --color-danger: #ef4444;
-
-  /* Fonts */
   --font-sans: var(--font-cairo);
 }
 
-/* ===============================
-   Tailwind Theme Mapping (v4)
-   =============================== */
+html.dark {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --primary: #ff8533;
+  --secondary: #191C33;
+  --main-text:#CAD5E2;
+  --sub-text:#90A1B9;
+  --input-bg: #1e293b;
+  --page-bg: #0f172a;
+  --font-sans: var(--font-cairo);
+}
+
+/* 3. ربط المتغيرات بـ Tailwind Theme */
 @theme inline {
+  --dark-mode: selector(.dark);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
-
   --color-input-bg: var(--input-bg);
+  --color-main-text: var(--main-text);
+  --color-sub-text: var(--sub-text);
   --color-page-bg: var(--page-bg);
-
   --font-sans: var(--font-cairo);
 }
-
-
 
 @layer base {
   *,
@@ -56,12 +52,13 @@
     color: var(--foreground);
     font-family: var(--font-cairo), Arial, sans-serif;
     margin: 0;
+  
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
   }
 }
 
-/* ===============================
-   Components / Utilities
-   =============================== */
 @layer utilities {
   .font-cairo {
     font-family: var(--font-cairo), sans-serif;
@@ -72,55 +69,29 @@
   }
 }
 
-/* ===============================
-   Animations
-   =============================== */
+
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.3s ease-out both;
-}
+.animate-fade-in-up { animation: fadeInUp 0.3s ease-out both; }
+.animate-scale-in { animation: scaleIn 0.25s ease-out both; }
 
-.animate-scale-in {
-  animation: scaleIn 0.25s ease-out both;
-}
-
-/* ===============================
-   Custom Scrollbar
-   =============================== */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 20px;
 }
 
+
+/**/
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.2);
 }

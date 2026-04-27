@@ -24,7 +24,7 @@ interface FavoriteCourse {
 const FavoriteCourseCard = ({ course, isFav = false}: { course: FavoriteCourse, isFav?: boolean; }) => {
   const dispatch = useDispatch()
   return (
-    <div className="w-full max-w-86 h-96.25 bg-white rounded-[10px] overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+    <div className="w-full max-w-86 h-96.25 bg-input-bg rounded-[10px] overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
       <div className="relative w-full h-45">
         <Image
           src={course.image}
@@ -58,27 +58,27 @@ const FavoriteCourseCard = ({ course, isFav = false}: { course: FavoriteCourse, 
       </div>
 
       <div className="p-4 flex flex-col gap-2.5">
-        <h3 className="font-cairo font-bold text-base text-[#113555] line-clamp-2">
+        <h3 className="font-cairo font-bold text-base text-main-text line-clamp-2">
           {course.title}
         </h3>
 
-        <p className="font-cairo text-sm font-medium text-[#1E3A8A] -mt-1">
+        <p className="font-cairo text-sm font-medium text-sub-text -mt-1">
           م. {course.instructor}
         </p>
 
-        <div className="flex items-center justify-between text-sm text-gray-600 mt-5">
+        <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 mt-5">
           <div className="flex items-center gap-2.5">
             <Star className="w-4 h-4 text-[#F5A00F] fill-[#F5A00F]"/>
             <span className="font-cairo font-medium">{course.rating}</span>
           </div>
 
           <div className="flex items-center gap-2.5">
-            <Users className="w-4 h-4 text-black" />
+            <Users className="w-4 h-4 text-sub-text" />
             <span className="font-cairo font-medium">{course.studentsCount}</span>
           </div>
 
           <div className="flex items-center gap-2.5 ">
-            <Clock className="w-4 h-4 text-black" />
+            <Clock className="w-4 h-4 text-sub-text" />
             <span className="font-cairo font-medium">{course.hoursCount} ساعة</span>
           </div>
         </div>
@@ -99,7 +99,7 @@ const FavoriteCourseCard = ({ course, isFav = false}: { course: FavoriteCourse, 
             </div>
           </div>
 
-          <button className="w-20 h-8 rounded-lg font-cairo font-semibold text-sm border border-[#FF6400] text-black hover:bg-[#FF6400] hover:text-white transition-all duration-200">
+          <button className="w-20 h-8 rounded-lg font-cairo font-semibold text-sm border border-[#FF6400] text-main-text hover:bg-[#FF6400] hover:text-white transition-all duration-200">
             {
               isFav?"سجل الآن":"عرض الدورة"
             }

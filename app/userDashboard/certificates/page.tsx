@@ -3,7 +3,7 @@
 import CertificateCard from '../../components/CertificateCard';
 import Link from 'next/link';
 
-export const certificates = [
+const certificates = [
   {
     id: 1,
     title: 'تطوير تطبيقات الويب المتقدمة',

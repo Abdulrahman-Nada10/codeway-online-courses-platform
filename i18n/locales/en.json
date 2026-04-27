@@ -1,0 +1,41 @@
+{
+  "common": {
+    "welcome": "Welcome to the learning platform",
+    "courses": "Courses",
+    "about": "About Us"
+  },
+  "auth": {
+    "login": "Login",
+    "signup": "Sign Up"
+  },
+  "courses": {
+    "title": "Courses",
+    "subtitle": "Discover over 60+ courses in various fields with the best Arab instructors",
+    "search": "Search for a course or instructor",
+    "sort": {
+      "newest": "Newest",
+      "oldest": "Oldest",
+      "popular": "Popular",
+      "rated": "Highest Rated"
+    },
+      "categories": {
+      "programming": "Programming",
+      "design": "Design",
+      "marketing": "Marketing",
+      "languages": "Languages",
+      "business": "Business"
+    },
+    "filterToggle": "Filters",
+    "displayCourses": "Display {{count}} Courses",
+    "noCourses": "No courses found matching your search",
+    "showMore": "Show More Courses"
+  },
+  "nav": {
+    "home": "Home",
+    "courses": "Courses",
+    "features": "Features",
+    "contact": "Contact Us",
+    "user_name": "Eng. Mohamed Mahmoud"
+  }
+}
+

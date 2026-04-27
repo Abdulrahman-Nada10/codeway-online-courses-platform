@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { DiplomaIcon, BackIcon, CalendarIconAlt, User as InstructorIcon, BadgeCheck as BadgeIcon, CheckCircle as CheckCircleIcon, Download as DownloadIconAlt, Share2 as ShareIconAlt } from '../../../components/icons';
 
-export const certificatesData = [
+const certificatesData = [
   {
     id: 1,
     title: 'تطوير تطبيقات الويب المتقدمة',

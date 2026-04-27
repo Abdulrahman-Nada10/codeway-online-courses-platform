@@ -274,7 +274,7 @@ function ExerciseItem({ exercise, index, onUpdate, onDelete }: ExerciseItemProps
           className="w-full px-3 py-2 rounded-lg border border-stone-200 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-orange-300 transition-all bg-white"
         />
         <div className="flex items-center gap-2">
-          <Upload size={13} className="text-stone-400 flex-shrink-0" aria-hidden="true" />
+          <Upload size={13} className="text-stone-400 shrink-0" aria-hidden="true" />
           <button
             type="button"
             className="text-xs text-stone-500 hover:text-orange-500 transition-colors"

@@ -14,11 +14,11 @@ export default function CourseHeader({ course }: CourseHeaderProps) {
   return (
     <section
       dir="rtl"
-      className="w-full bg-[#113555] text-[#FFFFFF] pt-20 pb-15 px-6 md:px-16"
+      className="min-h-screen bg-secondary text-[#FFFFFF] pt-30 pb-15 px-6 md:px-16"
     >
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row-reverse items-start gap-10">
 
-         <div className="w-full md:w-[320px] shrink-0">
+        <div className="w-full md:w-[320px] shrink-0 ">
   
           <div className="relative rounded-t-xl overflow-hidden mb-0">
             <img
@@ -29,7 +29,7 @@ export default function CourseHeader({ course }: CourseHeaderProps) {
             />
           </div>
 
-          <div className="bg-white text-gray-900 rounded-b-xl p-5 shadow-2xl -mt-1 flex flex-col gap-3">
+          <div className="bg-input-bg text-gray-900 rounded-b-xl p-5 shadow-2xl -mt-1 flex flex-col gap-3">
 
             <div className="flex items-center gap-3">
               <span className="text-2xl font-medium text-[#FF6400]">

@@ -9,7 +9,8 @@ import PaymentModal from './components/PaymentModal';
 import CountryCodeSelector from './components/CountryCodeSelector';
 
 interface IProps {
-  initialSummary?: ITicketSummary;
+  params: Promise<{ [key: string]: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 const paymentTabs: IPaymentTabs[] = [
