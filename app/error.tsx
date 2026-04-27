@@ -51,7 +51,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
         {/* Icon */}
         <div className="flex justify-center mb-8">
           <div className="relative">
-            <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center shadow-2xl shadow-red-100">
+            <div className="w-28 h-28 rounded-3xl bg-linear-to-br from-red-400 to-red-600 flex items-center justify-center shadow-2xl shadow-red-100">
               <AlertTriangle size={52} className="text-white" aria-hidden="true" />
             </div>
             {/* Pulse ring */}
@@ -80,7 +80,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
         {/* Error digest badge */}
         {error.digest && (
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-stone-100 text-stone-500 text-xs font-mono mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" aria-hidden="true" />
+            <span className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0" aria-hidden="true" />
             كود الخطأ: {error.digest}
           </div>
         )}

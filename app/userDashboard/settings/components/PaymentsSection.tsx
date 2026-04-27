@@ -1,6 +1,7 @@
 'use client';
 
 import { Check } from 'lucide-react';
+import DashboardInput from '@/app/components/ui/DashboardInput';
 
 interface PaymentsSectionProps {
   bankData: {
@@ -9,6 +10,8 @@ interface PaymentsSectionProps {
     iban: string;
     swiftCode: string;
   };
+  errors?: Partial<Record<'accountHolderName' | 'bankName' | 'iban' | 'swiftCode', string>>;
+  touched?: Partial<Record<'accountHolderName' | 'bankName' | 'iban' | 'swiftCode', boolean>>;
   onBankDataChange: (field: string, value: string) => void;
   onSave: () => void;
   onCancel: () => void;
@@ -16,6 +19,8 @@ interface PaymentsSectionProps {
 
 export default function PaymentsSection({
   bankData,
+  errors = {},
+  touched = {},
   onBankDataChange,
   onSave,
   onCancel
@@ -30,59 +35,43 @@ export default function PaymentsSection({
 
       <div className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="accountHolderName" className="block font-cairo font-medium text-sm text-[#113555] mb-2">
-              اسم صاحب الحساب
-            </label>
-            <input
-              id="accountHolderName"
-              type="text"
-              value={bankData.accountHolderName}
-              onChange={(e) => onBankDataChange('accountHolderName', e.target.value)}
-              className="w-full px-4 py-3 rounded-xl font-cairo text-sm bg-[#FFF3EB] border border-transparent focus:border-[#FF6400] focus:outline-none transition-colors input-shadow"
-            />
-          </div>
+          <DashboardInput
+            id="accountHolderName"
+            type="text"
+            label="اسم صاحب الحساب"
+            value={bankData.accountHolderName}
+            onChange={(e) => onBankDataChange('accountHolderName', e.target.value)}
+            error={touched.accountHolderName ? errors.accountHolderName : undefined}
+          />
 
-          <div>
-            <label htmlFor="bankName" className="block font-cairo font-medium text-sm text-[#113555] mb-2">
-              اسم البنك
-            </label>
-            <input
-              id="bankName"
-              type="text"
-              value={bankData.bankName}
-              onChange={(e) => onBankDataChange('bankName', e.target.value)}
-              className="w-full px-4 py-3 rounded-xl font-cairo text-sm bg-[#FFF3EB] border border-transparent focus:border-[#FF6400] focus:outline-none transition-colors input-shadow"
-            />
-          </div>
+          <DashboardInput
+            id="bankName"
+            type="text"
+            label="اسم البنك"
+            value={bankData.bankName}
+            onChange={(e) => onBankDataChange('bankName', e.target.value)}
+            error={touched.bankName ? errors.bankName : undefined}
+          />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="iban" className="block font-cairo font-medium text-sm text-[#113555] mb-2">
-              رقم IBAN
-            </label>
-            <input
-              id="iban"
-              type="text"
-              value={bankData.iban}
-              onChange={(e) => onBankDataChange('iban', e.target.value)}
-              className="w-full px-4 py-3 rounded-xl font-cairo text-sm bg-[#FFF3EB] border border-transparent focus:border-[#FF6400] focus:outline-none transition-colors input-shadow"
-            />
-          </div>
+          <DashboardInput
+            id="iban"
+            type="text"
+            label="رقم IBAN"
+            value={bankData.iban}
+            onChange={(e) => onBankDataChange('iban', e.target.value)}
+            error={touched.iban ? errors.iban : undefined}
+          />
 
-          <div>
-            <label htmlFor="swiftCode" className="block font-cairo font-medium text-sm text-[#113555] mb-2">
-              رمز SWIFT
-            </label>
-            <input
-              id="swiftCode"
-              type="text"
-              value={bankData.swiftCode}
-              onChange={(e) => onBankDataChange('swiftCode', e.target.value)}
-              className="w-full px-4 py-3 rounded-xl font-cairo text-sm bg-[#FFF3EB] border border-transparent focus:border-[#FF6400] focus:outline-none transition-colors input-shadow"
-            />
-          </div>
+          <DashboardInput
+            id="swiftCode"
+            type="text"
+            label="رمز SWIFT"
+            value={bankData.swiftCode}
+            onChange={(e) => onBankDataChange('swiftCode', e.target.value)}
+            error={touched.swiftCode ? errors.swiftCode : undefined}
+          />
         </div>
       </div>
 

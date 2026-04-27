@@ -4,10 +4,16 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import SearchBar from './SearchBar';
+import { useAuth } from '@/app/hooks/useAuth';
 import { Bell as BellIcon } from './icons';
 
 const Navbar = () => {
+  const { user } = useAuth();
   const [showNotifications, setShowNotifications] = useState(false);
+
+  const displayName = user?.name ?? 'المدرب';
+  const roleLabel = user?.role === 'instructor' ? 'مدرب' : 'طالب';
+  const avatarSrc = user?.avatar ?? '/profile.jpg';
 
   return (
     <div className="p-3 sm:p-4 lg:p-6 pt-3 sm:pt-4 lg:pt-6">
@@ -23,7 +29,7 @@ const Navbar = () => {
             onClick={() => setShowNotifications(!showNotifications)}
           >
             <BellIcon className="h-4 w-4 sm:h-5 sm:w-5 text-[#113555]" strokeWidth={2} />
-            <span className="absolute top-0.5 sm:top-1 left-0.5 sm:left-1 w-1.5 sm:w-2 h-1.5 sm:h-2 bg-[#FF6400] rounded-full"></span>
+            <span className="absolute top-0.5 sm:top-1 left-0.5 sm:left-1 w-1.5 sm:w-2 h-1.5 sm:h-2 bg-[#FF6400] rounded-full" />
           </button>
 
           <div className="md:hidden relative">
@@ -33,7 +39,7 @@ const Navbar = () => {
               onClick={() => setShowNotifications(!showNotifications)}
             >
               <BellIcon className="h-4 w-4 sm:h-5 sm:w-5 text-[#113555]" strokeWidth={2} />
-              <span className="absolute top-0.5 sm:top-1 left-0.5 sm:left-1 w-1.5 sm:w-2 h-1.5 sm:h-2 bg-[#FF6400] rounded-full"></span>
+              <span className="absolute top-0.5 sm:top-1 left-0.5 sm:left-1 w-1.5 sm:w-2 h-1.5 sm:h-2 bg-[#FF6400] rounded-full" />
             </button>
 
             {showNotifications && (
@@ -55,7 +61,7 @@ const Navbar = () => {
                     <span className="font-cairo text-xs text-gray-400">منذ يومين</span>
                   </div>
                 </div>
-                <Link href="/settings" className="block p-3 text-center bg-gray-50 hover:bg-gray-100">
+                <Link href="/ins-settings" className="block p-3 text-center bg-gray-50 hover:bg-gray-100">
                   <span className="font-cairo text-xs sm:text-sm text-[#FF6400]">عرض كل الإشعارات</span>
                 </Link>
               </div>
@@ -63,10 +69,10 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <Link href="/profile" className="block">
+            <Link href="/ins-profile" className="block">
               <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-full overflow-hidden border-2 border-[#FF6400] cursor-pointer">
                 <Image
-                  src="/profile.jpg"
+                  src={avatarSrc}
                   alt="البروفايل"
                   width={40}
                   height={40}
@@ -76,9 +82,9 @@ const Navbar = () => {
             </Link>
             <div className="hidden sm:flex flex-col items-start">
               <span className="font-cairo font-bold text-sm sm:text-base text-[#113555] leading-tight">
-                عمر محمد السيد
+                {displayName}
               </span>
-              <span className="font-cairo font-light text-xs text-[#FF6400]">مدرب</span>
+              <span className="font-cairo font-light text-xs text-[#FF6400]">{roleLabel}</span>
             </div>
           </div>
         </div>
@@ -88,4 +94,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

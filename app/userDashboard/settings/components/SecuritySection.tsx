@@ -1,11 +1,19 @@
 'use client';
 
-import { Check } from 'lucide-react';
+import { useState } from 'react';
+import { Check, Eye, EyeOff } from 'lucide-react';
+import DashboardInput from '@/app/components/ui/DashboardInput';
+import {
+  PasswordRulesChecklist,
+  PasswordStrengthBar,
+} from '@/app/components/auth/AuthUi';
 
 interface SecuritySectionProps {
   currentPassword: string;
   newPassword: string;
   confirmPassword: string;
+  errors?: Partial<Record<'currentPassword' | 'newPassword' | 'confirmPassword', string>>;
+  touched?: Partial<Record<'currentPassword' | 'newPassword' | 'confirmPassword', boolean>>;
   onCurrentPasswordChange: (value: string) => void;
   onNewPasswordChange: (value: string) => void;
   onConfirmPasswordChange: (value: string) => void;
@@ -17,12 +25,18 @@ export default function SecuritySection({
   currentPassword,
   newPassword,
   confirmPassword,
+  errors = {},
+  touched = {},
   onCurrentPasswordChange,
   onNewPasswordChange,
   onConfirmPasswordChange,
   onSave,
   onCancel
 }: SecuritySectionProps) {
+  const [showCurrent, setShowCurrent] = useState(false);
+  const [showNew, setShowNew] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
   return (
     <div className="space-y-8">
       <div className="text-right pb-4">
@@ -31,46 +45,86 @@ export default function SecuritySection({
         </h3>
       </div>
 
-      <div className="space-y-6 xl:space-x-142 sm:space-x-89">
-        <div>
-          <label htmlFor="current-password" className="block font-cairo font-medium text-sm text-[#113555] mb-2">
-            كلمة المرور الحالية
-          </label>
-          <input
-            id="current-password"
-            type="password"
-            value={currentPassword}
-            onChange={(e) => onCurrentPasswordChange(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl font-cairo text-sm bg-[#FFF3EB] border border-transparent focus:border-[#FF6400] focus:outline-none transition-colors input-shadow"
-          />
-        </div>
+      <div className="space-y-6">
+        <DashboardInput
+          id="current-password"
+          type={showCurrent ? 'text' : 'password'}
+          className='2xl:w-135'
+          label="كلمة المرور الحالية"
+          value={currentPassword}
+          onChange={(e) => onCurrentPasswordChange(e.target.value)}
+          error={touched.currentPassword ? errors.currentPassword : undefined}
+          leftIcon={
+            <button
+              type="button"
+              onClick={() => setShowCurrent((c) => !c)}
+              className="text-[#B6BCC5] hover:text-[#113555] transition-colors"
+              aria-label={showCurrent ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'}
+            >
+              {showCurrent ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
+            </button>
+          }
+        />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="new-password" className="block font-cairo font-medium text-sm text-[#113555] mb-2">
-              كلمة المرور الجديدة
-            </label>
-            <input
+            <DashboardInput
               id="new-password"
-              type="password"
+              type={showNew ? 'text' : 'password'}
+              label="كلمة المرور الجديدة"
               value={newPassword}
               onChange={(e) => onNewPasswordChange(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl font-cairo text-sm bg-[#FFF3EB] border border-transparent focus:border-[#FF6400] focus:outline-none transition-colors input-shadow"
+              error={touched.newPassword ? errors.newPassword : undefined}
+              helperText="8 أحرف على الأقل، حرف كبير، صغير، رقم، ورمز"
+              leftIcon={
+                <button
+                  type="button"
+                  onClick={() => setShowNew((c) => !c)}
+                  className="text-[#B6BCC5] hover:text-[#113555] transition-colors"
+                  aria-label={showNew ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'}
+                >
+                  {showNew ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
+              }
             />
+            {newPassword ? (
+              <>
+                <PasswordStrengthBar password={newPassword} />
+                <PasswordRulesChecklist password={newPassword} />
+              </>
+            ) : null}
           </div>
 
-          <div>
-            <label htmlFor="confirm-password" className="block font-cairo font-medium text-sm text-[#113555] mb-2">
-              تاكيد كلمة المرور
-            </label>
-            <input
-              id="confirm-password"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => onConfirmPasswordChange(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl font-cairo text-sm bg-[#FFF3EB] border border-transparent focus:border-[#FF6400] focus:outline-none transition-colors input-shadow"
-            />
-          </div>
+          <DashboardInput
+            id="confirm-password"
+            type={showConfirm ? 'text' : 'password'}
+            label="تاكيد كلمة المرور"
+            value={confirmPassword}
+            onChange={(e) => onConfirmPasswordChange(e.target.value)}
+            error={touched.confirmPassword ? errors.confirmPassword : undefined}
+            leftIcon={
+              <button
+                type="button"
+                onClick={() => setShowConfirm((c) => !c)}
+                className="text-[#B6BCC5] hover:text-[#113555] transition-colors"
+                aria-label={showConfirm ? 'إخفاء تأكيد كلمة المرور' : 'إظهار تأكيد كلمة المرور'}
+              >
+                {showConfirm ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            }
+          />
         </div>
       </div>
 

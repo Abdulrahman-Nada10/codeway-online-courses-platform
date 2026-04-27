@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   ChevronRight,
@@ -20,10 +20,10 @@ import { useState } from 'react';
 import { useAppSelector } from '../../store/hooks';
 import { selectAllCourses } from '../../store/selectors';
 import { StatusBadge } from '../../components/Statusbadge';
+import ProtectedRoute from '@/app/components/auth/ProtectedRoute';
 
 export default function CourseViewPage() {
   const params = useParams();
-  const router = useRouter();
   const courses = useAppSelector(selectAllCourses);
   const course = courses.find(c => c.id === params.id);
   const [expandedLesson, setExpandedLesson] = useState<string | null>(null);
@@ -54,8 +54,9 @@ export default function CourseViewPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-stone-50">
-      <div className="max-w-4xl mx-auto px-3 sm:px-6 py-6 sm:py-10">
+    <ProtectedRoute allowedRoles={['instructor']}>
+      <main className="min-h-screen bg-stone-50">
+        <div className="max-w-4xl mx-auto px-3 sm:px-6 py-6 sm:py-10">
 
         {/* Breadcrumb */}
         <nav aria-label="مسار التنقل" className="flex items-center gap-2 text-xs sm:text-sm text-stone-500 mb-4 sm:mb-6">
@@ -233,7 +234,8 @@ export default function CourseViewPage() {
           </div>
         )}
 
-      </div>
-    </main>
+        </div>
+      </main>
+    </ProtectedRoute>
   );
 }

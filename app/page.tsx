@@ -6,13 +6,11 @@ import Testimonials from "./components/Testimonials";
 import CTA from "./components/CTA";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-// import Sidebar from "./components/Sidebar";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#FFF8F0] overflow-x-hidden">
       <Navbar />
-      {/* <Sidebar /> */}
       <Hero />
       <Stats />
       <Features />

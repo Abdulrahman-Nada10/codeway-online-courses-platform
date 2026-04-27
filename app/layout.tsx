@@ -4,6 +4,7 @@ import "./globals.css";
 import ReduxProvider from "./components/ReduxProvider";
 import I18nProvider from "../providers/I18nProvider";
 import { ThemeProvider } from "../providers/ThemeProvider";
+import AuthProvider from "./providers/AuthProvider";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -78,13 +79,16 @@ export default function RootLayout({
       <body
         className={`${cairo.variable} antialiased bg-page-bg  transition-colors duration-300`}
       >
+        <AuthProvider>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+         
           <I18nProvider>
             <ReduxProvider>
               {children}
             </ReduxProvider>
           </I18nProvider>
         </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

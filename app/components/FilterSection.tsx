@@ -10,13 +10,10 @@ interface FilterSectionProps {
 
 const FilterSection: React.FC<FilterSectionProps> = ({ activeFilter, onFilterChange }) => {
   return (
-    <div className="mb-4 sm:mb-6">
-      <div className="bg-white rounded-2xl p-2 sm:p-3 lg:p-4 
-                flex flex-col sm:grid sm:grid-cols-2 
-                lg:flex lg:flex-row 
-                gap-2 sm:gap-3 border border-gray-200">
+    <div className="mb-4 sm:mb-6 relative right-6">
+      <div className="flex flex-col gap-2 rounded-2xl border border-gray-200 bg-white p-2 sm:grid sm:grid-cols-2 sm:gap-3 sm:p-3 lg:flex lg:flex-row lg:p-4">
         {filterOptions.map((filter) => {
-          const count = allCourses.filter(course => {
+          const count = allCourses.filter((course) => {
             if (filter.id === 'all') return true;
             return course.category === filter.id;
           }).length;
@@ -26,38 +23,21 @@ const FilterSection: React.FC<FilterSectionProps> = ({ activeFilter, onFilterCha
               key={filter.id}
               onClick={() => onFilterChange(filter.id)}
               className={`
-                group relative
-                w-full
-                lg:flex-1
-                min-h-11 sm:min-h-12 lg:min-h-14
-                px-3 sm:px-4 lg:px-6
-                rounded-xl
-                font-cairo font-semibold
-                text-xs sm:text-sm lg:text-lg
-                flex items-center justify-between gap-2 sm:gap-3
-                transition-all duration-300
-                border
+                group relative flex w-full items-center justify-between gap-3 rounded-xl border px-3 py-3
+                font-cairo text-xs font-semibold transition-all duration-300 sm:min-h-12 sm:px-4 sm:text-sm lg:min-h-14 lg:flex-1 lg:px-6 lg:text-lg
                 ${
                   activeFilter === filter.id
-                    ? 'bg-linear-to-r from-[#FF6400] to-[#FF8C42] text-white border-transparent shadow-md'
-                    : 'bg-white text-[#113555] border-gray-300 hover:border-[#FF6400] hover:shadow-sm'
+                    ? 'border-transparent bg-linear-to-r from-[#FF6400] to-[#FF8C42] text-white shadow-md'
+                    : 'border-gray-300 bg-white text-[#113555] hover:border-[#FF6400] hover:shadow-sm'
                 }
               `}
             >
-              <span className="truncate ">{filter.label}</span>
+              <span className="truncate">{filter.label}</span>
 
               <span
                 className={`
-                  text-[10px] sm:text-xs
-                  px-2 sm:px-5 py-0.5 sm:py-1
-                  rounded-full
-                  transition-all duration-300
-                  shrink-0
-                  ${
-                    activeFilter === filter.id
-                      ? ' text-white'
-                      : ' text-black group-hover:bg-orange-50'
-                  }
+                  shrink-0 rounded-full px-2 py-0.5 text-[10px] transition-all duration-300 sm:px-4 sm:py-1 sm:text-xs
+                  ${activeFilter === filter.id ? 'text-white' : 'text-black group-hover:bg-orange-50'}
                 `}
               >
                 ({count})
@@ -71,4 +51,3 @@ const FilterSection: React.FC<FilterSectionProps> = ({ activeFilter, onFilterCha
 };
 
 export default FilterSection;
-

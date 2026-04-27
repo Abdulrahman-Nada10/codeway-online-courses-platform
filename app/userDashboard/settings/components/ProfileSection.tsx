@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { Camera, Check } from 'lucide-react';
+import DashboardInput from '@/app/components/ui/DashboardInput';
 
 interface ProfileSectionProps {
   previewUrl: string;
@@ -12,6 +13,8 @@ interface ProfileSectionProps {
     phone: string;
     address: string;
   };
+  errors?: Partial<Record<keyof ProfileSectionProps['userData'], string>>;
+  touched?: Partial<Record<keyof ProfileSectionProps['userData'], boolean>>;
   onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSave: () => void;
@@ -21,6 +24,8 @@ interface ProfileSectionProps {
 export default function ProfileSection({
   previewUrl,
   userData,
+  errors = {},
+  touched = {},
   onFileChange,
   onInputChange,
   onSave,
@@ -65,61 +70,45 @@ export default function ProfileSection({
         </div>
 
         <div className="flex-1 w-full grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-          <div>
-            <label htmlFor="fullName" className="block font-cairo font-medium text-sm text-[#113555] mb-2">
-              الاسم الكامل
-            </label>
-            <input
-              id="fullName"
-              type="text"
-              name="fullName"
-              value={userData.fullName}
-              onChange={onInputChange}
-              className="w-full px-4 py-3 rounded-xl font-cairo text-sm bg-[#FFF3EB] border border-transparent focus:border-[#FF6400] focus:outline-none transition-colors input-shadow"
-            />
-          </div>
+          <DashboardInput
+            id="fullName"
+            name="fullName"
+            type="text"
+            label="الاسم الكامل"
+            value={userData.fullName}
+            onChange={onInputChange}
+            error={touched.fullName ? errors.fullName : undefined}
+          />
 
-          <div>
-            <label htmlFor="email" className="block font-cairo font-medium text-sm text-[#113555] mb-2">
-              البريد الإلكتروني
-            </label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              value={userData.email}
-              onChange={onInputChange}
-              className="w-full px-4 py-3 rounded-xl font-cairo text-sm bg-[#FFF3EB] border border-transparent focus:border-[#FF6400] focus:outline-none transition-colors input-shadow"
-            />
-          </div>
+          <DashboardInput
+            id="email"
+            name="email"
+            type="email"
+            label="البريد الإلكتروني"
+            value={userData.email}
+            onChange={onInputChange}
+            error={touched.email ? errors.email : undefined}
+          />
 
-          <div>
-            <label htmlFor="phone" className="block font-cairo font-medium text-sm text-[#113555] mb-2">
-              رقم التليفون
-            </label>
-            <input
-              id="phone"
-              type="tel"
-              name="phone"
-              value={userData.phone}
-              onChange={onInputChange}
-              className="w-full px-4 py-3 rounded-xl font-cairo text-sm bg-[#FFF3EB] border border-transparent focus:border-[#FF6400] focus:outline-none transition-colors input-shadow"
-            />
-          </div>
+          <DashboardInput
+            id="phone"
+            name="phone"
+            type="tel"
+            label="رقم التليفون"
+            value={userData.phone}
+            onChange={onInputChange}
+            error={touched.phone ? errors.phone : undefined}
+          />
 
-          <div>
-            <label htmlFor="address" className="block font-cairo font-medium text-sm text-[#113555] mb-2">
-              العنوان
-            </label>
-            <input
-              id="address"
-              type="text"
-              name="address"
-              value={userData.address}
-              onChange={onInputChange}
-              className="w-full px-4 py-3 rounded-xl font-cairo text-sm bg-[#FFF3EB] border border-transparent focus:border-[#FF6400] focus:outline-none transition-colors input-shadow"
-            />
-          </div>
+          <DashboardInput
+            id="address"
+            name="address"
+            type="text"
+            label="العنوان"
+            value={userData.address}
+            onChange={onInputChange}
+            error={touched.address ? errors.address : undefined}
+          />
         </div>
       </div>
 
