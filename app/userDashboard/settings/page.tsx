@@ -2,12 +2,22 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/app/hooks/useAuth';
+import { useAppDispatch } from '@/app/store/hooks';
+import { setContext } from '@/app/store/searchSlice';
 import ProfileSection from './components/ProfileSection';
 import NotificationsSection from './components/NotificationsSection';
 import SecuritySection from './components/SecuritySection';
 import PaymentsSection from './components/PaymentsSection';
 import SettingsTabs, { SettingsTab } from './components/SettingsTabs';
 import { User } from '@/types/auth';
+import { toast } from 'sonner';
+import {
+  email,
+  getPasswordStrength,
+  match,
+  required,
+  validatePasswordStrength,
+} from '@/app/libs/validation';
 
 type UserFormState = {
   fullName: string;
@@ -25,8 +35,18 @@ function getDefaultUserData(user: User | null): UserFormState {
   };
 }
 
+type ProfileErrors = Partial<Record<keyof UserFormState, string>>;
+type ProfileTouched = Partial<Record<keyof UserFormState, boolean>>;
+
+type SecurityErrors = Partial<Record<'currentPassword' | 'newPassword' | 'confirmPassword', string>>;
+type SecurityTouched = Partial<Record<'currentPassword' | 'newPassword' | 'confirmPassword', boolean>>;
+
+type PaymentsErrors = Partial<Record<'accountHolderName' | 'bankName' | 'iban' | 'swiftCode', string>>;
+type PaymentsTouched = Partial<Record<'accountHolderName' | 'bankName' | 'iban' | 'swiftCode', boolean>>;
+
 export default function Settings() {
   const { user, updateProfile } = useAuth();
+  const dispatch = useAppDispatch();
   const authUser = user?.role === 'user' ? user : null;
   const [activeTab, setActiveTab] = useState<SettingsTab>('profile');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -39,6 +59,10 @@ export default function Settings() {
     studyReminders: false,
     offersAndDiscounts: true,
   });
+
+  useEffect(() => {
+    dispatch(setContext(null));
+  }, [dispatch]);
 
   useEffect(() => {
     setUserData(getDefaultUserData(authUser));
@@ -57,6 +81,16 @@ export default function Settings() {
     swiftCode: '',
   });
 
+  /* ─── Errors & Touched ─── */
+  const [profileErrors, setProfileErrors] = useState<ProfileErrors>({});
+  const [profileTouched, setProfileTouched] = useState<ProfileTouched>({});
+
+  const [securityErrors, setSecurityErrors] = useState<SecurityErrors>({});
+  const [securityTouched, setSecurityTouched] = useState<SecurityTouched>({});
+
+  const [paymentsErrors, setPaymentsErrors] = useState<PaymentsErrors>({});
+  const [paymentsTouched, setPaymentsTouched] = useState<PaymentsTouched>({});
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
@@ -65,13 +99,13 @@ export default function Settings() {
     }
 
     if (file.size > 2 * 1024 * 1024) {
-      alert('حجم الملف يجب ألا يتجاوز 2 ميجابايت');
+      toast.error('حجم الملف يجب ألا يتجاوز 2 ميجابايت');
       return;
     }
 
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
     if (!allowedTypes.includes(file.type)) {
-      alert('صيغة الملف يجب أن تكون jpg أو png أو gif');
+      toast.error('صيغة الملف يجب أن تكون jpg أو png أو gif');
       return;
     }
 
@@ -86,9 +120,41 @@ export default function Settings() {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setUserData((current) => ({ ...current, [name]: value }));
+    if (profileErrors[name as keyof UserFormState]) {
+      setProfileErrors((current) => {
+        const next = { ...current };
+        delete next[name as keyof UserFormState];
+        return next;
+      });
+    }
+  };
+
+  const validateProfile = (): ProfileErrors => {
+    const errors: ProfileErrors = {};
+    const nameError = required(userData.fullName, 'الاسم الكامل مطلوب');
+    if (nameError) errors.fullName = nameError;
+
+    const emailError = email(userData.email);
+    if (emailError) errors.email = emailError;
+
+    const phoneError = required(userData.phone, 'رقم التليفون مطلوب');
+    if (phoneError) errors.phone = phoneError;
+
+    const addressError = required(userData.address, 'العنوان مطلوب');
+    if (addressError) errors.address = addressError;
+
+    return errors;
   };
 
   const handleProfileSave = async () => {
+    const errors = validateProfile();
+    setProfileErrors(errors);
+    setProfileTouched({ fullName: true, email: true, phone: true, address: true });
+
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+
     try {
       await updateProfile({
         name: userData.fullName.trim(),
@@ -98,9 +164,9 @@ export default function Settings() {
         avatar: previewUrl,
       });
 
-      alert('تم حفظ التغييرات بنجاح');
+      toast.success('تم حفظ التغييرات بنجاح');
     } catch (saveError) {
-      alert(
+      toast.error(
         saveError instanceof Error
           ? saveError.message
           : 'تعذر حفظ التغييرات.'
@@ -112,6 +178,8 @@ export default function Settings() {
     setUserData(getDefaultUserData(authUser));
     setPreviewUrl(authUser?.avatar ?? '/profile.jpg');
     setSelectedFile(null);
+    setProfileErrors({});
+    setProfileTouched({});
   };
 
   const handleNotificationToggle = (
@@ -124,8 +192,7 @@ export default function Settings() {
   };
 
   const handleNotificationSave = () => {
-    console.log('Saving notification settings:', notificationSettings);
-    alert('تم حفظ التغييرات بنجاح');
+    toast.success('تم حفظ التغييرات بنجاح');
   };
 
   const handleNotificationCancel = () => {
@@ -137,34 +204,98 @@ export default function Settings() {
     });
   };
 
+  const validateSecurity = (): SecurityErrors => {
+    const errors: SecurityErrors = {};
+
+    const currentError = required(currentPassword, 'كلمة المرور الحالية مطلوبة');
+    if (currentError) errors.currentPassword = currentError;
+
+    const newError = validatePasswordStrength(newPassword);
+    if (newError) errors.newPassword = newError;
+
+    const confirmError = match(newPassword, confirmPassword, 'كلمتا المرور غير متطابقتين');
+    if (confirmError && confirmPassword) errors.confirmPassword = confirmError;
+
+    return errors;
+  };
+
   const handlePasswordSave = () => {
-    if (newPassword !== confirmPassword) {
-      alert('كلمات المرور غير متطابقة');
+    const errors = validateSecurity();
+    setSecurityErrors(errors);
+    setSecurityTouched({ currentPassword: true, newPassword: true, confirmPassword: true });
+
+    if (Object.keys(errors).length > 0) {
       return;
     }
 
-    if (newPassword.length < 6) {
-      alert('كلمة المرور يجب أن تكون 6 أحرف على الأقل');
+    if (getPasswordStrength(newPassword) === 'weak') {
+      setSecurityErrors((current) => ({
+        ...current,
+        newPassword: 'من فضلك أدخل كلمة مرور أقوى',
+      }));
       return;
     }
 
-    console.log('Saving password:', { currentPassword, newPassword });
-    alert('تم تغيير كلمة المرور بنجاح');
+    toast.success('تم تغيير كلمة المرور بنجاح');
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
+    setSecurityErrors({});
+    setSecurityTouched({});
   };
 
   const handlePasswordCancel = () => {
     setCurrentPassword('');
     setNewPassword('');
     setConfirmPassword('');
+    setSecurityErrors({});
+    setSecurityTouched({});
+  };
+
+  const validatePayments = (): PaymentsErrors => {
+    const errors: PaymentsErrors = {};
+
+    const holderError = required(bankData.accountHolderName, 'اسم صاحب الحساب مطلوب');
+    if (holderError) errors.accountHolderName = holderError;
+
+    const bankError = required(bankData.bankName, 'اسم البنك مطلوب');
+    if (bankError) errors.bankName = bankError;
+
+    const ibanError = required(bankData.iban, 'رقم IBAN مطلوب');
+    if (ibanError) errors.iban = ibanError;
+
+    const swiftError = required(bankData.swiftCode, 'رمز SWIFT مطلوب');
+    if (swiftError) errors.swiftCode = swiftError;
+
+    return errors;
   };
 
   const handleBankDataChange = (field: string, value: string) => {
     setBankData((current) => ({ ...current, [field]: value }));
+    if (paymentsErrors[field as keyof PaymentsErrors]) {
+      setPaymentsErrors((current) => {
+        const next = { ...current };
+        delete next[field as keyof PaymentsErrors];
+        return next;
+      });
+    }
   };
 
   const handlePaymentsSave = () => {
-    console.log('Saving bank data:', bankData);
-    alert('تم حفظ البيانات البنكية بنجاح');
+    const errors = validatePayments();
+    setPaymentsErrors(errors);
+    setPaymentsTouched({
+      accountHolderName: true,
+      bankName: true,
+      iban: true,
+      swiftCode: true,
+    });
+
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+
+    toast.success('تم حفظ البيانات البنكية بنجاح');
   };
 
   const handlePaymentsCancel = () => {
@@ -174,6 +305,8 @@ export default function Settings() {
       iban: '',
       swiftCode: '',
     });
+    setPaymentsErrors({});
+    setPaymentsTouched({});
   };
 
   return (
@@ -200,6 +333,8 @@ export default function Settings() {
                   previewUrl={previewUrl}
                   selectedFile={selectedFile}
                   userData={userData}
+                  errors={profileErrors}
+                  touched={profileTouched}
                   onFileChange={handleFileChange}
                   onInputChange={handleInputChange}
                   onSave={handleProfileSave}
@@ -221,6 +356,8 @@ export default function Settings() {
                   currentPassword={currentPassword}
                   newPassword={newPassword}
                   confirmPassword={confirmPassword}
+                  errors={securityErrors}
+                  touched={securityTouched}
                   onCurrentPasswordChange={setCurrentPassword}
                   onNewPasswordChange={setNewPassword}
                   onConfirmPasswordChange={setConfirmPassword}
@@ -232,6 +369,8 @@ export default function Settings() {
               {activeTab === 'payments' && (
                 <PaymentsSection
                   bankData={bankData}
+                  errors={paymentsErrors}
+                  touched={paymentsTouched}
                   onBankDataChange={handleBankDataChange}
                   onSave={handlePaymentsSave}
                   onCancel={handlePaymentsCancel}
@@ -242,5 +381,6 @@ export default function Settings() {
         </main>
       </div>
     </div>
+    
   );
 }

@@ -11,6 +11,7 @@ import PaymentsSection from './components/PaymentsSection';
 import ProtectedRoute from "@/app/components/auth/ProtectedRoute";
 import { useAuth } from "../hooks/useAuth";
 import { Instructor } from '@/types/auth';
+import { toast } from 'sonner';
 
 type InstructorFormState = {
   fullName: string;
@@ -98,9 +99,9 @@ export default function InstructorSettingsPage() {
         avatar: previewUrl,
       });
 
-      alert('تم حفظ التغييرات بنجاح');
+      toast.success('تم حفظ التغييرات بنجاح');
     } catch (saveError) {
-      alert(
+      toast.error(
         saveError instanceof Error
           ? saveError.message
           : 'تعذر حفظ التغييرات.'

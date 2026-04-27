@@ -2,65 +2,120 @@
 
 import { FormEvent, Suspense, useState } from "react";
 import { Eye, EyeOff, Lock, LockKeyhole } from "lucide-react";
+import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import PublicRoute from "@/app/components/auth/PublicRoute";
 import {
   AuthBadge,
   AuthInput,
-  AuthMessage,
   AuthPrimaryButton,
   AuthSecondaryLinkButton,
   AuthShell,
+  PasswordRulesChecklist,
+  PasswordStrengthBar,
 } from "@/app/components/auth/AuthUi";
 import { useAuth } from "@/app/hooks/useAuth";
+import {
+  getPasswordStrength,
+  match,
+  validatePasswordStrength,
+} from "@/app/libs/validation";
+
+type ResetFormData = {
+  password: string;
+  confirmPassword: string;
+};
+
+type ResetFormErrors = Partial<Record<keyof ResetFormData, string>>;
+type ResetFormTouched = Partial<Record<keyof ResetFormData, boolean>>;
+
+function validateReset(values: ResetFormData): ResetFormErrors {
+  const errors: ResetFormErrors = {};
+
+  const passwordError = validatePasswordStrength(values.password);
+  if (passwordError) errors.password = passwordError;
+
+  const confirmError = match(
+    values.password,
+    values.confirmPassword,
+    "كلمتا المرور غير متطابقتين"
+  );
+  if (confirmError && values.confirmPassword)
+    errors.confirmPassword = confirmError;
+
+  return errors;
+}
 
 function ResetPasswordContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token") ?? "";
   const { resetPassword } = useAuth();
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [formData, setFormData] = useState<ResetFormData>({
+    password: "",
+    confirmPassword: "",
+  });
+  const [errors, setErrors] = useState<ResetFormErrors>({});
+  const [touched, setTouched] = useState<ResetFormTouched>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const handleChange = (field: keyof ResetFormData, value: string) => {
+    setFormData((current) => ({ ...current, [field]: value }));
+    if (errors[field]) {
+      setErrors((current) => {
+        const next = { ...current };
+        delete next[field];
+        return next;
+      });
+    }
+  };
+
+  const handleBlur = (field: keyof ResetFormData) => {
+    setTouched((current) => ({ ...current, [field]: true }));
+    const fieldErrors = validateReset(formData);
+    if (fieldErrors[field]) {
+      setErrors((current) => ({ ...current, [field]: fieldErrors[field] }));
+    }
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setError("");
-    setSuccess(false);
 
     if (!token) {
-      setError("رابط إعادة التعيين غير صالح.");
+      toast.error("رابط إعادة التعيين غير صالح.");
       return;
     }
 
-    if (password.length < 6) {
-      setError("كلمة المرور يجب أن تكون 6 أحرف على الأقل.");
+    const validationErrors = validateReset(formData);
+    setErrors(validationErrors);
+    setTouched({ password: true, confirmPassword: true });
+
+    if (Object.keys(validationErrors).length > 0) {
       return;
     }
 
-    if (password !== confirmPassword) {
-      setError("تأكيد كلمة المرور غير مطابق.");
+    if (getPasswordStrength(formData.password) === "weak") {
+      setErrors((current) => ({
+        ...current,
+        password: "من فضلك أدخل كلمة مرور أقوى",
+      }));
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      await resetPassword({
-        token,
-        password,
-      });
-
-      setSuccess(true);
+      await resetPassword({ token, password: formData.password });
+      toast.success(
+        "تم تحديث كلمة المرور بنجاح. سيتم تحويلك إلى صفحة الدخول."
+      );
       setTimeout(() => {
         router.replace("/login");
       }, 1200);
     } catch (submissionError) {
-      setError(
+      toast.error(
         submissionError instanceof Error
           ? submissionError.message
           : "تعذر إعادة تعيين كلمة المرور."
@@ -80,40 +135,62 @@ function ResetPasswordContent() {
         </AuthBadge>
       }
     >
-      <form className="space-y-3" onSubmit={handleSubmit}>
-        <AuthInput
-          type={showPassword ? "text" : "password"}
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          placeholder="كلمة المرور الجديدة"
-          rightIcon={<Lock className="h-4 w-4" />}
-          leftIcon={
-            <button
-              type="button"
-              onClick={() => setShowPassword((current) => !current)}
-              className="text-[#B6BCC5]"
-              aria-label={showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}
-            >
-              {showPassword ? (
-                <EyeOff className="h-4 w-4" />
-              ) : (
-                <Eye className="h-4 w-4" />
-              )}
-            </button>
-          }
-          autoComplete="new-password"
-        />
+      <form className="space-y-3" onSubmit={handleSubmit} noValidate>
+        <div>
+          <AuthInput
+            type={showPassword ? "text" : "password"}
+            value={formData.password}
+            onChange={(event) =>
+              handleChange("password", event.target.value)
+            }
+            onBlur={() => handleBlur("password")}
+            placeholder="كلمة المرور الجديدة"
+            rightIcon={<Lock className="h-4 w-4" />}
+            leftIcon={
+              <button
+                type="button"
+                onClick={() => setShowPassword((current) => !current)}
+                className="text-[#B6BCC5]"
+                aria-label={
+                  showPassword
+                    ? "إخفاء كلمة المرور"
+                    : "إظهار كلمة المرور"
+                }
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            }
+            autoComplete="new-password"
+            error={touched.password ? errors.password : undefined}
+            helperText="8 أحرف على الأقل، حرف كبير، صغير، رقم، ورمز"
+          />
+          {formData.password ? (
+            <>
+              <PasswordStrengthBar password={formData.password} />
+              <PasswordRulesChecklist password={formData.password} />
+            </>
+          ) : null}
+        </div>
 
         <AuthInput
           type={showConfirmPassword ? "text" : "password"}
-          value={confirmPassword}
-          onChange={(event) => setConfirmPassword(event.target.value)}
+          value={formData.confirmPassword}
+          onChange={(event) =>
+            handleChange("confirmPassword", event.target.value)
+          }
+          onBlur={() => handleBlur("confirmPassword")}
           placeholder="تأكيد كلمة المرور"
           rightIcon={<Lock className="h-4 w-4" />}
           leftIcon={
             <button
               type="button"
-              onClick={() => setShowConfirmPassword((current) => !current)}
+              onClick={() =>
+                setShowConfirmPassword((current) => !current)
+              }
               className="text-[#B6BCC5]"
               aria-label={
                 showConfirmPassword
@@ -129,17 +206,15 @@ function ResetPasswordContent() {
             </button>
           }
           autoComplete="new-password"
+          error={
+            touched.confirmPassword ? errors.confirmPassword : undefined
+          }
         />
 
-        {error ? <AuthMessage tone="error">{error}</AuthMessage> : null}
-
-        {success ? (
-          <AuthMessage tone="success">
-            تم تحديث كلمة المرور بنجاح. سيتم تحويلك إلى صفحة الدخول.
-          </AuthMessage>
-        ) : null}
-
-        <AuthPrimaryButton type="submit" disabled={isSubmitting || !token}>
+        <AuthPrimaryButton
+          type="submit"
+          disabled={isSubmitting || !token}
+        >
           {isSubmitting ? "جاري الحفظ..." : "حفظ كلمة المرور"}
         </AuthPrimaryButton>
 
@@ -162,7 +237,9 @@ function ResetPasswordFallback() {
         </AuthBadge>
       }
     >
-      <div className="text-center text-[12px] text-[#A0A0A0]">جاري التحميل...</div>
+      <div className="text-center text-[12px] text-[#A0A0A0]">
+        جاري التحميل...
+      </div>
     </AuthShell>
   );
 }
@@ -176,3 +253,4 @@ export default function ResetPasswordPage() {
     </PublicRoute>
   );
 }
+

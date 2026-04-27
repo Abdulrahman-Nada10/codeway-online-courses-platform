@@ -2,42 +2,51 @@
 
 import { FormEvent, useState } from "react";
 import { LockKeyhole, Mail } from "lucide-react";
+import { toast } from "sonner";
 import PublicRoute from "@/app/components/auth/PublicRoute";
 import {
   AuthBadge,
   AuthInput,
-  AuthMessage,
   AuthPrimaryButton,
   AuthSecondaryLinkButton,
   AuthShell,
 } from "@/app/components/auth/AuthUi";
 import { useAuth } from "@/app/hooks/useAuth";
-import { ForgotPasswordResult } from "@/types/auth";
+import { email } from "@/app/libs/validation";
 
 export default function ForgotPasswordPage() {
   const { forgotPassword } = useAuth();
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState<ForgotPasswordResult | null>(null);
+  const [emailValue, setEmailValue] = useState("");
+  const [error, setError] = useState<string | undefined>(undefined);
+  const [touched, setTouched] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (value: string) => {
+    setEmailValue(value);
+    if (error) setError(undefined);
+  };
+
+  const handleBlur = () => {
+    setTouched(true);
+    const validationError = email(emailValue);
+    if (validationError) setError(validationError);
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setError("");
-    setSuccess(null);
 
-    if (!email.trim()) {
-      setError("أدخل البريد الإلكتروني أولاً.");
-      return;
-    }
+    setTouched(true);
+    const validationError = email(emailValue);
+    setError(validationError);
+    if (validationError) return;
 
     setIsSubmitting(true);
 
     try {
-      const result = await forgotPassword(email.trim());
-      setSuccess(result);
+      const result = await forgotPassword(emailValue.trim());
+      toast.success(`تم إرسال تعليمات إعادة التعيين إلى ${result.email}`);
     } catch (submissionError) {
-      setError(
+      toast.error(
         submissionError instanceof Error
           ? submissionError.message
           : "تعذر إرسال طلب إعادة التعيين."
@@ -58,33 +67,17 @@ export default function ForgotPasswordPage() {
           </AuthBadge>
         }
       >
-        <form className="space-y-3" onSubmit={handleSubmit}>
+        <form className="space-y-3" onSubmit={handleSubmit} noValidate>
           <AuthInput
             type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            value={emailValue}
+            onChange={(event) => handleChange(event.target.value)}
+            onBlur={handleBlur}
             placeholder="البريد الإلكتروني"
             rightIcon={<Mail className="h-4 w-4" />}
             autoComplete="email"
+            error={touched ? error : undefined}
           />
-
-          {error ? <AuthMessage tone="error">{error}</AuthMessage> : null}
-
-          {success ? (
-            <AuthMessage tone="success">
-              <div className="space-y-1">
-                <p>تم إرسال تعليمات إعادة التعيين إلى {success.email}.</p>
-                {success.resetUrl ? (
-                  <a
-                    href={success.resetUrl}
-                    className="font-semibold text-[#FF6A00] hover:underline"
-                  >
-                    رابط إعادة التعيين التجريبي
-                  </a>
-                ) : null}
-              </div>
-            </AuthMessage>
-          ) : null}
 
           <AuthPrimaryButton type="submit" disabled={isSubmitting}>
             {isSubmitting ? "جاري الإرسال..." : "إرسال الكود"}
@@ -98,3 +91,4 @@ export default function ForgotPasswordPage() {
     </PublicRoute>
   );
 }
+

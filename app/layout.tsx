@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Cairo } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 import ReduxProvider from "./components/ReduxProvider";
 import AuthProvider from "./providers/AuthProvider";
@@ -75,6 +76,17 @@ export default function RootLayout({
             {children}
           </ReduxProvider>
         </AuthProvider>
+        <Toaster
+          position="top-left"
+          richColors
+          closeButton
+          duration={3000}
+          toastOptions={{
+            style: {
+              fontFamily: 'var(--font-cairo), system-ui, sans-serif',
+            },
+          }}
+        />
       </body>
     </html>
   );

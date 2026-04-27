@@ -3,28 +3,32 @@
 import { useMemo, useState } from 'react';
 import { CircleHelp } from 'lucide-react';
 import { liveSessions } from '../data';
-import { SessionTab } from '../types';
+import { SessionTab, LiveSession } from '../types';
 import { LiveSessionTabs } from './LiveSessionTabs';
 import { SessionCard } from './SessionCard';
 
-export function LiveSessionsHome() {
+interface LiveSessionsHomeProps {
+  sessions?: LiveSession[];
+}
+
+export function LiveSessionsHome({ sessions = liveSessions }: LiveSessionsHomeProps) {
   const [activeTab, setActiveTab] = useState<SessionTab>('live');
 
   const groupedSessions = useMemo(
     () => ({
-      upcoming: liveSessions.filter((session) => session.category === 'upcoming'),
-      live: liveSessions.filter((session) => session.category === 'live'),
-      past: liveSessions.filter((session) => session.category === 'past'),
+      upcoming: sessions.filter((session) => session.category === 'upcoming'),
+      live: sessions.filter((session) => session.category === 'live'),
+      past: sessions.filter((session) => session.category === 'past'),
     }),
-    [],
+    [sessions],
   );
 
   const visibleSessions = groupedSessions[activeTab];
 
   return (
     <div className="mx-auto max-w-375 xl:mr-0 lg:mr-40">
-      <div className="mb-5 text-right sm:mb-6 ">
-        <h1 className="text-2xl font-bold text-[#113555] sm:text-3xl ">حصصي المباشرة</h1>
+      <div className="mb-5 text-right sm:mb-6">
+        <h1 className="text-2xl font-bold text-[#113555] sm:text-3xl">حصصي المباشرة</h1>
         <p className="mt-2 max-w-2xl text-xs leading-6 text-[#6b7280] sm:text-sm">
           تابع الجلسات القادمة أو انتقل مباشرة إلى البث المفتوح الآن.
         </p>

@@ -2,31 +2,87 @@
 
 import { FormEvent, useState } from "react";
 import { ArrowUpToLine, User } from "lucide-react";
+import { toast } from "sonner";
 import PublicRoute from "@/app/components/auth/PublicRoute";
 import {
   AuthFooterLine,
   AuthInput,
-  AuthMessage,
   AuthPrimaryButton,
   AuthShell,
   AuthSocialLinks,
 } from "@/app/components/auth/AuthUi";
+import { required } from "@/app/libs/validation";
+
+type RecoverFormData = {
+  name: string;
+  proofType: string;
+};
+
+type RecoverFormErrors = Partial<Record<keyof RecoverFormData, string>>;
+type RecoverFormTouched = Partial<Record<keyof RecoverFormData, boolean>>;
+
+function validateRecover(values: RecoverFormData, hasFile: boolean): RecoverFormErrors {
+  const errors: RecoverFormErrors = {};
+
+  const nameError = required(values.name, "اسم العائلة مطلوب");
+  if (nameError) errors.name = nameError;
+
+  const proofTypeError = required(values.proofType, "نوع الإثبات مطلوب");
+  if (proofTypeError) errors.proofType = proofTypeError;
+
+  if (!hasFile) {
+    (errors as Record<string, string>).proofFile = "أرفق لقطة الشاشة";
+  }
+
+  return errors;
+}
 
 export default function RecoverAccountPage() {
-  const [name, setName] = useState("");
-  const [proofType, setProofType] = useState("");
+  const [formData, setFormData] = useState<RecoverFormData>({ name: "", proofType: "" });
   const [proofFile, setProofFile] = useState<File | null>(null);
-  const [error, setError] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState<RecoverFormErrors & { proofFile?: string }>({});
+  const [touched, setTouched] = useState<RecoverFormTouched & { proofFile?: boolean }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (field: keyof RecoverFormData, value: string) => {
+    setFormData((current) => ({ ...current, [field]: value }));
+    if (errors[field]) {
+      setErrors((current) => {
+        const next = { ...current };
+        delete next[field];
+        return next;
+      });
+    }
+  };
+
+  const handleBlur = (field: keyof RecoverFormData) => {
+    setTouched((current) => ({ ...current, [field]: true }));
+    const fieldErrors = validateRecover(formData, Boolean(proofFile));
+    if (fieldErrors[field]) {
+      setErrors((current) => ({ ...current, [field]: fieldErrors[field] }));
+    }
+  };
+
+  const handleFileChange = (file: File | null) => {
+    setProofFile(file);
+    setTouched((current) => ({ ...current, proofFile: true }));
+    if (errors.proofFile && file) {
+      setErrors((current) => {
+        const next = { ...current };
+        delete next.proofFile;
+        return next;
+      });
+    }
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setError("");
-    setSubmitted(false);
 
-    if (!name.trim() || !proofType.trim() || !proofFile) {
-      setError("أكمل البيانات وأرفق لقطة الشاشة.");
+    const validationErrors = validateRecover(formData, Boolean(proofFile));
+    setErrors(validationErrors);
+    setTouched({ name: true, proofType: true, proofFile: true });
+
+    if (Object.keys(validationErrors).length > 0) {
       return;
     }
 
@@ -34,7 +90,7 @@ export default function RecoverAccountPage() {
 
     setTimeout(() => {
       setIsSubmitting(false);
-      setSubmitted(true);
+      toast.success("تم إرسال طلب استرجاع الحساب بنجاح");
     }, 450);
   };
 
@@ -58,40 +114,49 @@ export default function RecoverAccountPage() {
           </div>
         }
       >
-        <form className="space-y-3" onSubmit={handleSubmit}>
+        <form className="space-y-3" onSubmit={handleSubmit} noValidate>
           <AuthInput
             type="text"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
+            value={formData.name}
+            onChange={(event) => handleChange("name", event.target.value)}
+            onBlur={() => handleBlur("name")}
             placeholder="اسم عائلتك"
             rightIcon={<User className="h-4 w-4" />}
+            error={touched.name ? errors.name : undefined}
           />
 
           <AuthInput
             type="text"
-            value={proofType}
-            onChange={(event) => setProofType(event.target.value)}
+            value={formData.proofType}
+            onChange={(event) => handleChange("proofType", event.target.value)}
+            onBlur={() => handleBlur("proofType")}
             placeholder="نوع إثباتك"
+            error={touched.proofType ? errors.proofType : undefined}
           />
 
-          <label className="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-sm bg-[#FFD2B7] text-[13px] font-semibold text-[#FF6A00] transition hover:bg-[#FFC6A3]">
-            <ArrowUpToLine className="h-4 w-4" />
-            <span>{proofFile ? proofFile.name : "خذ لقطة شاشة"}</span>
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={(event) => setProofFile(event.target.files?.[0] ?? null)}
-            />
-          </label>
-
-          {error ? <AuthMessage tone="error">{error}</AuthMessage> : null}
-
-          {submitted ? (
-            <AuthMessage tone="success">
-              تم إرسال طلب استرجاع الحساب بنجاح.
-            </AuthMessage>
-          ) : null}
+          <div>
+            <label
+              className={`flex h-10 cursor-pointer items-center justify-center gap-2 rounded-sm text-[13px] font-semibold transition ${
+                touched.proofFile && errors.proofFile
+                  ? "bg-red-100 text-red-600 border border-red-300"
+                  : "bg-[#FFD2B7] text-[#FF6A00] hover:bg-[#FFC6A3]"
+              }`}
+            >
+              <ArrowUpToLine className="h-4 w-4" />
+              <span>{proofFile ? proofFile.name : "خذ لقطة شاشة"}</span>
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(event) => handleFileChange(event.target.files?.[0] ?? null)}
+              />
+            </label>
+            {touched.proofFile && errors.proofFile ? (
+              <p className="mt-1 text-right text-[11px] font-medium text-red-500">
+                {errors.proofFile}
+              </p>
+            ) : null}
+          </div>
 
           <AuthPrimaryButton type="submit" disabled={isSubmitting}>
             {isSubmitting ? "جاري الإرسال..." : "إرسال"}
@@ -101,3 +166,4 @@ export default function RecoverAccountPage() {
     </PublicRoute>
   );
 }
+

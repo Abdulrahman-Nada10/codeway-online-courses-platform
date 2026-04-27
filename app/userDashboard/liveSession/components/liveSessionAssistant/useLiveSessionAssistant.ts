@@ -2,6 +2,7 @@
 
 import { useParams, useSearchParams } from 'next/navigation';
 import { ChangeEvent, FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { toast } from 'sonner';
 import { sendAiChatMessage } from '@/services/aiChat';
 import {
   isValidCourseId,
@@ -487,6 +488,7 @@ export function useLiveSessionAssistant({
       }
 
       setComposerError(errorText);
+      toast.error(errorText, { id: 'ai-chat-error' });
     } finally {
       setIsLoading(false);
       isSendingRef.current = false;

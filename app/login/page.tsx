@@ -3,34 +3,77 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { toast } from "sonner";
 import PublicRoute from "@/app/components/auth/PublicRoute";
 import {
   AuthDivider,
   AuthFooterLine,
   AuthGoogleButton,
   AuthInput,
-  AuthMessage,
   AuthPrimaryButton,
   AuthShell,
 } from "@/app/components/auth/AuthUi";
 import { useAuth } from "@/app/hooks/useAuth";
+import { email, required } from "@/app/libs/validation";
+
+type LoginFormData = {
+  email: string;
+  password: string;
+};
+
+type LoginFormErrors = Partial<Record<keyof LoginFormData, string>>;
+type LoginFormTouched = Partial<Record<keyof LoginFormData, boolean>>;
+
+function validateLogin(values: LoginFormData): LoginFormErrors {
+  const errors: LoginFormErrors = {};
+  const emailError = email(values.email);
+  if (emailError) errors.email = emailError;
+
+  const passwordError = required(values.password, "كلمة المرور مطلوبة");
+  if (passwordError) errors.password = passwordError;
+
+  return errors;
+}
 
 export default function LoginPage() {
   const { login } = useAuth();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
   });
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState<LoginFormErrors>({});
+  const [touched, setTouched] = useState<LoginFormTouched>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  const handleChange = (field: keyof LoginFormData, value: string) => {
+    setFormData((current) => ({ ...current, [field]: value }));
+    // Clear error while typing
+    if (errors[field]) {
+      setErrors((current) => {
+        const next = { ...current };
+        delete next[field];
+        return next;
+      });
+    }
+  };
+
+  const handleBlur = (field: keyof LoginFormData) => {
+    setTouched((current) => ({ ...current, [field]: true }));
+    const fieldErrors = validateLogin(formData);
+    if (fieldErrors[field]) {
+      setErrors((current) => ({ ...current, [field]: fieldErrors[field] }));
+    }
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setError("");
 
-    if (!formData.email.trim() || !formData.password.trim()) {
-      setError("أدخل البريد الإلكتروني وكلمة المرور.");
+    const validationErrors = validateLogin(formData);
+    setErrors(validationErrors);
+    setTouched({ email: true, password: true });
+
+    if (Object.keys(validationErrors).length > 0) {
       return;
     }
 
@@ -41,8 +84,9 @@ export default function LoginPage() {
         email: formData.email.trim(),
         password: formData.password,
       });
+      toast.success("تم تسجيل الدخول بنجاح");
     } catch (submissionError) {
-      setError(
+      toast.error(
         submissionError instanceof Error
           ? submissionError.message
           : "تعذر تسجيل الدخول. حاول مرة أخرى."
@@ -75,32 +119,25 @@ export default function LoginPage() {
         <AuthGoogleButton />
         <AuthDivider text="أو تسجل الدخول ببياناتك الشخصية" />
 
-        <form className="space-y-3" onSubmit={handleSubmit}>
+        <form className="space-y-3" onSubmit={handleSubmit} noValidate>
           <AuthInput
             id="email"
             type="email"
             value={formData.email}
-            onChange={(event) =>
-              setFormData((current) => ({
-                ...current,
-                email: event.target.value,
-              }))
-            }
+            onChange={(event) => handleChange("email", event.target.value)}
+            onBlur={() => handleBlur("email")}
             placeholder="البريد الإلكتروني"
             rightIcon={<Mail className="h-4 w-4" />}
             autoComplete="email"
+            error={touched.email ? errors.email : undefined}
           />
 
           <AuthInput
             id="password"
             type={showPassword ? "text" : "password"}
             value={formData.password}
-            onChange={(event) =>
-              setFormData((current) => ({
-                ...current,
-                password: event.target.value,
-              }))
-            }
+            onChange={(event) => handleChange("password", event.target.value)}
+            onBlur={() => handleBlur("password")}
             placeholder="كلمة المرور"
             rightIcon={<Lock className="h-4 w-4" />}
             leftIcon={
@@ -118,6 +155,7 @@ export default function LoginPage() {
               </button>
             }
             autoComplete="current-password"
+            error={touched.password ? errors.password : undefined}
           />
 
           <div className="text-left">
@@ -129,8 +167,6 @@ export default function LoginPage() {
             </Link>
           </div>
 
-          {error ? <AuthMessage tone="error">{error}</AuthMessage> : null}
-
           <AuthPrimaryButton type="submit" disabled={isSubmitting}>
             {isSubmitting ? "جاري الدخول..." : "دخول"}
           </AuthPrimaryButton>
@@ -139,3 +175,4 @@ export default function LoginPage() {
     </PublicRoute>
   );
 }
+

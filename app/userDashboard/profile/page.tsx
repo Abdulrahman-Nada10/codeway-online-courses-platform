@@ -1,13 +1,21 @@
 'use client';
 
+import { useEffect } from 'react';
 import UserInfo from '../../components/profile/UserInfo';
 import Stats from '../../components/profile/Stats';
 import CertificateList from '../../components/profile/CertificateList';
 import { Pencil } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { useAppDispatch } from '../../store/hooks';
+import { setContext } from '../../store/searchSlice';
 
 export default function Profile() {
   const { user } = useAuth();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setContext('profile'));
+  }, [dispatch]);
 
   const userData = {
     name: user?.name ?? '',
@@ -37,7 +45,6 @@ export default function Profile() {
               <h1 className="font-cairo font-bold text-xl sm:text-2xl text-[#113555]">
                 الملف الشخصي
               </h1>
-
               <p className="font-cairo text-sm text-gray-600 mt-1">
                 عرض و إدارة معلوماتك الشخصية
               </p>
@@ -76,6 +83,7 @@ export default function Profile() {
           </div>
         </main>
       </div>
-    </div>
-  );
-}
+     </div>
+     )
+    }
+      

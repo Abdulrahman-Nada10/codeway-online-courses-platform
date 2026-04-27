@@ -41,7 +41,7 @@ const UserInfo: React.FC<UserInfoProps> = ({
             </h2>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-x-4 lg:gap-x-34 sm:gap-y-2 mt-8">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:gap-x-4 sm:gap-y-2 mt-8 justify-around">
             <div className="flex items-center gap-2 justify-center sm:justify-start">
               <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center shrink-0">
                 <Mail className="w-4 h-4 text-[#FF6400]" />

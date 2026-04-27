@@ -338,7 +338,8 @@ export default function EarningsPage() {
           </p>
         </div>
         <button
-          onClick={handleDownload}
+       aria-label='button'   
+       onClick={handleDownload}
           disabled={isDownloading}
           className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-3 rounded-xl font-bold transition-all disabled:opacity-70 shadow-lg shadow-orange-200 hover:shadow-xl hover:scale-105 active:scale-95"
         >
@@ -496,12 +497,13 @@ export default function EarningsPage() {
             <div className="relative">
               <Filter className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={18} />
               <select
+              aria-label='select'
                 value={filterMonth}
                 onChange={(e) => {
                   setFilterMonth(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="pr-10 pl-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none bg-white cursor-pointer min-w-[150px]"
+                className="pr-10 pl-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none bg-white cursor-pointer min-w-37.5"
               >
                 <option value="all">كل الأشهر</option>
                 {['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'].map((month, idx) => (
@@ -571,7 +573,8 @@ export default function EarningsPage() {
             </div>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+            aria-label='button'   
+               onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                 disabled={currentPage === 1}
                 className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
@@ -593,7 +596,8 @@ export default function EarningsPage() {
 
                   return (
                     <button
-                      key={i}
+            aria-label='button'   
+                    key={i}
                       onClick={() => setCurrentPage(pageNum)}
                       className={`w-10 h-10 rounded-lg font-medium transition-all ${currentPage === pageNum
                           ? 'bg-orange-500 text-white shadow-lg'
@@ -607,7 +611,8 @@ export default function EarningsPage() {
               </div>
 
               <button
-                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+            aria-label='button'   
+               onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                 disabled={currentPage === totalPages}
                 className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >

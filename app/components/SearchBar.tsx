@@ -1,17 +1,38 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { setSearchQuery } from '../store/searchSlice';
+import { setQuery, searchThunk } from '../store/searchSlice';
 import { Search } from 'lucide-react';
 
 const SearchBar: React.FC = () => {
   const dispatch = useAppDispatch();
   const query = useAppSelector((state) => state.search.query);
+  const context = useAppSelector((state) => state.search.context);
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSearchQuery(e.target.value));
+    dispatch(setQuery(e.target.value));
   };
+
+  // Debounced search: trigger API thunk 300ms after user stops typing
+  useEffect(() => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    if (query.trim().length > 0 && context) {
+      debounceRef.current = setTimeout(() => {
+        dispatch(searchThunk({ query, context }));
+      }, 300);
+    }
+
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
+  }, [query, context, dispatch]);
 
   return (
     <div className="relative">

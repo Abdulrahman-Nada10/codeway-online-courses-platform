@@ -2,19 +2,29 @@
 
 import { FormEvent, useState } from "react";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
+import { toast } from "sonner";
 import PublicRoute from "@/app/components/auth/PublicRoute";
 import {
   AuthDivider,
   AuthFooterLine,
   AuthGoogleButton,
   AuthInput,
-  AuthMessage,
   AuthPrimaryButton,
   AuthSelect,
   AuthShell,
   AuthSocialLinks,
+  PasswordRulesChecklist,
+  PasswordStrengthBar,
 } from "@/app/components/auth/AuthUi";
 import { useAuth } from "@/app/hooks/useAuth";
+import {
+  email,
+  getPasswordStrength,
+  match,
+  numeric,
+  required,
+  validatePasswordStrength,
+} from "@/app/libs/validation";
 
 type RegisterFormState = {
   name: string;
@@ -27,6 +37,9 @@ type RegisterFormState = {
   gender: "male" | "female";
 };
 
+type RegisterFormErrors = Partial<Record<keyof RegisterFormState, string>>;
+type RegisterFormTouched = Partial<Record<keyof RegisterFormState, boolean>>;
+
 const INITIAL_STATE: RegisterFormState = {
   name: "",
   email: "",
@@ -38,42 +51,91 @@ const INITIAL_STATE: RegisterFormState = {
   gender: "male",
 };
 
+function validateRegister(values: RegisterFormState): RegisterFormErrors {
+  const errors: RegisterFormErrors = {};
+
+  const nameError = required(values.name, "الاسم مطلوب");
+  if (nameError) errors.name = nameError;
+
+  const emailError = email(values.email);
+  if (emailError) errors.email = emailError;
+
+  const passwordError = validatePasswordStrength(values.password);
+  if (passwordError) errors.password = passwordError;
+
+  const confirmError = match(
+    values.password,
+    values.confirmPassword,
+    "كلمتا المرور غير متطابقتين"
+  );
+  if (confirmError && values.confirmPassword)
+    errors.confirmPassword = confirmError;
+
+  const ageError = numeric(values.age, "أدخل السن بشكل صحيح (أرقام فقط)");
+  if (ageError) errors.age = ageError;
+
+  const govError = required(values.governorate, "اختر المحافظة");
+  if (govError) errors.governorate = govError;
+
+  const streetError = required(values.street, "المنطقة/الشارع مطلوب");
+  if (streetError) errors.street = streetError;
+
+  return errors;
+}
+
 export default function RegisterPage() {
   const { register } = useAuth();
   const [formData, setFormData] = useState<RegisterFormState>(INITIAL_STATE);
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState<RegisterFormErrors>({});
+  const [touched, setTouched] = useState<RegisterFormTouched>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const handleChange = (field: keyof RegisterFormState, value: string) => {
+    setFormData((current) => ({ ...current, [field]: value }));
+    if (errors[field]) {
+      setErrors((current) => {
+        const next = { ...current };
+        delete next[field];
+        return next;
+      });
+    }
+  };
+
+  const handleBlur = (field: keyof RegisterFormState) => {
+    setTouched((current) => ({ ...current, [field]: true }));
+    const fieldErrors = validateRegister(formData);
+    if (fieldErrors[field]) {
+      setErrors((current) => ({ ...current, [field]: fieldErrors[field] }));
+    }
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setError("");
 
-    if (
-      !formData.name.trim() ||
-      !formData.email.trim() ||
-      !formData.age.trim() ||
-      !formData.governorate.trim() ||
-      !formData.street.trim() ||
-      !formData.password.trim()
-    ) {
-      setError("أكمل جميع الحقول المطلوبة.");
+    const validationErrors = validateRegister(formData);
+    setErrors(validationErrors);
+    setTouched({
+      name: true,
+      email: true,
+      password: true,
+      confirmPassword: true,
+      age: true,
+      governorate: true,
+      street: true,
+      gender: true,
+    });
+
+    if (Object.keys(validationErrors).length > 0) {
       return;
     }
 
-    if (!/^\d+$/.test(formData.age.trim())) {
-      setError("أدخل السن بشكل صحيح.");
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      setError("كلمة المرور يجب أن تكون 6 أحرف على الأقل.");
-      return;
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      setError("تأكيد كلمة المرور غير مطابق.");
+    if (getPasswordStrength(formData.password) === "weak") {
+      setErrors((current) => ({
+        ...current,
+        password: "من فضلك أدخل كلمة مرور أقوى",
+      }));
       return;
     }
 
@@ -88,8 +150,9 @@ export default function RegisterPage() {
         address: `${formData.governorate.trim()} - ${formData.street.trim()}`,
         password: formData.password,
       });
+      toast.success("تم إنشاء الحساب بنجاح");
     } catch (submissionError) {
-      setError(
+      toast.error(
         submissionError instanceof Error
           ? submissionError.message
           : "تعذر إنشاء الحساب. حاول مرة أخرى."
@@ -123,78 +186,84 @@ export default function RegisterPage() {
         <AuthGoogleButton />
         <AuthDivider text="أو تسجل الدخول ببياناتك الشخصية" />
 
-        <form className="space-y-3" onSubmit={handleSubmit}>
+        <form className="space-y-3" onSubmit={handleSubmit} noValidate>
           <AuthInput
             type="text"
             value={formData.name}
-            onChange={(event) =>
-              setFormData((current) => ({
-                ...current,
-                name: event.target.value,
-              }))
-            }
+            onChange={(event) => handleChange("name", event.target.value)}
+            onBlur={() => handleBlur("name")}
             placeholder="الأسم"
             rightIcon={<User className="h-4 w-4" />}
             autoComplete="name"
+            error={touched.name ? errors.name : undefined}
           />
 
           <AuthInput
             type="email"
             value={formData.email}
-            onChange={(event) =>
-              setFormData((current) => ({
-                ...current,
-                email: event.target.value,
-              }))
-            }
+            onChange={(event) => handleChange("email", event.target.value)}
+            onBlur={() => handleBlur("email")}
             placeholder="البريد الإلكتروني"
             rightIcon={<Mail className="h-4 w-4" />}
             autoComplete="email"
+            error={touched.email ? errors.email : undefined}
           />
 
-          <AuthInput
-            type={showPassword ? "text" : "password"}
-            value={formData.password}
-            onChange={(event) =>
-              setFormData((current) => ({
-                ...current,
-                password: event.target.value,
-              }))
-            }
-            placeholder="كلمة المرور"
-            rightIcon={<Lock className="h-4 w-4" />}
-            leftIcon={
-              <button
-                type="button"
-                onClick={() => setShowPassword((current) => !current)}
-                className="text-[#B6BCC5]"
-                aria-label={showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}
-              >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
-              </button>
-            }
-            autoComplete="new-password"
-          />
+          <div>
+            <AuthInput
+              type={showPassword ? "text" : "password"}
+              value={formData.password}
+              onChange={(event) =>
+                handleChange("password", event.target.value)
+              }
+              onBlur={() => handleBlur("password")}
+              placeholder="كلمة المرور"
+              rightIcon={<Lock className="h-4 w-4" />}
+              leftIcon={
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((current) => !current)}
+                  className="text-[#B6BCC5] pb-4"
+                  aria-label={
+                    showPassword
+                      ? "إخفاء كلمة المرور"
+                      : "إظهار كلمة المرور"
+                  }
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
+              }
+              autoComplete="new-password"
+              error={touched.password ? errors.password : undefined}
+              helperText="8 أحرف على الأقل، حرف كبير، صغير، رقم، ورمز"
+            />
+            {formData.password ? (
+              <>
+                <PasswordStrengthBar password={formData.password} />
+                <PasswordRulesChecklist password={formData.password} />
+              </>
+            ) : null}
+          </div>
 
           <AuthInput
             type={showConfirmPassword ? "text" : "password"}
             value={formData.confirmPassword}
             onChange={(event) =>
-              setFormData((current) => ({
-                ...current,
-                confirmPassword: event.target.value,
-              }))
+              handleChange("confirmPassword", event.target.value)
             }
+            onBlur={() => handleBlur("confirmPassword")}
             placeholder="تأكيد كلمة المرور"
             rightIcon={<Lock className="h-4 w-4" />}
             leftIcon={
               <button
                 type="button"
-                onClick={() => setShowConfirmPassword((current) => !current)}
+                onClick={() =>
+                  setShowConfirmPassword((current) => !current)
+                }
                 className="text-[#B6BCC5]"
                 aria-label={
                   showConfirmPassword
@@ -210,30 +279,29 @@ export default function RegisterPage() {
               </button>
             }
             autoComplete="new-password"
+            error={
+              touched.confirmPassword ? errors.confirmPassword : undefined
+            }
           />
 
           <AuthInput
             type="text"
             inputMode="numeric"
             value={formData.age}
-            onChange={(event) =>
-              setFormData((current) => ({
-                ...current,
-                age: event.target.value,
-              }))
-            }
+            onChange={(event) => handleChange("age", event.target.value)}
+            onBlur={() => handleBlur("age")}
             placeholder="السن"
+            error={touched.age ? errors.age : undefined}
           />
 
           <div className="grid grid-cols-[1fr_1.2fr] gap-2">
             <AuthSelect
               value={formData.governorate}
               onChange={(event) =>
-                setFormData((current) => ({
-                  ...current,
-                  governorate: event.target.value,
-                }))
+                handleChange("governorate", event.target.value)
               }
+              onBlur={() => handleBlur("governorate")}
+              error={touched.governorate ? errors.governorate : undefined}
             >
               <option value="">المحافظة</option>
               <option value="القاهرة">القاهرة</option>
@@ -246,12 +314,11 @@ export default function RegisterPage() {
               type="text"
               value={formData.street}
               onChange={(event) =>
-                setFormData((current) => ({
-                  ...current,
-                  street: event.target.value,
-                }))
+                handleChange("street", event.target.value)
               }
+              onBlur={() => handleBlur("street")}
               placeholder="المنطقة/الشارع"
+              error={touched.street ? errors.street : undefined}
             />
           </div>
 
@@ -263,12 +330,7 @@ export default function RegisterPage() {
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
-                onClick={() =>
-                  setFormData((current) => ({
-                    ...current,
-                    gender: "female",
-                  }))
-                }
+                onClick={() => handleChange("gender", "female")}
                 className="flex h-10 items-center justify-center gap-2 rounded-sm border border-[#E7E7E7] text-[13px] text-[#4D4D4D]"
               >
                 <span
@@ -278,7 +340,7 @@ export default function RegisterPage() {
                       : "border-[#A8A8A8]"
                   }`}
                 >
-                {formData.gender === "female" ? (
+                  {formData.gender === "female" ? (
                     <span className="absolute inset-0.75 rounded-full bg-[#FF6A00]" />
                   ) : null}
                 </span>
@@ -287,12 +349,7 @@ export default function RegisterPage() {
 
               <button
                 type="button"
-                onClick={() =>
-                  setFormData((current) => ({
-                    ...current,
-                    gender: "male",
-                  }))
-                }
+                onClick={() => handleChange("gender", "male")}
                 className="flex h-10 items-center justify-center gap-2 rounded-sm border border-[#E7E7E7] text-[13px] text-[#4D4D4D]"
               >
                 <span
@@ -311,8 +368,6 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          {error ? <AuthMessage tone="error">{error}</AuthMessage> : null}
-
           <AuthPrimaryButton type="submit" disabled={isSubmitting}>
             {isSubmitting ? "جاري إنشاء الحساب..." : "إنشاء الحساب"}
           </AuthPrimaryButton>
@@ -321,3 +376,4 @@ export default function RegisterPage() {
     </PublicRoute>
   );
 }
+

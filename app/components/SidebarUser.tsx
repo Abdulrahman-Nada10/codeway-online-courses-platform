@@ -99,7 +99,7 @@ const Sidebar = () => {
     <>
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className={`lg:hidden fixed left-4 z-50 p-2 bg-[#FF6400] text-white rounded-lg shadow-lg transition-all duration-300 ${
+        className={`lg:hidden fixed left-4 z-90 p-2 bg-[#FF6400] text-white rounded-lg shadow-lg transition-all duration-300 ${
           isScrolled ? 'top-2.5' : 'top-27.5'
         }`}
         aria-label="القائمة"
@@ -156,7 +156,7 @@ const Sidebar = () => {
         lg:hidden
         fixed top-0 right-0 h-screen w-64
         bg-white flex flex-col
-        transform transition-transform duration-300 ease-in-out z-50
+        transform transition-transform duration-300 ease-in-out z-70
         ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}
       `}>
         <div className="p-6 border-b border-gray-100 flex justify-center">
