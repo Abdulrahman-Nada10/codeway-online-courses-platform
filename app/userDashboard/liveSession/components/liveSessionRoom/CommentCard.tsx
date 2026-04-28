@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
+import { useLocaleDirection } from '@/app/hooks/useLocaleDirection';
 import { SessionMessage } from '../../types';
 import { formatRoomTime } from './utils';
 
@@ -8,11 +10,13 @@ interface CommentCardProps {
 }
 
 export function CommentCard({ currentUserId, message }: CommentCardProps) {
+  const { t } = useTranslation();
+  const { dir } = useLocaleDirection();
   const isCurrentUser = message.authorId === currentUserId;
   const isInstructor = message.role === 'instructor';
 
   return (
-    <article className="flex flex-row-reverse items-start gap-3 text-right">
+    <article className="flex flex-row items-start gap-3 text-start" dir={dir}>
       <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-[#f2e7df]">
         <Image src={message.avatar} alt={message.author} fill className="object-cover" />
       </div>
@@ -20,8 +24,8 @@ export function CommentCard({ currentUserId, message }: CommentCardProps) {
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            {isCurrentUser ? <span className="rounded-full bg-[#fff0e6] px-2 py-1 text-[11px] text-[#ff6400]">أنت</span> : null}
-            {isInstructor ? <span className="rounded-full bg-[#113555] px-2 py-1 text-[11px] text-white">المحاضر</span> : null}
+            {isCurrentUser ? <span className="rounded-full bg-[#fff0e6] px-2 py-1 text-[11px] text-[#ff6400]">{t('nav.you')}</span> : null}
+            {isInstructor ? <span className="rounded-full bg-[#113555] px-2 py-1 text-[11px] text-white">{t('nav.instructor')}</span> : null}
           </div>
 
           <div>

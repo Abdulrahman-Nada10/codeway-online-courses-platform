@@ -1,0 +1,688 @@
+{
+  "common": {
+    "welcome": "Welcome to the learning platform",
+    "courses": "Courses",
+    "about": "About Us",
+    "saveChanges": "Save Changes",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "send": "Send",
+    "back": "Back",
+    "edit": "Edit",
+    "editProfile": "Edit Profile",
+    "exploreCourses": "Explore Courses",
+    "all": "All",
+    "showAll": "Show All",
+    "joinNow": "Join Now",
+    "watchRecording": "Watch Recording",
+    "profileImage": "Profile Image",
+    "viewAll": "View All",
+    "close": "Close",
+    "remove": "Remove",
+    "view": "View",
+    "download": "Download",
+    "share": "Share",
+    "play": "Play",
+    "volume": "Volume",
+    "screen": "Screen",
+    "settings": "Settings",
+    "currency": "EGP",
+    "emoji": "Emoji"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "newPassword": "New Password",
+    "logout": "Logout",
+    "forgotPassword": "Forgot Password?",
+    "forgotPasswordTitle": "Forgot your password?",
+    "forgotPasswordSubtitle": "Enter your email to reset",
+    "resetPassword": "Reset Password",
+    "resetPasswordSubtitle": "Enter your new password and confirm it",
+    "recoverAccount": "Recover Account",
+    "recoverAccountTitle": "Account Recovery Details",
+    "sendCode": "Send Code",
+    "backToLogin": "Back to Login",
+    "name": "Name",
+    "fullName": "Full Name",
+    "age": "Age",
+    "governorate": "Governorate",
+    "street": "Area/Street",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "accountRecovery": "Recover Account",
+    "loginWelcome": "Welcome Back",
+    "registerWelcome": "Create New Account",
+    "registerSubtitle": "Join over 50,000 learners",
+    "loginSubtitle": "Join over 50,000 learners",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "haveAccountRecover": "Have an account and want to recover it?",
+    "orLoginWith": "Or log in with your personal data",
+    "continueWithGoogle": "Continue with Google",
+    "loginAction": "Login",
+    "loggingIn": "Logging in...",
+    "creatingAccount": "Creating account...",
+    "sending": "Sending...",
+    "saving": "Saving...",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "showConfirmPassword": "Show confirm password",
+    "hideConfirmPassword": "Hide confirm password",
+    "enterStrongerPassword": "Please enter a stronger password",
+    "loginSuccess": "Logged in successfully",
+    "loginError": "Login failed. Please try again.",
+    "registerSuccess": "Account created successfully",
+    "registerError": "Failed to create account. Please try again.",
+    "forgotPasswordSuccess": "Reset instructions sent to {{email}}",
+    "forgotPasswordError": "Failed to send reset request.",
+    "resetPasswordSuccess": "Password updated successfully. Redirecting to login.",
+    "resetPasswordError": "Failed to reset password.",
+    "invalidResetLink": "Invalid reset link.",
+    "recoverAccountSuccess": "Account recovery request sent successfully",
+    "familyName": "Your family name",
+    "proofType": "Your proof type",
+    "screenshotUpload": "Take a screenshot",
+    "passwordHint": "At least 8 chars, uppercase, lowercase, number, and symbol"
+  },
+  "nav": {
+    "home": "Home",
+    "courses": "Courses",
+    "features": "Features",
+    "contact": "Contact Us",
+    "searchPlaceholder": "Search...",
+    "notifications": "Notifications",
+    "cart": "Cart",
+    "userProfile": "Profile",
+    "myCourses": "My Courses",
+    "favorites": "Favorites",
+    "certificates": "Certificates",
+    "settings": "Settings",
+    "liveSession": "Live Session",
+    "student": "Student",
+    "instructor": "Instructor",
+    "menu": "Menu",
+    "close": "Close",
+    "you": "You",
+    "brand": "EGC",
+    "changeLanguage": "Change language"
+  },
+  "dashboard": {
+    "profile": "Profile",
+    "profileSubtitle": "View and manage your personal information",
+    "courses": "My Courses",
+    "coursesSubtitle": "Track your progress in enrolled courses",
+    "favorites": "Favorites",
+    "favoritesSubtitle": "Courses you've added to your favorites list",
+    "certificates": "My Certificates",
+    "certificatesSubtitle": "All certificates you've earned",
+    "settings": "Settings",
+    "settingsSubtitle": "Manage your account and preferences",
+    "liveSession": "My Live Sessions",
+    "liveSessionSubtitle": "Follow upcoming sessions or join the live broadcast now.",
+    "basicInfo": "Basic Information",
+    "changeImage": "Change Image",
+    "imageFormat": "File format: jpg, png, gif",
+    "imageSize": "File size: max 2MB",
+    "phone": "Phone Number",
+    "address": "Address",
+    "joinedAt": "Joined on {{date}}",
+    "registeredCourses": "Registered Courses",
+    "completedCourses": "Completed Courses",
+    "learningHours": "Learning Hours",
+    "latestCertificates": "Latest Certificates",
+    "securityAndPassword": "Security & Password",
+    "currentPassword": "Current Password",
+    "notificationSettings": "Notification Settings",
+    "paymentSettings": "Bank Account Settings",
+    "accountHolderName": "Account Holder Name",
+    "bankName": "Bank Name",
+    "iban": "IBAN Number",
+    "swiftCode": "SWIFT Code",
+    "passwordChanged": "Password changed successfully",
+    "profileSaved": "Changes saved successfully",
+    "profileSaveError": "Failed to save changes.",
+    "paymentSaved": "Bank details saved successfully",
+    "emailNotifications": "Email Notifications",
+    "emailNotificationsDesc": "Receive notifications via email",
+    "newCourses": "New Courses",
+    "newCoursesDesc": "Get notified when new courses are added",
+    "studyReminders": "Study Reminders",
+    "studyRemindersDesc": "Regular reminders to continue learning",
+    "offersAndDiscounts": "Offers & Discounts",
+    "offersAndDiscountsDesc": "Receive special offers and discounts",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "noFavorites": "No courses in favorites",
+    "noFavoritesDesc": "Add courses to favorites to save them here",
+    "noCoursesMatch": "No matching search results",
+    "tryDifferentSearch": "Try different words or other filters",
+    "noCertificatesYet": "Complete more courses!",
+    "certificatesCount": "You have <0>{{count}}</0> certificates so far",
+    "completeMoreCourses": "Complete more courses to earn additional certificates",
+    "upcoming": "Upcoming Sessions",
+    "liveNow": "Live Now",
+    "past": "Past Sessions",
+    "noSessionsAvailable": "No sessions available in this section currently.",
+    "ended": "Ended",
+    "learner": "learner",
+    "learners": "learners",
+    "views": "views",
+    "endedRecently": "Ended recently",
+    "endedHoursAgo": "Ended {{count}} hours ago",
+    "endedDaysAgo": "Ended {{count}} days ago",
+    "newCourseNotification": "New course added",
+    "questionReplied": "Your question has been answered",
+    "discountNotification": "20% discount on courses",
+    "hourAgo": "1 hour ago",
+    "dayAgo": "1 day ago",
+    "twoDaysAgo": "2 days ago",
+    "startsIn": "Starts in",
+    "hour": "Hour",
+    "minute": "Minute",
+    "second": "Second",
+    "issueDate": "Issue Date",
+    "certificateNumber": "Certificate Number",
+    "questionForInstructor": "Question for Instructor",
+    "directedToInstructor": "Directed to Instructor",
+    "comments": "Comments",
+    "markComplete": "Mark as Complete",
+    "markIncomplete": "Mark as Incomplete",
+    "sendComment": "Send Comment",
+    "closeComments": "Close Comments",
+    "demoUser": "Mustafa Adel",
+    "pollEnded": "Poll Ended",
+    "pollActive": "Active Poll",
+    "endPoll": "End Poll",
+    "vote": "vote",
+    "votes": "votes",
+    "votingClosed": "Voting is closed",
+    "votingHint": "You can vote once and change your choice before ending",
+    "emptyChat": "No interactions yet. Start a new comment to appear in live chat.",
+    "emptyQuestions": "No questions sent yet. Send your question to the instructor below.",
+    "emptyPolls": "No polls currently. Create a new poll to appear here.",
+    "aboutThisSession": "About this Session",
+    "resources": "Resources",
+    "addToCalendar": "Calendar",
+    "shareSession": "Share",
+    "myCourses": "My Courses",
+    "menu": "Menu",
+    "lessonsUnit": "lessons",
+    "hoursUnit": "hours",
+    "lastWatched": "Last watched",
+    "lastWatchedToday": "Today",
+    "lastWatchedYesterday": "Yesterday",
+    "reviewCourse": "Review Course",
+    "continueLearning": "Continue Learning",
+    "filterAllCourses": "All Courses",
+    "filterInProgressCourses": "In Progress Courses",
+    "filterCompletedCourses": "Completed Courses",
+    "instructorPrefix": "Eng.",
+    "roomCurrentUser": "Mohamed Mahmoud",
+    "coursesData": {
+      "1": {
+        "title": "Data Analysis for Beginners",
+        "instructor": "Mohamed Mahmoud"
+      },
+      "2": {
+        "title": "Practical Python Basics",
+        "instructor": "Ahmed Ali"
+      },
+      "3": {
+        "title": "Applied Data Analysis Project",
+        "instructor": "Sara Khaled"
+      },
+      "4": {
+        "title": "Data Cleaning and Processing",
+        "instructor": "Mariam Hassan"
+      },
+      "5": {
+        "title": "Data Visualization and Decision Making",
+        "instructor": "Khaled Youssef"
+      },
+      "6": {
+        "title": "Practical Statistics for Data Science",
+        "instructor": "Nadia Mohamed"
+      }
+    },
+    "chat": "Chat",
+    "questions": "Questions",
+    "poll": "Poll",
+    "writeComment": "Write your comment",
+    "askQuestion": "Ask your question",
+    "chatHelper": "Post a new comment and it will appear in the live chat.",
+    "questionsHelper": "Send your question to the instructor and it will appear here.",
+    "pollHelper": "Create a new poll and share it with attendees.",
+    "noAssignments": "No assignments available",
+    "downloadAssignment": "Download assignment",
+    "pollQuestionPlaceholder": "Poll question",
+    "pollOption": "Option {{number}}",
+    "addOption": "Add option",
+    "removeOption": "Remove option",
+    "publishPoll": "Publish poll"
+  },
+  "profile": {
+    "joinedIn": "Joined on {{date}}",
+    "registeredCourses": "Registered Courses",
+    "completedCourses": "Completed Courses",
+    "certificates": "Certificates",
+    "learningHours": "Learning Hours",
+    "latestCertificates": "Latest Certificates"
+  },
+  "session": {
+    "liveNow": "Live Now",
+    "ended": "Ended",
+    "learner": "learner",
+    "learners": "learners",
+    "views": "views",
+    "endedRecently": "Ended recently",
+    "endedSinceHours": "Ended {{count}} hours ago",
+    "endedSinceDays": "Ended {{count}} days ago",
+    "viewRecording": "View Recording",
+    "joinNow": "Join Now",
+    "myLiveSessions": "My Live Sessions",
+    "liveSessionSubtitle": "Follow upcoming sessions or join the live broadcast now.",
+    "noSessionsAvailable": "No sessions available in this section currently."
+  },
+  "assistant": {
+    "openAssistant": "Open AI Assistant",
+    "closeAssistant": "Close AI Assistant",
+    "typing": "AI Assistant is typing...",
+    "sendMessage": "Send message",
+    "placeholder": "Type your message here...",
+    "newChat": "New chat",
+    "chatHistory": "Chat history",
+    "noHistory": "No chat history",
+    "howCanIHelp": "How can I help you today?",
+    "suggestions": "Suggestions",
+    "attachFile": "Attach file",
+    "voiceInput": "Voice input",
+    "newConversation": "New Conversation",
+    "conversationHistory": "Conversation History",
+    "firstConversationHint": "Your first conversation will appear here automatically.",
+    "contextBound": "Assistant bound to {{context}} context",
+    "defaultContext": "AI Assistant inside live sessions",
+    "stopVoiceInput": "Stop voice recording",
+    "askPlaceholder": "Ask the AI Assistant about anything...",
+    "voiceMessage": "Voice message",
+    "selectCourseFirst": "Select the course first",
+    "attachment": "Attachment",
+    "newMessage": "New message",
+    "aiConnectionError": "AI connection error, please try again",
+    "serverConnectionError": "Could not connect to server. Make sure the AI service is running.",
+    "invalidResponse": "AI response is unclear. Check the Backend service.",
+    "emptyResponse": "AI response is empty or incomplete. Try again.",
+    "endpointNotFound": "Endpoint not found (404). Check Backend settings.",
+    "serverError": "Server encountered an internal issue. Try again in a moment.",
+    "invalidRequest": "Invalid request. Check the sent data.",
+    "noLessonsFound": "No lessons found for this course. Check the course ID.",
+    "voiceNotSupported": "Current browser does not support voice-to-text.",
+    "voiceCaptureError": "Could not capture voice message. Try again.",
+    "suggestion": {
+      "explainLesson": "Explain Lesson",
+      "quickSummary": "Quick Summary",
+      "illustrativeExample": "Illustrative Example",
+      "solveQuestion": "Solve Question"
+    },
+    "action": {
+      "example": "Illustrative Example",
+      "expand": "Explain More"
+    },
+    "uploadFiles": "Upload files",
+    "conversationWithTitle": "Conversation {{title}}",
+    "previousConversation": "Previous conversation",
+    "replyWithoutText": "The AI assistant replied without clear text.",
+    "attachmentNameLine": "- File name: {{name}}",
+    "attachmentSizeLine": "- Size: {{size}}",
+    "attachmentSnippetLine": "- File snippet:",
+    "currentContextLine": "Current context: {{contextTitle}}",
+    "attachmentsHeader": "Attachments",
+    "prompt": {
+      "explainLesson": "Explain the lesson in a simple, organized way.",
+      "explainLessonWithContext": "Explain \"{{contextTitle}}\" in a simple, organized way.",
+      "quickSummary": "Summarize the topic in short bullet points.",
+      "quickSummaryWithContext": "Summarize the key ideas of \"{{contextTitle}}\" in short bullet points.",
+      "illustrativeExample": "Give me a simple illustrative example about the topic.",
+      "illustrativeExampleWithContext": "Give me a simple illustrative example about \"{{contextTitle}}\".",
+      "solveQuestion": "Help me solve a question related to the topic and ask me about the question if it is not clear.",
+      "solveQuestionWithContext": "Help me solve a question related to \"{{contextTitle}}\" and ask me about the question if it is not clear.",
+      "contextPrefix": "The current topic is \"{{contextTitle}}\".\n\n",
+      "followUpExample": "{{contextPrefix}}Give me a simple illustrative example for the following explanation:\n{{assistantMessage}}",
+      "followUpExpand": "{{contextPrefix}}Explain this answer in more detail and in a simpler way:\n{{assistantMessage}}"
+    }
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalidEmail": "Invalid email",
+    "emailRequired": "Email is required",
+    "passwordWeak": "Weak password",
+    "passwordMedium": "Medium password",
+    "passwordStrong": "Strong password",
+    "passwordMismatch": "Passwords do not match",
+    "passwordRuleLength": "At least 8 characters",
+    "passwordRuleUppercase": "Uppercase letter (A-Z)",
+    "passwordRuleLowercase": "Lowercase letter (a-z)",
+    "passwordRuleNumber": "Number (0-9)",
+    "passwordRuleSpecial": "Special character (!@#$...)",
+    "passwordRequirements": "Password must contain uppercase, lowercase, number, and symbol",
+    "nameRequired": "Name is required",
+    "passwordRequired": "Password is required",
+    "governorateRequired": "Select governorate",
+    "streetRequired": "Area/Street is required",
+    "ageNumeric": "Enter age correctly (numbers only)",
+    "fullNameRequired": "Full name is required",
+    "phoneRequired": "Phone number is required",
+    "addressRequired": "Address is required",
+    "currentPasswordRequired": "Current password is required",
+    "accountHolderRequired": "Account holder name is required",
+    "bankNameRequired": "Bank name is required",
+    "ibanRequired": "IBAN number is required",
+    "swiftRequired": "SWIFT code is required",
+    "familyNameRequired": "Family name is required",
+    "proofTypeRequired": "Proof type is required",
+    "screenshotRequired": "Attach a screenshot",
+    "fileSizeError": "File size must not exceed 2MB",
+    "fileFormatError": "File format must be jpg, png, or gif",
+    "minLength": "Must be at least {{count}} characters",
+    "numericOnly": "Numbers only"
+  },
+  "theme": {
+    "toggle": "Toggle theme"
+  },
+  "social": {
+    "linkedin": "LinkedIn",
+    "facebook": "Facebook",
+    "youtube": "YouTube",
+    "instagram": "Instagram"
+  },
+  "contact": {
+    "title": "Complaints & Suggestions",
+    "requiredFields": "Please complete all required fields.",
+    "messagePlaceholder": "Write your message...",
+    "success": "Your message has been sent successfully."
+  },
+  "favorites": {
+    "removeFromFavorites": "Remove from favorites",
+    "enrollNow": "Enroll Now",
+    "viewCourse": "View Course",
+    "courses": {
+      "1": {
+        "title": "UX/UI Design",
+        "instructor": "Ahmed Mohamed",
+        "category": "Design"
+      },
+      "2": {
+        "title": "Web Development with React",
+        "instructor": "Mohamed Ali",
+        "category": "Programming"
+      },
+      "3": {
+        "title": "Digital Marketing Fundamentals",
+        "instructor": "Sara Ahmed",
+        "category": "Marketing"
+      },
+      "4": {
+        "title": "Professional Project Management",
+        "instructor": "Khaled Youssef",
+        "category": "Business"
+      },
+      "5": {
+        "title": "Graphic Design for Beginners",
+        "instructor": "Noura Abdullah",
+        "category": "Design"
+      },
+      "6": {
+        "title": "Python for Data and AI",
+        "instructor": "Omar Hassan",
+        "category": "Programming"
+      }
+    }
+  },
+  "certificates": {
+    "months": {
+      "december": "December",
+      "november": "November",
+      "october": "October",
+      "september": "September"
+    },
+    "studentName": "Omar Mohamed El-Sayed",
+    "approved": "Approved",
+    "backToCertificates": "Back to certificates",
+    "completionCertificate": "Certificate of Completion",
+    "awardedTo": "Awarded to",
+    "completionDescription": "For successfully completing the course \"{{course}}\" with a total of {{hours}} learning hours and {{units}} study units.",
+    "instructor": "Instructor",
+    "status": "Status",
+    "platformManagement": "Platform Management",
+    "signature": "Signature",
+    "download": "Download Certificate",
+    "share": "Share Certificate",
+    "records": {
+      "1": {
+        "title": "Advanced Web Application Development",
+        "instructor": "Ahmed Mohamed",
+        "courseName": "Advanced Web Application Development",
+        "issueDate": "15 December 2023"
+      },
+      "2": {
+        "title": "UX/UI Design",
+        "instructor": "Sara Ahmed",
+        "courseName": "UX/UI Design",
+        "issueDate": "20 November 2023"
+      },
+      "3": {
+        "title": "Python Programming",
+        "instructor": "Mohamed Ali",
+        "courseName": "Python Programming",
+        "issueDate": "10 October 2023"
+      },
+      "4": {
+        "title": "Digital Marketing Fundamentals",
+        "instructor": "Khaled Youssef",
+        "courseName": "Digital Marketing Fundamentals",
+        "issueDate": "5 September 2023"
+      }
+    }
+  },
+  "player": {
+    "courseTitle": "Data Analysis with Python Course",
+    "breadcrumbLabel": "Back to course details",
+    "instructorName": "Eng. Mohamed Mahmoud",
+    "commentsPlaceholder": "Write your comment...",
+    "tabs": {
+      "overview": "Overview",
+      "resources": "Resources & Files",
+      "assignments": "Assignments & Exercises"
+    },
+    "defaultOverviewDuration": "15 minutes",
+    "overviewIntro": "In this lesson, we will learn:",
+    "overviewConcept": "What is the core concept in {{topic}}?",
+    "overviewUsage": "How do we use {{topic}} in a data analysis workflow?",
+    "overviewPracticalPoints": "Key practical points that help you apply it.",
+    "overviewOutcome": "By the end of the lesson, you will understand the idea and start trying it yourself.",
+    "commentTemplate": "Excellent explanation on {{topic}}",
+    "threeMinutesAgo": "3 minutes ago",
+    "resourceSummary": "{{topic}} Summary (PDF)",
+    "resourceFiles": "{{topic}} Files (ZIP)",
+    "resourcePresentation": "{{topic}} Presentation (PPT)",
+    "assignmentOneTitle": "Exercise 1: Apply {{topic}}",
+    "assignmentOneDescription": "Write a simple program that demonstrates how to use {{topic}} in a practical example.",
+    "assignmentTwoTitle": "Exercise 2: Process {{topic}}",
+    "assignmentTwoDescription": "Create a short example that shows {{topic}} in action and display the result.",
+    "lessonOnePointOne": "What is data analysis and why is it important?",
+    "lessonOnePointTwo": "How do we use Python in data analysis?",
+    "lessonOnePointThree": "An overview of the most important core tools.",
+    "lessonOnePointFour": "By the end of this lesson, you will understand the fundamentals and start applying them.",
+    "lessonResourceTopic": "lesson",
+    "lessonAssignmentTopic": "information",
+    "lessonTwoTopic": "data analysis",
+    "lessonThreeDuration": "20 minutes",
+    "lessonThreePointOne": "In this lesson, we will learn Python basics",
+    "lessonThreePointTwo": "Variables and functions",
+    "lessonThreePointThree": "Control structures",
+    "lessonThreeTopic": "Python",
+    "lessonFourDuration": "25 minutes",
+    "lessonFourPointOne": "Data types in Python",
+    "lessonFourPointTwo": "Variables and conversions",
+    "lessonFourPointThree": "Basic operations",
+    "lessonFourTopic": "variables",
+    "lessonSixDuration": "18 minutes",
+    "lessonSixPointOne": "if/else conditional statements",
+    "lessonSixPointTwo": "elif and nested conditions",
+    "lessonSixTopic": "conditional statements",
+    "lessonSevenDuration": "22 minutes",
+    "lessonSevenPointOne": "for and while loops",
+    "lessonSevenPointTwo": "break/continue/pass",
+    "lessonSevenTopic": "loops",
+    "lessonEightTopic": "lists",
+    "notSpecified": "Not specified",
+    "noOverview": "No overview available",
+    "noResources": "No resources or files available",
+    "downloadFile": "Download file",
+    "playLesson": "Play lesson",
+    "lessons": {
+      "1": {
+        "title": "Course Introduction",
+        "shortTitle": "Course Introduction"
+      },
+      "2": {
+        "title": "Chapter 1: Introduction to Data Analysis",
+        "shortTitle": "Chapter 1: Introduction to Data Analysis"
+      },
+      "3": {
+        "title": "Chapter 2: Python Fundamentals",
+        "shortTitle": "Chapter 2: Python Fundamentals"
+      },
+      "4": {
+        "title": "Chapter 3: Variables and Data Types",
+        "shortTitle": "Chapter 3: Variables"
+      },
+      "5": {
+        "title": "Chapter 4: Arithmetic and Logical Operations",
+        "shortTitle": "Chapter 4: Operations"
+      },
+      "6": {
+        "title": "Chapter 5: Conditional Statements",
+        "shortTitle": "Chapter 5: Conditional Statements"
+      },
+      "7": {
+        "title": "Chapter 6: Loops",
+        "shortTitle": "Chapter 6: Loops"
+      },
+      "8": {
+        "title": "Chapter 7: Lists and Dictionaries",
+        "shortTitle": "Chapter 7: Lists"
+      }
+    }
+  },
+  "liveSession": {
+    "speakers": {
+      "1": {
+        "name": "Modupe Oifaemi",
+        "role": "CEO at GITECH"
+      },
+      "2": {
+        "name": "Alan Smith",
+        "role": "Head of Innovation at NJT"
+      },
+      "3": {
+        "name": "Stella Johnson",
+        "role": "CFO at CLOUDCORE"
+      }
+    },
+    "records": {
+      "1": {
+        "title": "Modern Architecture Expansion: From Monolith to Microservices",
+        "instructor": "Ahmed Montaser",
+        "instructorRole": "Senior Software Engineer at TechEgypt",
+        "description": "In this session, we explore the practical journey of evolving large systems from traditional architecture to microservices, with a focus on gradual migration, performance monitoring, and risk management.",
+        "dateLabel": "21 April 2026",
+        "timeLabel": "8:00 AM - 9:30 AM Cairo Time",
+        "resources": {
+          "1": "Session Slides.pdf",
+          "2": "Files Link"
+        },
+        "messageAuthors": {
+          "1": "Sara Ali",
+          "2": "Mahmoud Ragab"
+        },
+        "questionAuthors": {
+          "1": "Mena Ahmed",
+          "2": "Omar El-Sayed"
+        },
+        "messages": {
+          "1": "Focus on the fact that moving to microservices must be driven by a real need, not just a trend.",
+          "2": "The domain decomposition part is very important, especially for large systems.",
+          "3": "Will the learning materials be uploaded after the live stream ends?",
+          "4": "Yes, the files and links will be uploaded right after the session inside the live session page."
+        },
+        "questions": {
+          "1": "When does moving to microservices become the wrong decision for a small team?",
+          "2": "Do you recommend using event-driven architecture from the beginning or after reaching a certain stage?"
+        },
+        "poll": {
+          "question": "Which architecture are you currently using?",
+          "options": {
+            "1": "Monolithic system",
+            "2": "Microservices"
+          }
+        }
+      },
+      "2": {
+        "title": "Designing Scalable Interface Systems Within Product Teams",
+        "instructor": "Ahmed Montaser",
+        "instructorRole": "Senior Software Engineer at TechEgypt",
+        "description": "A live session about building a practical design system, managing shared components, and aligning product, design, and engineering across multiple teams.",
+        "dateLabel": "15 November 2026",
+        "timeLabel": "8:00 PM - 9:30 PM Cairo Time",
+        "resources": {
+          "1": "Design Guide.pdf",
+          "2": "Figma Library"
+        },
+        "messageAuthors": {
+          "1": "Yasmin Khaled"
+        },
+        "questionAuthors": {
+          "1": "Abdullah Hany"
+        },
+        "messages": {
+          "1": "The most important thing in a design system is clear usage rules, not just how the component looks.",
+          "2": "Would you split components by domain or by atomic design?"
+        },
+        "questions": {
+          "1": "What is the best way to document variants without making the docs themselves exhausting?"
+        },
+        "poll": {
+          "question": "What most slows down design system adoption in your team?",
+          "options": {
+            "1": "Weak documentation",
+            "2": "Lack of team commitment",
+            "3": "Slow component updates"
+          }
+        }
+      },
+      "3": {
+        "title": "Scalable Frontend Architecture",
+        "instructor": "Mohamed Ali",
+        "instructorRole": "Senior Frontend Engineer",
+        "description": "An upcoming session about folder structure, architectural patterns, and reducing page bloat inside Next.js applications."
+      },
+      "4": {
+        "title": "Building Launch-Ready AI Products",
+        "instructor": "Fatma Ali",
+        "instructorRole": "AI Product Manager",
+        "description": "How to move from idea to MVP and then to a real product with value measurement instead of hype."
+      },
+      "5": {
+        "title": "A Practical Review of MLOps in Mid-Sized Teams",
+        "instructor": "Fatma Saleh",
+        "instructorRole": "Machine Learning Lead",
+        "description": "A finished session on deployment, monitoring, and continuous improvement for AI models."
+      }
+    }
+  }
+}

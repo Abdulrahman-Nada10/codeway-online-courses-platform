@@ -1,4 +1,5 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
+import { useLocaleDirection } from "@/app/hooks/useLocaleDirection";
 
 function cn(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
@@ -30,7 +31,7 @@ function FieldMessage({
   return (
     <p
       className={cn(
-        "mt-1.5 text-right text-xs font-medium transition-all duration-300 ease-out animate-fade-in-up",
+        "mt-1.5 text-start text-xs font-medium transition-all duration-300 ease-out animate-fade-in-up",
         error && "text-red-500",
         success && "text-green-600",
         !error && !success && "text-gray-400"
@@ -60,6 +61,7 @@ export default function DashboardInput({
   helperText,
   ...props
 }: DashboardInputProps) {
+  const { dir } = useLocaleDirection();
   const state = getFieldState(error, success);
 
   return (
@@ -67,18 +69,18 @@ export default function DashboardInput({
       {label ? (
         <label
           htmlFor={props.id}
-          className="block font-cairo font-medium text-sm text-[#113555] mb-2"
+          className="mb-2 block font-cairo text-sm font-medium text-[#113555] dark:text-slate-100"
         >
           {label}
         </label>
       ) : null}
 
-      <div className="relative">
+      <div className="relative" dir={dir}>
         <input
           {...props}
           className={cn(
             baseClasses,
-            "text-[#113555] placeholder:text-gray-400",
+            "text-start text-[#113555] placeholder:text-gray-400 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500",
             rightIcon ? "pr-11" : "pr-4",
             leftIcon ? "pl-11" : "pl-4",
             state === "error" &&
@@ -86,18 +88,18 @@ export default function DashboardInput({
             state === "success" &&
               "border-green-400 bg-green-50/40 text-green-900 placeholder:text-green-300",
             state === "default" &&
-              "border-transparent focus:border-[#FF6400]"
+              "border-transparent focus:border-[#FF6400] dark:border-slate-700 dark:focus:border-[#FF6400]"
           )}
         />
 
         {rightIcon ? (
-          <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[#B6BCC5]">
+          <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[#B6BCC5] dark:text-slate-500">
             {rightIcon}
           </span>
         ) : null}
 
         {leftIcon ? (
-          <span className="absolute inset-y-0 left-3 flex items-center text-[#B6BCC5]">
+          <span className="absolute inset-y-0 left-3 flex items-center text-[#B6BCC5] dark:text-slate-500">
             {leftIcon}
           </span>
         ) : null}

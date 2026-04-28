@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { LockKeyhole, Mail } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import PublicRoute from "@/app/components/auth/PublicRoute";
 import {
   AuthBadge,
@@ -15,6 +16,7 @@ import { useAuth } from "@/app/hooks/useAuth";
 import { email } from "@/app/libs/validation";
 
 export default function ForgotPasswordPage() {
+  const { t } = useTranslation();
   const { forgotPassword } = useAuth();
   const [emailValue, setEmailValue] = useState("");
   const [error, setError] = useState<string | undefined>(undefined);
@@ -28,7 +30,7 @@ export default function ForgotPasswordPage() {
 
   const handleBlur = () => {
     setTouched(true);
-    const validationError = email(emailValue);
+    const validationError = email(emailValue, t("validation.invalidEmail"));
     if (validationError) setError(validationError);
   };
 
@@ -36,7 +38,7 @@ export default function ForgotPasswordPage() {
     event.preventDefault();
 
     setTouched(true);
-    const validationError = email(emailValue);
+    const validationError = email(emailValue, t("validation.invalidEmail"));
     setError(validationError);
     if (validationError) return;
 
@@ -44,12 +46,12 @@ export default function ForgotPasswordPage() {
 
     try {
       const result = await forgotPassword(emailValue.trim());
-      toast.success(`تم إرسال تعليمات إعادة التعيين إلى ${result.email}`);
+      toast.success(t("auth.forgotPasswordSuccess", { email: result.email }));
     } catch (submissionError) {
       toast.error(
         submissionError instanceof Error
           ? submissionError.message
-          : "تعذر إرسال طلب إعادة التعيين."
+          : t("auth.forgotPasswordError")
       );
     } finally {
       setIsSubmitting(false);
@@ -59,8 +61,8 @@ export default function ForgotPasswordPage() {
   return (
     <PublicRoute>
       <AuthShell
-        title="نسيت كلمة المرور؟"
-        subtitle="ادخل بريدك الإلكتروني لإعادة التعيين"
+        title={t("auth.forgotPasswordTitle")}
+        subtitle={t("auth.forgotPasswordSubtitle")}
         icon={
           <AuthBadge>
             <LockKeyhole className="h-4 w-4" />
@@ -73,22 +75,21 @@ export default function ForgotPasswordPage() {
             value={emailValue}
             onChange={(event) => handleChange(event.target.value)}
             onBlur={handleBlur}
-            placeholder="البريد الإلكتروني"
+            placeholder={t("auth.email")}
             rightIcon={<Mail className="h-4 w-4" />}
             autoComplete="email"
             error={touched ? error : undefined}
           />
 
           <AuthPrimaryButton type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "جاري الإرسال..." : "إرسال الكود"}
+            {isSubmitting ? t("auth.sending") : t("auth.sendCode")}
           </AuthPrimaryButton>
 
           <AuthSecondaryLinkButton href="/login">
-            العودة لتسجيل الدخول
+            {t("auth.backToLogin")}
           </AuthSecondaryLinkButton>
         </form>
       </AuthShell>
     </PublicRoute>
   );
 }
-

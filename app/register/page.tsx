@@ -1,8 +1,10 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import PublicRoute from "@/app/components/auth/PublicRoute";
 import {
   AuthDivider,
@@ -17,6 +19,7 @@ import {
   PasswordStrengthBar,
 } from "@/app/components/auth/AuthUi";
 import { useAuth } from "@/app/hooks/useAuth";
+import { getDashboardRoute } from "@/libs/auth-routing";
 import {
   email,
   getPasswordStrength,
@@ -51,13 +54,13 @@ const INITIAL_STATE: RegisterFormState = {
   gender: "male",
 };
 
-function validateRegister(values: RegisterFormState): RegisterFormErrors {
+function validateRegister(values: RegisterFormState, t: (key: string) => string): RegisterFormErrors {
   const errors: RegisterFormErrors = {};
 
-  const nameError = required(values.name, "الاسم مطلوب");
+  const nameError = required(values.name, t("validation.nameRequired"));
   if (nameError) errors.name = nameError;
 
-  const emailError = email(values.email);
+  const emailError = email(values.email, t("validation.invalidEmail"));
   if (emailError) errors.email = emailError;
 
   const passwordError = validatePasswordStrength(values.password);
@@ -66,25 +69,27 @@ function validateRegister(values: RegisterFormState): RegisterFormErrors {
   const confirmError = match(
     values.password,
     values.confirmPassword,
-    "كلمتا المرور غير متطابقتين"
+    t("validation.passwordMismatch")
   );
   if (confirmError && values.confirmPassword)
     errors.confirmPassword = confirmError;
 
-  const ageError = numeric(values.age, "أدخل السن بشكل صحيح (أرقام فقط)");
+  const ageError = numeric(values.age, t("validation.ageNumeric"));
   if (ageError) errors.age = ageError;
 
-  const govError = required(values.governorate, "اختر المحافظة");
+  const govError = required(values.governorate, t("validation.governorateRequired"));
   if (govError) errors.governorate = govError;
 
-  const streetError = required(values.street, "المنطقة/الشارع مطلوب");
+  const streetError = required(values.street, t("validation.streetRequired"));
   if (streetError) errors.street = streetError;
 
   return errors;
 }
 
 export default function RegisterPage() {
+  const { t } = useTranslation();
   const { register } = useAuth();
+  const router = useRouter();
   const [formData, setFormData] = useState<RegisterFormState>(INITIAL_STATE);
   const [errors, setErrors] = useState<RegisterFormErrors>({});
   const [touched, setTouched] = useState<RegisterFormTouched>({});
@@ -105,7 +110,7 @@ export default function RegisterPage() {
 
   const handleBlur = (field: keyof RegisterFormState) => {
     setTouched((current) => ({ ...current, [field]: true }));
-    const fieldErrors = validateRegister(formData);
+    const fieldErrors = validateRegister(formData, t);
     if (fieldErrors[field]) {
       setErrors((current) => ({ ...current, [field]: fieldErrors[field] }));
     }
@@ -114,7 +119,7 @@ export default function RegisterPage() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const validationErrors = validateRegister(formData);
+    const validationErrors = validateRegister(formData, t);
     setErrors(validationErrors);
     setTouched({
       name: true,
@@ -134,7 +139,7 @@ export default function RegisterPage() {
     if (getPasswordStrength(formData.password) === "weak") {
       setErrors((current) => ({
         ...current,
-        password: "من فضلك أدخل كلمة مرور أقوى",
+        password: t("auth.enterStrongerPassword"),
       }));
       return;
     }
@@ -142,7 +147,7 @@ export default function RegisterPage() {
     setIsSubmitting(true);
 
     try {
-      await register({
+      const response = await register({
         role: "user",
         name: formData.name.trim(),
         email: formData.email.trim(),
@@ -150,12 +155,13 @@ export default function RegisterPage() {
         address: `${formData.governorate.trim()} - ${formData.street.trim()}`,
         password: formData.password,
       });
-      toast.success("تم إنشاء الحساب بنجاح");
+      toast.success(t("auth.registerSuccess"));
+      router.replace(getDashboardRoute(response.user.role));
     } catch (submissionError) {
       toast.error(
         submissionError instanceof Error
           ? submissionError.message
-          : "تعذر إنشاء الحساب. حاول مرة أخرى."
+          : t("auth.registerError")
       );
     } finally {
       setIsSubmitting(false);
@@ -165,18 +171,18 @@ export default function RegisterPage() {
   return (
     <PublicRoute>
       <AuthShell
-        title="إنشاء حساب جديد"
-        subtitle="انضم لأكثر من 50,000 متعلم"
+        title={t("auth.registerWelcome")}
+        subtitle={t("auth.registerSubtitle")}
         footer={
           <div className="space-y-2">
             <AuthFooterLine
-              text="لديك حساب بالفعل؟"
-              linkLabel="تسجيل الدخول"
+              text={t("auth.haveAccount")}
+              linkLabel={t("auth.login")}
               href="/login"
             />
             <AuthFooterLine
-              text="هل لديك حساب وتريد استرجاعه؟"
-              linkLabel="استرجاع حساب"
+              text={t("auth.haveAccountRecover")}
+              linkLabel={t("auth.accountRecovery")}
               href="/recover-account"
             />
             <AuthSocialLinks />
@@ -184,7 +190,7 @@ export default function RegisterPage() {
         }
       >
         <AuthGoogleButton />
-        <AuthDivider text="أو تسجل الدخول ببياناتك الشخصية" />
+        <AuthDivider text={t("auth.orLoginWith")} />
 
         <form className="space-y-3" onSubmit={handleSubmit} noValidate>
           <AuthInput
@@ -192,7 +198,7 @@ export default function RegisterPage() {
             value={formData.name}
             onChange={(event) => handleChange("name", event.target.value)}
             onBlur={() => handleBlur("name")}
-            placeholder="الأسم"
+            placeholder={t("auth.name")}
             rightIcon={<User className="h-4 w-4" />}
             autoComplete="name"
             error={touched.name ? errors.name : undefined}
@@ -203,7 +209,7 @@ export default function RegisterPage() {
             value={formData.email}
             onChange={(event) => handleChange("email", event.target.value)}
             onBlur={() => handleBlur("email")}
-            placeholder="البريد الإلكتروني"
+            placeholder={t("auth.email")}
             rightIcon={<Mail className="h-4 w-4" />}
             autoComplete="email"
             error={touched.email ? errors.email : undefined}
@@ -217,8 +223,8 @@ export default function RegisterPage() {
                 handleChange("password", event.target.value)
               }
               onBlur={() => handleBlur("password")}
-              placeholder="كلمة المرور"
-              rightIcon={<Lock className="h-4 w-4" />}
+              placeholder={t("auth.password")}
+              rightIcon={<Lock className="relative h-4 w-4 bottom-2" />}
               leftIcon={
                 <button
                   type="button"
@@ -226,8 +232,8 @@ export default function RegisterPage() {
                   className="text-[#B6BCC5] pb-4"
                   aria-label={
                     showPassword
-                      ? "إخفاء كلمة المرور"
-                      : "إظهار كلمة المرور"
+                      ? t("auth.hidePassword")
+                      : t("auth.showPassword")
                   }
                 >
                   {showPassword ? (
@@ -239,7 +245,7 @@ export default function RegisterPage() {
               }
               autoComplete="new-password"
               error={touched.password ? errors.password : undefined}
-              helperText="8 أحرف على الأقل، حرف كبير، صغير، رقم، ورمز"
+              helperText={t("auth.passwordHint")}
             />
             {formData.password ? (
               <>
@@ -256,8 +262,8 @@ export default function RegisterPage() {
               handleChange("confirmPassword", event.target.value)
             }
             onBlur={() => handleBlur("confirmPassword")}
-            placeholder="تأكيد كلمة المرور"
-            rightIcon={<Lock className="h-4 w-4" />}
+            placeholder={t("auth.confirmPassword")}
+            rightIcon={<Lock className="h-4 w-4 relative" />}
             leftIcon={
               <button
                 type="button"
@@ -267,14 +273,14 @@ export default function RegisterPage() {
                 className="text-[#B6BCC5]"
                 aria-label={
                   showConfirmPassword
-                    ? "إخفاء تأكيد كلمة المرور"
-                    : "إظهار تأكيد كلمة المرور"
+                    ? t("auth.hideConfirmPassword")
+                    : t("auth.showConfirmPassword")
                 }
               >
                 {showConfirmPassword ? (
-                  <EyeOff className="h-4 w-4" />
+                  <EyeOff className="h-4 w-4 relative" />
                 ) : (
-                  <Eye className="h-4 w-4" />
+                  <Eye className="h-4 w-4 relative" />
                 )}
               </button>
             }
@@ -290,7 +296,7 @@ export default function RegisterPage() {
             value={formData.age}
             onChange={(event) => handleChange("age", event.target.value)}
             onBlur={() => handleBlur("age")}
-            placeholder="السن"
+            placeholder={t("auth.age")}
             error={touched.age ? errors.age : undefined}
           />
 
@@ -303,7 +309,7 @@ export default function RegisterPage() {
               onBlur={() => handleBlur("governorate")}
               error={touched.governorate ? errors.governorate : undefined}
             >
-              <option value="">المحافظة</option>
+              <option value="">{t("auth.governorate")}</option>
               <option value="القاهرة">القاهرة</option>
               <option value="الجيزة">الجيزة</option>
               <option value="الإسكندرية">الإسكندرية</option>
@@ -317,14 +323,14 @@ export default function RegisterPage() {
                 handleChange("street", event.target.value)
               }
               onBlur={() => handleBlur("street")}
-              placeholder="المنطقة/الشارع"
+              placeholder={t("auth.street")}
               error={touched.street ? errors.street : undefined}
             />
           </div>
 
           <div className="space-y-2">
             <p className="text-right text-[13px] font-semibold text-[#4B4B4B]">
-              النوع:
+              {t("auth.gender")}:
             </p>
 
             <div className="grid grid-cols-2 gap-2">
@@ -344,7 +350,7 @@ export default function RegisterPage() {
                     <span className="absolute inset-0.75 rounded-full bg-[#FF6A00]" />
                   ) : null}
                 </span>
-                <span>أنثى</span>
+                <span>{t("auth.female")}</span>
               </button>
 
               <button
@@ -363,17 +369,16 @@ export default function RegisterPage() {
                     <span className="absolute inset-0.75 rounded-full bg-[#FF6A00]" />
                   ) : null}
                 </span>
-                <span>ذكر</span>
+                <span>{t("auth.male")}</span>
               </button>
             </div>
           </div>
 
           <AuthPrimaryButton type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "جاري إنشاء الحساب..." : "إنشاء الحساب"}
+            {isSubmitting ? t("auth.creatingAccount") : t("auth.register")}
           </AuthPrimaryButton>
         </form>
       </AuthShell>
     </PublicRoute>
   );
 }
-

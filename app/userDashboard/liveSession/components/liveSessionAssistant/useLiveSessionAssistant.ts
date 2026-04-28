@@ -2,6 +2,7 @@
 
 import { useParams, useSearchParams } from 'next/navigation';
 import { ChangeEvent, FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { sendAiChatMessage } from '@/services/aiChat';
 import {
@@ -27,6 +28,7 @@ import {
   createConversation,
   createId,
   getAttachmentMeta,
+  getAssistantReply,
   getConversationTitle,
   parseStoredConversations,
 } from './utils';
@@ -79,6 +81,7 @@ export function useLiveSessionAssistant({
   sessionSlug,
   sessionContextData,
 }: LiveSessionAssistantProps) {
+  const { t, i18n } = useTranslation();
   const initialConversationRef = useRef<ConversationRecord>(createConversation());
   const listEndRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -345,7 +348,7 @@ export function useLiveSessionAssistant({
     console.log('[AI DEBUG] Final courseId before send:', finalCourseId);
 
     if (!isValidCourseId(finalCourseId)) {
-      setComposerError('حدد الكورس أولاً');
+      setComposerError(t('assistant.selectCourseFirst'));
       // eslint-disable-next-line no-console
       console.warn('[AI DEBUG] Blocked send: no valid courseId resolved.');
       return;
@@ -372,7 +375,7 @@ export function useLiveSessionAssistant({
     isSendingRef.current = true;
 
     const visibleMessage =
-      displayText?.trim() || textPrompt || (selectedAttachments[0] ? `مرفق: ${selectedAttachments[0].file.name}` : 'رسالة جديدة');
+      displayText?.trim() || textPrompt || (selectedAttachments[0] ? `${t('assistant.attachment')}: ${selectedAttachments[0].file.name}` : t('assistant.newMessage'));
     const conversationId = activeConversation.id;
     const previousMessages = activeConversation.messages;
     const userMessage = {
@@ -411,7 +414,7 @@ export function useLiveSessionAssistant({
       const messageParts: string[] = [];
 
       if (contextTitle) {
-        messageParts.push(`السياق الحالي: ${contextTitle}`);
+        messageParts.push(t('assistant.currentContextLine', { contextTitle }));
       }
 
       if (textPrompt) {
@@ -419,14 +422,15 @@ export function useLiveSessionAssistant({
       }
 
       if (attachmentContext) {
-        messageParts.push(`المرفقات:\n${attachmentContext}`);
+        messageParts.push(`${t('assistant.attachmentsHeader')}:\n${attachmentContext}`);
       }
 
-      const reply = await sendAiChatMessage({
+      const replyPayload = await sendAiChatMessage({
         message: messageParts.join('\n\n') || visibleMessage,
         courseId: finalCourseId!,
         history: buildHistory(previousMessages, RECENT_HISTORY_LIMIT),
       });
+      const reply = getAssistantReply(replyPayload);
 
       // Persist resolved courseId to session context
       saveSessionContext({
@@ -463,25 +467,25 @@ export function useLiveSessionAssistant({
       // eslint-disable-next-line no-console
       console.error('[useLiveSessionAssistant] AI chat error:', error);
 
-      let errorText = 'حصل خطأ في الاتصال بالـ AI، حاول تاني';
+      let errorText = t('assistant.aiConnectionError');
 
       if (error instanceof TypeError) {
-        errorText = 'تعذر الاتصال بالخادم. تأكد من تشغيل خدمة الـ AI (localhost:5500).';
+        errorText = t('assistant.serverConnectionError');
       } else if (error instanceof Error) {
         const msg = error.message.toLowerCase();
 
         if (msg.includes('not valid json')) {
-          errorText = 'رد الـ AI غير مفهوم. تحقق من خدمة الـ Backend.';
+          errorText = t('assistant.invalidResponse');
         } else if (msg.includes('did not include a valid "reply"') || msg.includes('empty')) {
-          errorText = 'رد الـ AI فارغ أو غير مكتمل. حاول مرة تانية.';
+          errorText = t('assistant.emptyResponse');
         } else if (msg.includes('status 404')) {
-          errorText = 'نقطة النهاية غير موجودة (404). تحقق من إعدادات الـ Backend.';
+          errorText = t('assistant.endpointNotFound');
         } else if (msg.includes('status 5')) {
-          errorText = 'الخادم واجه مشكلة داخلية. حاول مرة تانية بعد لحظات.';
+          errorText = t('assistant.serverError');
         } else if (msg.includes('status 4')) {
-          errorText = 'طلب غير صالح. تحقق من البيانات المرسلة.';
+          errorText = t('assistant.invalidRequest');
         } else if (msg.includes('no lessons found')) {
-          errorText = 'لم يتم العثور على دروس لهذا الكورس. تحقق من معرف الكورس.';
+          errorText = t('assistant.noLessonsFound');
         } else {
           errorText = error.message;
         }
@@ -553,14 +557,14 @@ export function useLiveSessionAssistant({
     const SpeechRecognitionApi = getSpeechRecognitionApi();
 
     if (!SpeechRecognitionApi) {
-      setComposerError('المتصفح الحالي لا يدعم تحويل الصوت إلى نص.');
+      setComposerError(t('assistant.voiceNotSupported'));
       return;
     }
 
     const recognition = new SpeechRecognitionApi();
     let finalTranscript = '';
 
-    recognition.lang = 'ar-EG';
+    recognition.lang = i18n.language.startsWith('ar') ? 'ar-EG' : 'en-US';
     recognition.interimResults = true;
     recognition.maxAlternatives = 1;
     recognition.onresult = (event) => {
@@ -583,7 +587,7 @@ export function useLiveSessionAssistant({
     };
 
     recognition.onerror = () => {
-      setComposerError('تعذر التقاط الرسالة الصوتية. حاول مرة تانية.');
+      setComposerError(t('assistant.voiceCaptureError'));
       setIsListening(false);
       recognitionRef.current = null;
     };
@@ -627,3 +631,4 @@ export function useLiveSessionAssistant({
     setIsHistoryOpen,
   };
 }
+

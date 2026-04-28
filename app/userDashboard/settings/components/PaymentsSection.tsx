@@ -1,6 +1,7 @@
 'use client';
 
 import { Check } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import DashboardInput from '@/app/components/ui/DashboardInput';
 
 interface PaymentsSectionProps {
@@ -25,11 +26,13 @@ export default function PaymentsSection({
   onSave,
   onCancel
 }: PaymentsSectionProps) {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-8">
-      <div className="text-right pb-4">
-        <h3 className="font-cairo font-bold text-lg text-[#113555]">
-          اعدادات حسابك البنكي
+      <div className="pb-4 text-start">
+        <h3 className="font-cairo text-lg font-bold text-[#113555] dark:text-slate-100">
+          {t('dashboard.paymentSettings')}
         </h3>
       </div>
 
@@ -38,7 +41,7 @@ export default function PaymentsSection({
           <DashboardInput
             id="accountHolderName"
             type="text"
-            label="اسم صاحب الحساب"
+            label={t('dashboard.accountHolderName')}
             value={bankData.accountHolderName}
             onChange={(e) => onBankDataChange('accountHolderName', e.target.value)}
             error={touched.accountHolderName ? errors.accountHolderName : undefined}
@@ -47,7 +50,7 @@ export default function PaymentsSection({
           <DashboardInput
             id="bankName"
             type="text"
-            label="اسم البنك"
+            label={t('dashboard.bankName')}
             value={bankData.bankName}
             onChange={(e) => onBankDataChange('bankName', e.target.value)}
             error={touched.bankName ? errors.bankName : undefined}
@@ -58,7 +61,7 @@ export default function PaymentsSection({
           <DashboardInput
             id="iban"
             type="text"
-            label="رقم IBAN"
+            label={t('dashboard.iban')}
             value={bankData.iban}
             onChange={(e) => onBankDataChange('iban', e.target.value)}
             error={touched.iban ? errors.iban : undefined}
@@ -67,7 +70,7 @@ export default function PaymentsSection({
           <DashboardInput
             id="swiftCode"
             type="text"
-            label="رمز SWIFT"
+            label={t('dashboard.swiftCode')}
             value={bankData.swiftCode}
             onChange={(e) => onBankDataChange('swiftCode', e.target.value)}
             error={touched.swiftCode ? errors.swiftCode : undefined}
@@ -80,14 +83,14 @@ export default function PaymentsSection({
           onClick={onCancel}
           className="px-6 py-3 border-2 border-[#FF6400] text-[#FF6400] rounded-xl font-cairo font-medium text-sm hover:bg-[#FFF3EB] transition-colors w-full sm:w-auto"
         >
-          الغاء
+          {t('common.cancel')}
         </button>
         <button
           onClick={onSave}
           className="px-6 py-3 bg-[#FF6400] text-white rounded-xl font-cairo font-medium text-sm hover:bg-[#E55A00] transition-colors w-full sm:w-auto flex items-center justify-center gap-2"
         >
           <Check className="w-5 h-5" />
-          حفظ التغيرات
+          {t('common.saveChanges')}
         </button>
       </div>
     </div>

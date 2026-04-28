@@ -1,15 +1,20 @@
 'use client';
 
 import { useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { LiveSessionsHome } from './components/LiveSessionsHome';
 import { LiveSessionAssistant } from './components/LiveSessionAssistant';
-import { liveSessions } from './data';
+import { getLiveSessions } from './data';
+import { useLocaleDirection } from '../../hooks/useLocaleDirection';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { setContext } from '../../store/searchSlice';
 
 export default function LiveSessionPage() {
+  const { t, i18n } = useTranslation();
+  const { dir } = useLocaleDirection();
   const dispatch = useAppDispatch();
   const searchQuery = useAppSelector((state) => state.search.query);
+  const liveSessions = useMemo(() => getLiveSessions(t), [t, i18n.language]);
 
   useEffect(() => {
     dispatch(setContext('liveSession'));
@@ -18,22 +23,29 @@ export default function LiveSessionPage() {
   const filteredSessions = useMemo(() => {
     if (!searchQuery.trim()) return liveSessions;
     const lower = searchQuery.toLowerCase();
+
     return liveSessions.filter(
       (session) =>
         session.title.toLowerCase().includes(lower) ||
         session.instructor.toLowerCase().includes(lower) ||
-        (session.description ? session.description.toLowerCase().includes(lower) : false)
+        (session.description
+          ? session.description.toLowerCase().includes(lower)
+          : false)
     );
-  }, [searchQuery]);
+  }, [liveSessions, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-[#fff3eb] overflow-x-hidden">
-      <div className="lg:mr-20 xl:mr-64">
+    <div
+      className="min-h-screen overflow-x-hidden bg-[#fff3eb] dark:bg-slate-950"
+      dir={dir}
+    >
+      <div className="rtl:lg:mr-20 rtl:xl:mr-64 ltr:lg:ml-20 ltr:xl:ml-64">
         <main className="px-3 pb-6 pt-26 sm:px-4 sm:pb-8 sm:pt-28 lg:px-8">
           <LiveSessionsHome sessions={filteredSessions} />
         </main>
       </div>
-      <LiveSessionAssistant contextTitle="الحصص المباشرة" />
+
+      <LiveSessionAssistant contextTitle={t('dashboard.liveSession')} />
     </div>
   );
 }

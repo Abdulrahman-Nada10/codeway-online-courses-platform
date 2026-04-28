@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { useLocaleDirection } from '@/app/hooks/useLocaleDirection';
 import AssignmentsPanel from './AssignmentsPanel';
 import CommentsPanel from './CommentsPanel';
 import { VideoPlayerCourse, VideoPlayerPanel, VideoPlayerTab, LessonInteractionState, VideoPlayerLesson } from './types';
@@ -15,6 +16,7 @@ import VideoHero from './VideoHero';
 import { getEffectiveLessonStatus } from './utils';
 
 export default function VideoPlayerLayout({ course }: { course: VideoPlayerCourse }) {
+  const { dir, isRTL } = useLocaleDirection();
   const [activeLessonId, setActiveLessonId] = useState(course.lessons[0]?.id ?? 1);
   const [activeTab, setActiveTab] = useState<VideoPlayerTab>('overview');
   const [previousTab, setPreviousTab] = useState<VideoPlayerTab>('overview');
@@ -99,18 +101,25 @@ export default function VideoPlayerLayout({ course }: { course: VideoPlayerCours
     }
   };
 
+  const gridCols = isRTL
+    ? 'lg:grid-cols-[minmax(0,1fr)_300px] xl:grid-cols-[minmax(0,702px)_358px]'
+    : 'lg:grid-cols-[300px_minmax(0,1fr)] xl:grid-cols-[358px_minmax(0,702px)]';
+
+  const contentOrder = isRTL ? 'order-1' : 'order-2';
+  const sidebarOrder = isRTL ? 'order-2' : 'order-1';
+
   return (
-    <div className="min-h-screen overflow-x-hidden overflow-y-auto bg-[#FFF3EB] pt-22 lg:h-screen lg:overflow-hidden lg:pt-14">
-      <div className="min-h-[calc(100vh-5.5rem)] md:mr-0 lg:h-[calc(100vh-6.5rem)] lg:min-h-0 lg:mr-24 xl:mr-28">
-        <main className="h-full w-full overflow-visible p-2.5 sm:p-4 lg:overflow-hidden lg:px-5 lg:py-0 xl:px-6" dir="rtl">
-          <div className="mx-auto flex h-full max-w-269 flex-col gap-2 pt-4 lg:gap-2.5 lg:pt-6 xl:pt-7 lg:mr-21">
-            <div className="flex w-full flex-col items-start gap-1 text-right xl:max-w-175.5 lg:mr-12">
+    <div className="min-h-screen overflow-x-hidden overflow-y-auto bg-[#FFF3EB] pt-22 dark:bg-slate-950 lg:h-screen lg:overflow-hidden lg:pt-14" dir={dir}>
+      <div className="min-h-[calc(100vh-5.5rem)] md:mr-0 lg:h-[calc(100vh-6.5rem)] lg:min-h-0 rtl:lg:mr-24 rtl:xl:mr-28 ltr:lg:ml-24 ltr:xl:ml-58" dir={dir} >
+        <main className="h-full w-full overflow-visible p-2.5 sm:p-4 lg:overflow-hidden lg:px-5 lg:py-0 xl:px-6">
+          <div className="mx-auto flex h-full max-w-269 flex-col gap-2 pt-4 lg:gap-2.5 lg:pt-6 xl:pt-7 rtl:lg:mr-21 ltr:lg:ml-21" dir={dir}>
+            <div className="flex w-full flex-col items-start gap-1 text-start xl:max-w-175.5 rtl:lg:mr-12 ltr:lg:ml-12" dir={dir}>
               <Link
                 href="/userDashboard/my-courses"
-                className="inline-flex items-center justify-end gap-1.5 text-[15px] font-bold  transition hover:text-[#FF6400]"
+                className="inline-flex items-center gap-1.5 text-[15px] font-bold transition hover:text-[#FF6400]"
               >
                   <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-[#ffff]">
-                    <ArrowRight className="w-6 h-6 text-[#FF6400]" />
+                    <ArrowRight className="h-6 w-6 text-[#FF6400] ltr:rotate-180" />
                   </div>
                 {course.breadcrumbLabel}
               </Link>
@@ -118,8 +127,8 @@ export default function VideoPlayerLayout({ course }: { course: VideoPlayerCours
                 {course.title}
               </h1>
             </div>
-            <div className="grid gap-3 lg:h-[calc(100%-3.75rem)] lg:gap-2 lg:grid-cols-[minmax(0,1fr)_300px] lg:justify-center xl:grid-cols-[minmax(0,702px)_358px] xl:items-start" dir="ltr">
-              <section className="order-1 flex min-w-0 flex-col gap-2 lg:h-full xl:w-175.5 xl:-translate-x-14 xl:-translate-y-11">
+            <div className={`grid gap-3 lg:h-[calc(100%-3.75rem)] lg:gap-2 lg:justify-center xl:items-start ${gridCols}`} dir={dir}>
+              <section className={`${contentOrder} flex min-w-0 flex-col gap-2 lg:h-full xl:w-175.5 ${isRTL ? 'xl:-translate-x-14' : 'xl:translate-x-14'} xl:-translate-y-11`}>
                 <div
                   className={`grid w-full gap-2 ${
                     activePanel === 'comments'
@@ -182,7 +191,7 @@ export default function VideoPlayerLayout({ course }: { course: VideoPlayerCours
                 </div>
               </section>
 
-              <div className="order-2 w-full lg:h-full lg:w-75 xl:w-89.5">
+              <div className={`${sidebarOrder} w-full lg:h-full lg:w-75 xl:w-89.5`}>
                 <LessonSidebar
                   lessons={sidebarLessons}
                   activeLessonId={activeLesson.id}
@@ -200,3 +209,4 @@ export default function VideoPlayerLayout({ course }: { course: VideoPlayerCours
     </div>
   );
 }
+

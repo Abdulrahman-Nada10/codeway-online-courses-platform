@@ -4,6 +4,8 @@ import { Toaster } from "sonner";
 import "./globals.css";
 import ReduxProvider from "./components/ReduxProvider";
 import AuthProvider from "./providers/AuthProvider";
+import I18nProvider from "../providers/I18nProvider";
+import { ThemeProvider } from "../providers/ThemeProvider";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -15,6 +17,12 @@ const cairo = Cairo({
 export const metadata: Metadata = {
   title: "منصة التعلم الإلكترونية",
   description: "منصة تعليمية لتطوير مهاراتك",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "EGC",
+  },
   keywords: [
     "تعلم عبر الإنترنت",
     "دورات تعليمية",
@@ -67,15 +75,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl" >
+    <html lang="ar" dir="rtl" suppressHydrationWarning>
       <body
-        className={`${cairo.variable} antialiased bg-[#FFF3EB]`}
+        className={`${cairo.variable} antialiased bg-page-bg  transition-colors duration-300`}
       >
-        <AuthProvider>
-          <ReduxProvider>
-            {children}
-          </ReduxProvider>
-        </AuthProvider>
+        <ReduxProvider>
+          <AuthProvider>
+            <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+              <I18nProvider>
+                {children}
+              </I18nProvider>
+            </ThemeProvider>
+          </AuthProvider>
+        </ReduxProvider>
         <Toaster
           position="top-left"
           richColors
@@ -91,4 +103,3 @@ export default function RootLayout({
     </html>
   );
 }
-

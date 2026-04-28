@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Check, Download, FileText } from 'lucide-react';
+import { useLocaleDirection } from '@/app/hooks/useLocaleDirection';
 import { LessonAssignment } from './types';
 
 function AssignmentIcon({ icon }: { icon: LessonAssignment['icon'] }) {
@@ -10,19 +12,21 @@ function AssignmentIcon({ icon }: { icon: LessonAssignment['icon'] }) {
 }
 
 export default function AssignmentsPanel({ assignments }: { assignments: LessonAssignment[] }) {
+  const { t } = useTranslation();
+  const { dir } = useLocaleDirection();
   const [downloadedIds, setDownloadedIds] = useState<number[]>([]);
 
   if (assignments.length === 0) {
     return (
       <div className="flex h-44 flex-col items-center justify-center rounded-2xl border border-[#E8D8CA] bg-white text-[#8B8B8B] shadow-[0_10px_24px_rgba(17,53,85,0.06)]">
         <FileText className=" mb-3 h-19 w-12 text-[#C1C1C1]" />
-        <p className="text-[12px] pb-4">لا توجد مهام او تمارين</p>
+        <p className="text-[12px] pb-4">{t('dashboard.noAssignments')}</p>
       </div>
     );
   }
 
   return (
-    <div className="h-44 overflow-hidden rounded-2xl border border-[#E8D8CA] bg-white px-5 py-3 shadow-[0_10px_24px_rgba(17,53,85,0.06)]">
+    <div className="h-44 overflow-hidden rounded-2xl border border-[#E8D8CA] bg-white px-5 py-3 shadow-[0_10px_24px_rgba(17,53,85,0.06)] dark:bg-slate-900" dir={dir}>
       <div className="custom-scrollbar h-full space-y-4 overflow-y-auto pr-1">
         {assignments.map((assignment) => {
           const isDownloaded = downloadedIds.includes(assignment.id);
@@ -37,20 +41,20 @@ export default function AssignmentsPanel({ assignments }: { assignments: LessonA
                   )
                 }
                 className="mt-4 text-[#6B7280] transition hover:text-[#113555]"
-                aria-label="تنزيل المهمة"
+                aria-label={t('dashboard.downloadAssignment')}
               >
                 {isDownloaded ? (
                   <span className="inline-flex items-center">
                     <Check className="h-4 w-5.3" />
-                    <span className="mt-5.5 inline-flex w-5 border-b border-current relative right-5.5" />
+                    <span className="relative mt-5.5 inline-flex w-5 border-b border-current rtl:right-5.5 ltr:left-5.5" />
                   </span>
                 ) : (
                   <Download className="h-4 w-5" />
                 )}
               </button>
 
-              <div className="text-right">
-                <p className="text-[13px] font-semibold text-[#111111]">{assignment.title}</p>
+              <div className="text-start">
+                <p className="text-[13px] font-semibold text-[#111111] dark:text-slate-100">{assignment.title}</p>
                 <p className="mt-1.5 text-[11px] leading-6 text-[#7B7B7B]">{assignment.description}</p>
                 <div className="mt-2.5 flex items-center justify-end gap-2 text-[10px] text-[#7B7B7B]">
                   <span>{assignment.title} (PDF)</span>

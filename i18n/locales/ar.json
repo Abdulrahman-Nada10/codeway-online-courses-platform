@@ -1,0 +1,688 @@
+{
+  "common": {
+    "welcome": "أهلاً بك في منصة التعلم",
+    "courses": "الدورات",
+    "about": "من نحن",
+    "saveChanges": "حفظ التغييرات",
+    "cancel": "الغاء",
+    "loading": "جاري التحميل...",
+    "send": "إرسال",
+    "back": "العودة",
+    "edit": "تعديل",
+    "editProfile": "تعديل الملف",
+    "exploreCourses": "استكشف الدورات",
+    "all": "الكل",
+    "showAll": "عرض الكل",
+    "joinNow": "انضم الآن",
+    "watchRecording": "عرض التسجيل",
+    "profileImage": "الصورة الشخصية",
+    "viewAll": "عرض الكل",
+    "close": "إغلاق",
+    "remove": "إزالة",
+    "view": "عرض",
+    "download": "تحميل",
+    "share": "مشاركة",
+    "currency": "ج.م",
+    "emoji": "إيموجي",
+    "play": "تشغيل",
+    "volume": "الصوت",
+    "screen": "الشاشة",
+    "settings": "الإعدادات"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "newPassword": "كلمة المرور الجديدة",
+    "logout": "تسجيل الخروج",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "forgotPasswordTitle": "نسيت كلمة المرور؟",
+    "forgotPasswordSubtitle": "ادخل بريدك الإلكتروني لإعادة التعيين",
+    "resetPassword": "تعيين كلمة مرور جديدة",
+    "resetPasswordSubtitle": "ادخل كلمة المرور الجديدة ثم أكدها",
+    "recoverAccount": "استرجاع الحساب",
+    "recoverAccountTitle": "بيانات استرجاع الحساب",
+    "sendCode": "إرسال الكود",
+    "backToLogin": "العودة لتسجيل الدخول",
+    "name": "الاسم",
+    "fullName": "الاسم الكامل",
+    "age": "السن",
+    "governorate": "المحافظة",
+    "street": "المنطقة/الشارع",
+    "gender": "النوع",
+    "male": "ذكر",
+    "female": "أنثى",
+    "accountRecovery": "استرجاع حساب",
+    "loginWelcome": "مرحباً بعودتك",
+    "registerWelcome": "إنشاء حساب جديد",
+    "registerSubtitle": "انضم لأكثر من 50,000 متعلم",
+    "loginSubtitle": "انضم لأكثر من 50,000 متعلم",
+    "noAccount": "ليس لديك حساب؟",
+    "haveAccount": "لديك حساب بالفعل؟",
+    "haveAccountRecover": "هل لديك حساب وتريد استرجاعه؟",
+    "orLoginWith": "أو تسجل الدخول ببياناتك الشخصية",
+    "continueWithGoogle": "Continue with Google",
+    "loginAction": "دخول",
+    "loggingIn": "جاري الدخول...",
+    "creatingAccount": "جاري إنشاء الحساب...",
+    "sending": "جاري الإرسال...",
+    "saving": "جاري الحفظ...",
+    "showPassword": "إظهار كلمة المرور",
+    "hidePassword": "إخفاء كلمة المرور",
+    "showConfirmPassword": "إظهار تأكيد كلمة المرور",
+    "hideConfirmPassword": "إخفاء تأكيد كلمة المرور",
+    "enterStrongerPassword": "من فضلك أدخل كلمة مرور أقوى",
+    "loginSuccess": "تم تسجيل الدخول بنجاح",
+    "loginError": "تعذر تسجيل الدخول. حاول مرة أخرى.",
+    "registerSuccess": "تم إنشاء الحساب بنجاح",
+    "registerError": "تعذر إنشاء الحساب. حاول مرة أخرى.",
+    "forgotPasswordSuccess": "تم إرسال تعليمات إعادة التعيين إلى {{email}}",
+    "forgotPasswordError": "تعذر إرسال طلب إعادة التعيين.",
+    "resetPasswordSuccess": "تم تحديث كلمة المرور بنجاح. سيتم تحويلك إلى صفحة الدخول.",
+    "resetPasswordError": "تعذر إعادة تعيين كلمة المرور.",
+    "invalidResetLink": "رابط إعادة التعيين غير صالح.",
+    "recoverAccountSuccess": "تم إرسال طلب استرجاع الحساب بنجاح",
+    "familyName": "اسم عائلتك",
+    "proofType": "نوع إثباتك",
+    "screenshotUpload": "خذ لقطة شاشة",
+    "passwordHint": "8 أحرف على الأقل، حرف كبير، صغير، رقم، ورمز"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "courses": "الدورات",
+    "features": "المميزات",
+    "contact": "تواصل معنا",
+    "searchPlaceholder": "البحث...",
+    "notifications": "الإشعارات",
+    "cart": "السلة",
+    "userProfile": "الملف الشخصي",
+    "myCourses": "دوراتي",
+    "favorites": "المفضلة",
+    "certificates": "شهاداتي",
+    "settings": "الإعدادات",
+    "liveSession": "حصة مباشرة",
+    "student": "طالب",
+    "instructor": "مدرب",
+    "menu": "القائمة",
+    "close": "إغلاق",
+    "you": "أنت",
+    "brand": "EGC",
+    "changeLanguage": "تغيير اللغة"
+  },
+  "dashboard": {
+    "profile": "الملف الشخصي",
+    "profileSubtitle": "عرض و إدارة معلوماتك الشخصية",
+    "courses": "دوراتي",
+    "coursesSubtitle": "تابع تقدمك في الدورات المسجل بها",
+    "favorites": "المفضلة",
+    "favoritesSubtitle": "الدورات التي أضفتها إلى قائمتك المفضلة",
+    "certificates": "شهاداتي",
+    "certificatesSubtitle": "جميع الشهادات التي حصلت عليها",
+    "settings": "الإعدادات",
+    "settingsSubtitle": "إدارة حسابك وتفضيلاتك",
+    "liveSession": "حصصي المباشرة",
+    "liveSessionSubtitle": "تابع الجلسات القادمة أو انتقل مباشرة إلى البث المفتوح الآن.",
+    "basicInfo": "المعلومات الأساسية",
+    "changeImage": "تغيير الصورة",
+    "imageFormat": "صيغة الملف: jpg, png, gif",
+    "imageSize": "حجم الملف: أقصى حجم 2MB",
+    "phone": "رقم التليفون",
+    "address": "العنوان",
+    "joinedAt": "انضم في {{date}}",
+    "registeredCourses": "الدورات المسجلة",
+    "completedCourses": "الدورات المكتملة",
+    "learningHours": "ساعات التعلم",
+    "latestCertificates": "اخر الشهادات",
+    "securityAndPassword": "الأمان و كلمة المرور",
+    "currentPassword": "كلمة المرور الحالية",
+    "notificationSettings": "إعدادات الإشعارات",
+    "paymentSettings": "اعدادات حسابك البنكي",
+    "accountHolderName": "اسم صاحب الحساب",
+    "bankName": "اسم البنك",
+    "iban": "رقم IBAN",
+    "swiftCode": "رمز SWIFT",
+    "passwordChanged": "تم تغيير كلمة المرور بنجاح",
+    "profileSaved": "تم حفظ التغييرات بنجاح",
+    "profileSaveError": "تعذر حفظ التغييرات.",
+    "paymentSaved": "تم حفظ البيانات البنكية بنجاح",
+    "emailNotifications": "اشعارات البريد الإلكتروني",
+    "emailNotificationsDesc": "استلم إشعارات عبر البريد الإلكتروني",
+    "newCourses": "دورات جديده",
+    "newCoursesDesc": "استلم إشعارات عند إضافة دورات جديدة",
+    "studyReminders": "تذكير بالعلم",
+    "studyRemindersDesc": "تذكيرات منتظمة لمواصلة تعلمك",
+    "offersAndDiscounts": "العرض و الخصومات",
+    "offersAndDiscountsDesc": "استلم العروض والخصومات الخاصة",
+    "enabled": "مفعل",
+    "disabled": "غير مفعل",
+    "noFavorites": "لا توجد دورات في المفضلة",
+    "noFavoritesDesc": "أضف دورات إلى المفضلة لحفظها هنا",
+    "noCoursesMatch": "لا توجد نتائج مطابقة للبحث",
+    "tryDifferentSearch": "جرّب كلمات مختلفة أو فلاتر أخرى",
+    "noCertificatesYet": "أكمل المزيد من الدورات!",
+    "certificatesCount": "لديك <0>{{count}}</0> شهادات حتى الآن",
+    "completeMoreCourses": "أكمل المزيد من الدورات للحصول على شهادات إضافية",
+    "issueDate": "تاريخ الاصدار",
+    "certificateNumber": "رقم الشهادة",
+    "questionForInstructor": "سؤال للمحاضر",
+    "directedToInstructor": "موجّه إلى المحاضر",
+    "comments": "التعليقات",
+    "markComplete": "تحديد كمكتمل",
+    "markIncomplete": "الغاء التحديد",
+    "sendComment": "إرسال التعليق",
+    "closeComments": "إغلاق التعليقات",
+    "demoUser": "مصطفى عادل",
+    "pollEnded": "استطلاع رأي منتهي",
+    "pollActive": "استطلاع نشط",
+    "endPoll": "إنهاء الاستطلاع",
+    "vote": "صوت",
+    "votes": "أصوات",
+    "votingClosed": "تم إغلاق التصويت",
+    "votingHint": "يمكنك التصويت مرة واحدة وتغيير اختيارك قبل الإنهاء",
+    "emptyChat": "لا توجد تفاعلات بعد. ابدأ تعليقاً جديداً ليظهر في الدردشة المباشرة.",
+    "emptyQuestions": "لا توجد أسئلة مرسلة بعد. أرسل سؤالك للمحاضر من الأسفل.",
+    "emptyPolls": "لا توجد استطلاعات حالياً. أنشئ استطلاعاً جديداً ليظهر هنا.",
+    "aboutThisSession": "عن هذه الجلسة",
+    "resources": "المصادر",
+    "addToCalendar": "التقويم",
+    "shareSession": "مشاركة",
+    "upcoming": "الجلسات القادمة",
+    "liveNow": "مباشرة الآن",
+    "past": "الجلسات المنتهية",
+    "noSessionsAvailable": "لا توجد جلسات متاحة في هذا القسم حالياً.",
+    "ended": "تم الانتهاء",
+    "learner": "متعلم",
+    "learners": "متعلمين",
+    "views": "مشاهدة",
+    "endedRecently": "انتهت منذ قليل",
+    "endedHoursAgo": "انتهت منذ {{count}} ساعات",
+    "endedDaysAgo": "انتهت منذ {{count}} أيام",
+    "newCourseNotification": "تم إضافة دورة جديدة",
+    "questionReplied": "تم الرد على سؤالك",
+    "discountNotification": "خصم 20% على الدورات",
+    "hourAgo": "منذ ساعة",
+    "dayAgo": "منذ يوم",
+    "twoDaysAgo": "منذ يومين",
+    "startsIn": "تبدأ خلال",
+    "hour": "ساعة",
+    "minute": "دقيقة",
+    "second": "ثانية",
+    "myCourses": "دوراتي",
+    "menu": "القائمة",
+    "lessonsUnit": "درس",
+    "hoursUnit": "ساعة",
+    "lastWatched": "آخر مشاهدة",
+    "lastWatchedToday": "اليوم",
+    "lastWatchedYesterday": "أمس",
+    "reviewCourse": "مراجعة الدورة",
+    "continueLearning": "متابعة التعلم",
+    "filterAllCourses": "كل الدورات",
+    "filterInProgressCourses": "الدورات الجارية",
+    "filterCompletedCourses": "الدورات المكتملة",
+    "instructorPrefix": "م.",
+    "roomCurrentUser": "محمد محمود",
+    "coursesData": {
+      "1": {
+        "title": "تحليل البيانات للمبتدئين",
+        "instructor": "محمد محمود"
+      },
+      "2": {
+        "title": "أساسيات Python العملية",
+        "instructor": "أحمد علي"
+      },
+      "3": {
+        "title": "مشروع تطبيقي في تحليل البيانات",
+        "instructor": "سارة خالد"
+      },
+      "4": {
+        "title": "تنظيف البيانات ومعالجتها",
+        "instructor": "مريم حسن"
+      },
+      "5": {
+        "title": "تصور البيانات واتخاذ القرار",
+        "instructor": "خالد يوسف"
+      },
+      "6": {
+        "title": "الإحصاء العملي لعلم البيانات",
+        "instructor": "نادية محمد"
+      }
+    },
+    "chat": "الدردشة",
+    "questions": "الأسئلة",
+    "poll": "استطلاع",
+    "writeComment": "اكتب تعليقك",
+    "askQuestion": "اكتب سؤالك",
+    "chatHelper": "شارك تعليقك مع الحضور وسيظهر هنا مباشرة.",
+    "questionsHelper": "اكتب سؤالك للمحاضر وسيظهر في هذه القائمة.",
+    "pollHelper": "أنشئ استطلاعًا جديدًا وشاركه مع الحضور.",
+    "noAssignments": "لا توجد واجبات متاحة",
+    "downloadAssignment": "تنزيل الواجب",
+    "pollQuestionPlaceholder": "اكتب سؤال الاستطلاع",
+    "pollOption": "الخيار {{number}}",
+    "addOption": "إضافة خيار",
+    "removeOption": "حذف الخيار",
+    "publishPoll": "نشر الاستطلاع"
+  },
+  "profile": {
+    "joinedIn": "انضم في {{date}}",
+    "registeredCourses": "الدورات المسجلة",
+    "completedCourses": "الدورات المكتملة",
+    "certificates": "الشهادات",
+    "learningHours": "ساعات التعلم",
+    "latestCertificates": "اخر الشهادات"
+  },
+  "session": {
+    "liveNow": "مباشرة الآن",
+    "ended": "تم الانتهاء",
+    "learner": "متعلم",
+    "learners": "متعلمين",
+    "views": "مشاهدة",
+    "endedRecently": "انتهت منذ قليل",
+    "endedSinceHours": "انتهت منذ {{count}} ساعات",
+    "endedSinceDays": "انتهت منذ {{count}} أيام",
+    "viewRecording": "عرض التسجيل",
+    "joinNow": "انضم الآن",
+    "myLiveSessions": "حصصي المباشرة",
+    "liveSessionSubtitle": "تابع الجلسات القادمة أو انتقل مباشرة إلى البث المفتوح الآن.",
+    "noSessionsAvailable": "لا توجد جلسات متاحة في هذا القسم حالياً."
+  },
+  "assistant": {
+    "openAssistant": "فتح المساعد الذكي",
+    "closeAssistant": "إغلاق المساعد الذكي",
+    "typing": "المساعد الذكي يكتب...",
+    "sendMessage": "إرسال رسالة",
+    "placeholder": "اكتب رسالتك هنا...",
+    "newChat": "محادثة جديدة",
+    "chatHistory": "سجل المحادثات",
+    "noHistory": "لا يوجد سجل محادثات",
+    "howCanIHelp": "كيف يمكنني مساعدتك اليوم؟",
+    "suggestions": "اقتراحات",
+    "attachFile": "إرفاق ملف",
+    "voiceInput": "إدخال صوتي",
+    "newConversation": "محادثة جديدة",
+    "conversationHistory": "سجل المحادثات",
+    "firstConversationHint": "أول محادثة هتظهر هنا تلقائياً.",
+    "contextBound": "المساعد مربوط بسياق {{context}}",
+    "defaultContext": "مساعد ذكي داخل الحصص المباشرة",
+    "stopVoiceInput": "إيقاف التسجيل الصوتي",
+    "askPlaceholder": "اسأل المساعد الذكي عن أي شيء...",
+    "voiceMessage": "رسالة صوتية",
+    "selectCourseFirst": "حدد الكورس أولاً",
+    "attachment": "مرفق",
+    "newMessage": "رسالة جديدة",
+    "aiConnectionError": "حصل خطأ في الاتصال بالـ AI، حاول تاني",
+    "serverConnectionError": "تعذر الاتصال بالخادم. تأكد من تشغيل خدمة الـ AI.",
+    "invalidResponse": "رد الـ AI غير مفهوم. تحقق من خدمة الـ Backend.",
+    "emptyResponse": "رد الـ AI فارغ أو غير مكتمل. حاول مرة تانية.",
+    "endpointNotFound": "نقطة النهاية غير موجودة (404). تحقق من إعدادات الـ Backend.",
+    "serverError": "الخادم واجه مشكلة داخلية. حاول مرة تانية بعد لحظات.",
+    "invalidRequest": "طلب غير صالح. تحقق من البيانات المرسلة.",
+    "noLessonsFound": "لم يتم العثور على دروس لهذا الكورس. تحقق من معرف الكورس.",
+    "voiceNotSupported": "المتصفح الحالي لا يدعم تحويل الصوت إلى نص.",
+    "voiceCaptureError": "تعذر التقاط الرسالة الصوتية. حاول مرة تانية.",
+    "suggestion": {
+      "explainLesson": "شرح الدرس",
+      "quickSummary": "تلخيص سريع",
+      "illustrativeExample": "مثال توضيحي",
+      "solveQuestion": "حل سؤال"
+    },
+    "action": {
+      "example": "مثال توضيحي",
+      "expand": "اشرح أكثر"
+    },
+    "uploadFiles": "رفع الملفات",
+    "conversationWithTitle": "محادثة {{title}}",
+    "previousConversation": "محادثة سابقة",
+    "replyWithoutText": "ردّ المساعد الذكي بدون نص واضح.",
+    "attachmentNameLine": "- اسم الملف: {{name}}",
+    "attachmentSizeLine": "- الحجم: {{size}}",
+    "attachmentSnippetLine": "- مقتطف من الملف:",
+    "currentContextLine": "السياق الحالي: {{contextTitle}}",
+    "attachmentsHeader": "المرفقات",
+    "prompt": {
+      "explainLesson": "اشرح الدرس بطريقة بسيطة ومنظمة.",
+      "explainLessonWithContext": "اشرح درس \"{{contextTitle}}\" بطريقة بسيطة ومنظمة.",
+      "quickSummary": "لخص الموضوع في نقاط قصيرة.",
+      "quickSummaryWithContext": "لخص الأفكار الأساسية في \"{{contextTitle}}\" في نقاط قصيرة.",
+      "illustrativeExample": "أعطني مثالًا توضيحيًا بسيطًا عن الموضوع.",
+      "illustrativeExampleWithContext": "أعطني مثالًا توضيحيًا بسيطًا عن \"{{contextTitle}}\".",
+      "solveQuestion": "ساعدني في حل سؤال متعلق بالموضوع واسألني عن تفاصيل السؤال إذا لم يكن واضحًا.",
+      "solveQuestionWithContext": "ساعدني في حل سؤال متعلق بـ \"{{contextTitle}}\" واسألني عن تفاصيل السؤال إذا لم يكن واضحًا.",
+      "contextPrefix": "الموضوع الحالي هو \"{{contextTitle}}\".\n\n",
+      "followUpExample": "{{contextPrefix}}أعطني مثالًا توضيحيًا بسيطًا على الشرح التالي:\n{{assistantMessage}}",
+      "followUpExpand": "{{contextPrefix}}اشرح هذه الإجابة بمزيد من التفصيل وبطريقة أبسط:\n{{assistantMessage}}"
+    }
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "invalidEmail": "البريد الإلكتروني غير صحيح",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "passwordWeak": "كلمة المرور ضعيفة",
+    "passwordMedium": "كلمة المرور متوسطة",
+    "passwordStrong": "كلمة المرور قوية",
+    "passwordMismatch": "كلمتا المرور غير متطابقتين",
+    "passwordRuleLength": "8 أحرف على الأقل",
+    "passwordRuleUppercase": "حرف كبير (A-Z)",
+    "passwordRuleLowercase": "حرف صغير (a-z)",
+    "passwordRuleNumber": "رقم (0-9)",
+    "passwordRuleSpecial": "رمز خاص (!@#$...)",
+    "passwordRequirements": "يجب أن تحتوي كلمة المرور على حرف كبير وصغير ورقم ورمز",
+    "nameRequired": "الاسم مطلوب",
+    "passwordRequired": "كلمة المرور مطلوبة",
+    "governorateRequired": "اختر المحافظة",
+    "streetRequired": "المنطقة/الشارع مطلوب",
+    "ageNumeric": "أدخل السن بشكل صحيح (أرقام فقط)",
+    "fullNameRequired": "الاسم الكامل مطلوب",
+    "phoneRequired": "رقم التليفون مطلوب",
+    "addressRequired": "العنوان مطلوب",
+    "currentPasswordRequired": "كلمة المرور الحالية مطلوبة",
+    "accountHolderRequired": "اسم صاحب الحساب مطلوب",
+    "bankNameRequired": "اسم البنك مطلوب",
+    "ibanRequired": "رقم IBAN مطلوب",
+    "swiftRequired": "رمز SWIFT مطلوب",
+    "familyNameRequired": "اسم العائلة مطلوب",
+    "proofTypeRequired": "نوع الإثبات مطلوب",
+    "screenshotRequired": "أرفق لقطة الشاشة",
+    "fileSizeError": "حجم الملف يجب ألا يتجاوز 2 ميجابايت",
+    "fileFormatError": "صيغة الملف يجب أن تكون jpg أو png أو gif",
+    "minLength": "يجب ألا يقل عن {{count}} أحرف",
+    "numericOnly": "يُسمح بالأرقام فقط"
+  },
+  "theme": {
+    "toggle": "تبديل المظهر"
+  },
+  "social": {
+    "linkedin": "لينكدإن",
+    "facebook": "فيسبوك",
+    "youtube": "يوتيوب",
+    "instagram": "إنستغرام"
+  },
+  "contact": {
+    "title": "الشكاوى والاقتراحات",
+    "requiredFields": "يرجى استكمال جميع الحقول المطلوبة.",
+    "messagePlaceholder": "اكتب رسالتك...",
+    "success": "تم إرسال رسالتك بنجاح."
+  },
+  "favorites": {
+    "removeFromFavorites": "إزالة من المفضلة",
+    "enrollNow": "سجل الآن",
+    "viewCourse": "عرض الدورة",
+    "courses": {
+      "1": {
+        "title": "تصميم UX/UI",
+        "instructor": "أحمد محمد",
+        "category": "تصميم"
+      },
+      "2": {
+        "title": "تطوير الويب باستخدام React",
+        "instructor": "محمد علي",
+        "category": "برمجة"
+      },
+      "3": {
+        "title": "أساسيات التسويق الرقمي",
+        "instructor": "سارة أحمد",
+        "category": "تسويق"
+      },
+      "4": {
+        "title": "إدارة المشاريع الاحترافية",
+        "instructor": "خالد يوسف",
+        "category": "أعمال"
+      },
+      "5": {
+        "title": "التصميم الجرافيكي للمبتدئين",
+        "instructor": "نورة عبدالله",
+        "category": "تصميم"
+      },
+      "6": {
+        "title": "Python للبيانات والذكاء الاصطناعي",
+        "instructor": "عمر حسن",
+        "category": "برمجة"
+      }
+    }
+  },
+  "certificates": {
+    "months": {
+      "december": "ديسمبر",
+      "november": "نوفمبر",
+      "october": "أكتوبر",
+      "september": "سبتمبر"
+    },
+    "studentName": "عمر محمد السيد",
+    "approved": "معتمد",
+    "backToCertificates": "العودة للشهادات",
+    "completionCertificate": "شهادة إتمام",
+    "awardedTo": "تُمنح إلى",
+    "completionDescription": "لإتمامه بنجاح دورة \"{{course}}\" بإجمالي {{hours}} ساعة تعليمية و{{units}} وحدات دراسية.",
+    "instructor": "المحاضر",
+    "status": "الحالة",
+    "platformManagement": "إدارة المنصة",
+    "signature": "التوقيع",
+    "download": "تحميل الشهادة",
+    "share": "مشاركة الشهادة",
+    "records": {
+      "1": {
+        "title": "تطوير تطبيقات الويب المتقدمة",
+        "instructor": "أحمد محمد",
+        "courseName": "تطوير تطبيقات الويب المتقدمة",
+        "issueDate": "15 ديسمبر 2023"
+      },
+      "2": {
+        "title": "تصميم UX/UI",
+        "instructor": "سارة أحمد",
+        "courseName": "تصميم UX/UI",
+        "issueDate": "20 نوفمبر 2023"
+      },
+      "3": {
+        "title": "برمجة Python",
+        "instructor": "محمد علي",
+        "courseName": "برمجة Python",
+        "issueDate": "10 أكتوبر 2023"
+      },
+      "4": {
+        "title": "أساسيات التسويق الرقمي",
+        "instructor": "خالد يوسف",
+        "courseName": "أساسيات التسويق الرقمي",
+        "issueDate": "5 سبتمبر 2023"
+      }
+    }
+  },
+  "player": {
+    "courseTitle": "دورة تحليل البيانات باستخدام Python",
+    "breadcrumbLabel": "العودة إلى تفاصيل الدورة",
+    "instructorName": "م. محمد محمود",
+    "commentsPlaceholder": "اكتب تعليقك...",
+    "tabs": {
+      "overview": "نظرة عامة",
+      "resources": "المصادر والملفات",
+      "assignments": "الواجبات والتمارين"
+    },
+    "defaultOverviewDuration": "15 دقيقة",
+    "overviewIntro": "في هذا الدرس سنتعرف على:",
+    "overviewConcept": "ما المفهوم الأساسي في {{topic}}؟",
+    "overviewUsage": "كيف نستخدم {{topic}} ضمن مسار تحليل البيانات؟",
+    "overviewPracticalPoints": "أهم النقاط العملية التي تساعدك على تطبيقه.",
+    "overviewOutcome": "بنهاية هذا الدرس ستفهم الفكرة وتبدأ في تجربتها بنفسك.",
+    "commentTemplate": "شرح ممتاز عن {{topic}}",
+    "threeMinutesAgo": "منذ 3 دقائق",
+    "resourceSummary": "ملخص {{topic}} (PDF)",
+    "resourceFiles": "ملفات {{topic}} (ZIP)",
+    "resourcePresentation": "عرض {{topic}} (PPT)",
+    "assignmentOneTitle": "تدريب 1: تطبيق {{topic}}",
+    "assignmentOneDescription": "اكتب برنامجًا بسيطًا يوضح استخدام {{topic}} في مثال عملي.",
+    "assignmentTwoTitle": "تدريب 2: معالجة {{topic}}",
+    "assignmentTwoDescription": "أنشئ مثالًا قصيرًا يوضح {{topic}} واعرض النتيجة.",
+    "lessonOnePointOne": "ما هو تحليل البيانات ولماذا هو مهم؟",
+    "lessonOnePointTwo": "كيف نستخدم Python في تحليل البيانات؟",
+    "lessonOnePointThree": "نظرة عامة على أهم الأدوات الأساسية.",
+    "lessonOnePointFour": "بنهاية هذا الدرس ستفهم الأساسيات وتبدأ في التطبيق.",
+    "lessonResourceTopic": "الدرس",
+    "lessonAssignmentTopic": "المفاهيم",
+    "lessonTwoTopic": "تحليل البيانات",
+    "lessonThreeDuration": "20 دقيقة",
+    "lessonThreePointOne": "في هذا الدرس سنتعلم أساسيات Python",
+    "lessonThreePointTwo": "المتغيرات والدوال",
+    "lessonThreePointThree": "تراكيب التحكم",
+    "lessonThreeTopic": "Python",
+    "lessonFourDuration": "25 دقيقة",
+    "lessonFourPointOne": "أنواع البيانات في Python",
+    "lessonFourPointTwo": "المتغيرات والتحويلات",
+    "lessonFourPointThree": "العمليات الأساسية",
+    "lessonFourTopic": "المتغيرات",
+    "lessonSixDuration": "18 دقيقة",
+    "lessonSixPointOne": "الجمل الشرطية if/else",
+    "lessonSixPointTwo": "استخدام elif والشروط المتداخلة",
+    "lessonSixTopic": "الجمل الشرطية",
+    "lessonSevenDuration": "22 دقيقة",
+    "lessonSevenPointOne": "حلقات for و while",
+    "lessonSevenPointTwo": "أوامر break و continue و pass",
+    "lessonSevenTopic": "الحلقات",
+    "lessonEightTopic": "القوائم",
+    "notSpecified": "غير محدد",
+    "noOverview": "لا يوجد وصف متاح",
+    "noResources": "لا توجد ملفات أو مصادر متاحة",
+    "downloadFile": "تحميل الملف",
+    "playLesson": "تشغيل الدرس",
+    "lessons": {
+      "1": {
+        "title": "مقدمة الدورة",
+        "shortTitle": "مقدمة الدورة"
+      },
+      "2": {
+        "title": "الفصل 1: مقدمة في تحليل البيانات",
+        "shortTitle": "الفصل 1: مقدمة في تحليل البيانات"
+      },
+      "3": {
+        "title": "الفصل 2: أساسيات Python",
+        "shortTitle": "الفصل 2: أساسيات Python"
+      },
+      "4": {
+        "title": "الفصل 3: المتغيرات وأنواع البيانات",
+        "shortTitle": "الفصل 3: المتغيرات"
+      },
+      "5": {
+        "title": "الفصل 4: العمليات الحسابية والمنطقية",
+        "shortTitle": "الفصل 4: العمليات"
+      },
+      "6": {
+        "title": "الفصل 5: الجمل الشرطية",
+        "shortTitle": "الفصل 5: الجمل الشرطية"
+      },
+      "7": {
+        "title": "الفصل 6: الحلقات التكرارية",
+        "shortTitle": "الفصل 6: الحلقات"
+      },
+      "8": {
+        "title": "الفصل 7: القوائم والقواميس",
+        "shortTitle": "الفصل 7: القوائم"
+      }
+    }
+  },
+  "liveSession": {
+    "speakers": {
+      "1": {
+        "name": "مودوبي أويفيمي",
+        "role": "الرئيس التنفيذي في GITECH"
+      },
+      "2": {
+        "name": "آلان سميث",
+        "role": "رئيس الابتكار في NJT"
+      },
+      "3": {
+        "name": "ستيلا جونسون",
+        "role": "المدير المالي في CLOUDCORE"
+      }
+    },
+    "records": {
+      "1": {
+        "title": "توسيع البنية الحديثة: من النظام الموحد إلى الخدمات المصغرة",
+        "instructor": "أحمد منتصر",
+        "instructorRole": "مهندس برمجيات أول في TechEgypt",
+        "description": "في هذه الجلسة نستعرض الرحلة العملية لتطوير الأنظمة الكبيرة من البنية التقليدية إلى الخدمات المصغرة، مع التركيز على الهجرة التدريجية ومراقبة الأداء وإدارة المخاطر.",
+        "dateLabel": "21 أبريل 2026",
+        "timeLabel": "8:00 ص - 9:30 ص بتوقيت القاهرة",
+        "resources": {
+          "1": "شرائح الجلسة.pdf",
+          "2": "رابط الملفات"
+        },
+        "messageAuthors": {
+          "1": "سارة علي",
+          "2": "محمود رجب"
+        },
+        "questionAuthors": {
+          "1": "مينا أحمد",
+          "2": "عمر السيد"
+        },
+        "messages": {
+          "1": "المهم هنا أن الانتقال إلى الخدمات المصغرة يجب أن يكون ناتجًا عن احتياج حقيقي وليس مجرد اتباع للترند.",
+          "2": "جزء تقسيم الدومين مهم جدًا خصوصًا في الأنظمة الكبيرة.",
+          "3": "هل سيتم رفع المواد التعليمية بعد انتهاء البث المباشر؟",
+          "4": "نعم، سيتم رفع الملفات والروابط مباشرة بعد نهاية الجلسة داخل صفحة البث."
+        },
+        "questions": {
+          "1": "متى يكون الانتقال إلى الخدمات المصغرة قرارًا غير مناسب لفريق صغير؟",
+          "2": "هل تنصح بالاعتماد على event-driven architecture من البداية أم بعد الوصول لمرحلة معينة؟"
+        },
+        "poll": {
+          "question": "ما البنية التي تستخدمونها حاليًا؟",
+          "options": {
+            "1": "نظام موحد",
+            "2": "خدمات مصغرة"
+          }
+        }
+      },
+      "2": {
+        "title": "تصميم أنظمة واجهات قابلة للتوسع داخل فرق المنتجات",
+        "instructor": "أحمد منتصر",
+        "instructorRole": "مهندس برمجيات أول في TechEgypt",
+        "description": "جلسة مباشرة عن بناء design system عملي، وإدارة المكونات المشتركة، وتنسيق العمل بين المنتج والتصميم والهندسة عبر عدة فرق.",
+        "dateLabel": "15 نوفمبر 2026",
+        "timeLabel": "8:00 م - 9:30 م بتوقيت القاهرة",
+        "resources": {
+          "1": "دليل التصميم.pdf",
+          "2": "مكتبة Figma"
+        },
+        "messageAuthors": {
+          "1": "ياسمين خالد"
+        },
+        "questionAuthors": {
+          "1": "عبدالله هاني"
+        },
+        "messages": {
+          "1": "أهم شيء في الـ design system هو وجود قواعد استخدام واضحة، وليس شكل المكوّن فقط.",
+          "2": "هل تفضلون تقسيم المكونات حسب الـ domain أم حسب atomic design؟"
+        },
+        "questions": {
+          "1": "ما أفضل طريقة لتوثيق الـ variants بدون أن تصبح الوثائق نفسها مرهقة؟"
+        },
+        "poll": {
+          "question": "ما أكثر ما يبطئ تبني الـ design system داخل فريقكم؟",
+          "options": {
+            "1": "ضعف التوثيق",
+            "2": "ضعف التزام الفريق",
+            "3": "بطء تحديث المكونات"
+          }
+        }
+      },
+      "3": {
+        "title": "هندسة Frontend قابلة للتوسع",
+        "instructor": "محمد علي",
+        "instructorRole": "مهندس Frontend أول",
+        "description": "جلسة قادمة عن بنية المجلدات والأنماط المعمارية وتقليل تعقيد الصفحات داخل تطبيقات Next.js."
+      },
+      "4": {
+        "title": "بناء منتجات ذكاء اصطناعي جاهزة للإطلاق",
+        "instructor": "فاطمة علي",
+        "instructorRole": "مديرة منتجات ذكاء اصطناعي",
+        "description": "كيف تنتقل من فكرة إلى MVP ثم إلى منتج حقيقي مع قياس القيمة بدلًا من الضجة."
+      },
+      "5": {
+        "title": "مراجعة عملية لـ MLOps في الفرق متوسطة الحجم",
+        "instructor": "فاطمة صالح",
+        "instructorRole": "قائدة تعلم آلي",
+        "description": "جلسة منتهية عن النشر والمراقبة والتحسين المستمر لنماذج الذكاء الاصطناعي."
+      }
+    }
+  }
+}

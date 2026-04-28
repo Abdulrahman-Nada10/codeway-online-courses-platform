@@ -1,4 +1,4 @@
-export type UserRole = "user" | "instructor";
+export type UserRole = "user" | "instructor" | "admin";
 
 export interface BaseAuthUser {
   id: string;
@@ -19,7 +19,11 @@ export interface Instructor extends BaseAuthUser {
   role: "instructor";
 }
 
-export type AuthUser = User | Instructor;
+export interface Admin extends BaseAuthUser {
+  role: "admin";
+}
+
+export type AuthUser = User | Instructor | Admin;
 
 export interface LoginPayload {
   email: string;
@@ -76,6 +80,7 @@ export interface AuthState {
   token: string | null;
   isAuthenticated: boolean;
   loading: boolean;
+  lastRole: UserRole | null;
 }
 
 export interface AuthContextValue extends AuthState {
@@ -91,5 +96,6 @@ export interface AuthContextValue extends AuthState {
 export const AUTH_TOKEN_KEY = "auth_token";
 export const AUTH_USER_KEY = "auth_user";
 export const AUTH_MOCK_USERS_KEY = "auth_mock_users";
+export const AUTH_MOCK_VERSION_KEY = "auth_mock_version";
 export const AUTH_RESET_TOKENS_KEY = "auth_reset_tokens";
 

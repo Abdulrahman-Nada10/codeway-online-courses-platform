@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { LiveSession, SessionPoll } from '../../types';
-import { createDefaultPollDraft, currentRoomUser, maxPollOptions, minPollOptions, roomTabs } from './constants';
+import { createDefaultPollDraft, getCurrentRoomUser, maxPollOptions, minPollOptions, roomTabs } from './constants';
 import { PollDraft, RoomFeedItem, RoomTab } from './types';
 import {
   buildInitialRoomItems,
@@ -16,6 +16,7 @@ import {
 } from './utils';
 
 export function useLiveSessionRoom(session: LiveSession) {
+  const currentRoomUser = useMemo(() => getCurrentRoomUser(), []);
   const initialItems = useMemo(() => buildInitialRoomItems(session), [session]);
   const storageKey = useMemo(() => getRoomStorageKey(session.id), [session.id]);
 

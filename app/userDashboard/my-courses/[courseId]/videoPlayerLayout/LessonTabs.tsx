@@ -1,5 +1,6 @@
 'use client';
 
+import { useLocaleDirection } from '@/app/hooks/useLocaleDirection';
 import { VideoPlayerTab } from './types';
 
 export default function LessonTabs({
@@ -11,8 +12,10 @@ export default function LessonTabs({
   activeTab: VideoPlayerTab;
   onTabChange: (tab: VideoPlayerTab) => void;
 }) {
+  const { dir } = useLocaleDirection();
+
   return (
-    <div className="grid h-auto grid-cols-1 gap-2 rounded-2xl border border-[#E8D8CA] bg-white p-2.5 shadow-[0_8px_20px_rgba(17,53,85,0.05)] sm:grid-cols-3 sm:gap-4 sm:h-14.5" dir="rtl">
+    <div className="grid h-auto grid-cols-1 gap-2 rounded-2xl border border-[#E8D8CA] bg-white p-2.5 shadow-[0_8px_20px_rgba(17,53,85,0.05)] dark:bg-slate-900 sm:h-14.5 sm:grid-cols-3 sm:gap-4" dir={dir}>
       {tabs.map((tab) => {
         const isActive = activeTab === tab.id;
 

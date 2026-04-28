@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { Camera, Check } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import DashboardInput from '@/app/components/ui/DashboardInput';
 
 interface ProfileSectionProps {
@@ -31,11 +32,13 @@ export default function ProfileSection({
   onSave,
   onCancel
 }: ProfileSectionProps) {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-8">
-      <div className="text-right pb-4">
-        <h3 className="font-cairo font-bold text-lg text-[#113555]">
-          المعلومات الأساسية
+      <div className="pb-4 text-start">
+        <h3 className="font-cairo text-lg font-bold text-[#113555] dark:text-slate-100">
+          {t('dashboard.basicInfo')}
         </h3>
       </div>
 
@@ -44,7 +47,7 @@ export default function ProfileSection({
           <div className="w-32 h-32 sm:w-36 sm:h-36 lg:w-40 lg:h-40 rounded-full overflow-hidden border-4 border-[#FF6400] p-1 bg-white">
             <Image
               src={previewUrl}
-              alt="الصورة الشخصية"
+              alt={t('common.profileImage')}
               width={160}
               height={160}
               className="w-full h-full object-cover rounded-full"
@@ -53,7 +56,7 @@ export default function ProfileSection({
           <div className="flex flex-col items-start gap-2">
             <label className="cursor-pointer flex items-center gap-2 px-4 py-2 border-2 border-[#FF6400] text-[#FF6400] rounded-xl font-cairo font-medium text-sm hover:bg-[#FFF3EB] transition-colors">
               <Camera className="w-4 h-4" />
-              تغيير الصورة
+              {t('dashboard.changeImage')}
               <input
                 type="file"
                 accept="image/jpeg,image/png,image/gif"
@@ -61,10 +64,10 @@ export default function ProfileSection({
                 className="hidden"
               />
             </label>
-            <p className="text-xs text-gray-500 font-cairo text-left">
-              صيغة الملف: jpg, png, gif
+            <p className="text-start font-cairo text-xs text-gray-500 dark:text-slate-400">
+              {t('dashboard.imageFormat')}
               <br />
-              حجم الملف: أقصى حجم 2MB
+              {t('dashboard.imageSize')}
             </p>
           </div>
         </div>
@@ -74,7 +77,7 @@ export default function ProfileSection({
             id="fullName"
             name="fullName"
             type="text"
-            label="الاسم الكامل"
+            label={t('auth.fullName')}
             value={userData.fullName}
             onChange={onInputChange}
             error={touched.fullName ? errors.fullName : undefined}
@@ -84,7 +87,7 @@ export default function ProfileSection({
             id="email"
             name="email"
             type="email"
-            label="البريد الإلكتروني"
+            label={t('auth.email')}
             value={userData.email}
             onChange={onInputChange}
             error={touched.email ? errors.email : undefined}
@@ -94,7 +97,7 @@ export default function ProfileSection({
             id="phone"
             name="phone"
             type="tel"
-            label="رقم التليفون"
+            label={t('dashboard.phone')}
             value={userData.phone}
             onChange={onInputChange}
             error={touched.phone ? errors.phone : undefined}
@@ -104,7 +107,7 @@ export default function ProfileSection({
             id="address"
             name="address"
             type="text"
-            label="العنوان"
+            label={t('dashboard.address')}
             value={userData.address}
             onChange={onInputChange}
             error={touched.address ? errors.address : undefined}
@@ -117,14 +120,14 @@ export default function ProfileSection({
           onClick={onCancel}
           className="px-6 py-3 border-2 border-[#FF6400] text-[#FF6400] rounded-xl font-cairo font-medium text-sm hover:bg-[#FFF3EB] transition-colors w-full sm:w-auto"
         >
-          الغاء
+          {t('common.cancel')}
         </button>
         <button
           onClick={onSave}
           className="px-6 py-3 bg-[#FF6400] text-white rounded-xl font-cairo font-medium text-sm hover:bg-[#E55A00] transition-colors w-full sm:w-auto flex items-center justify-center gap-2"
         >
           <Check className="w-5 h-5" />
-          حفظ التغيرات
+          {t('common.saveChanges')}
         </button>
       </div>
     </div>

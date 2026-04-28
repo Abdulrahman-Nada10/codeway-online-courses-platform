@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { Mail, User } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import {
   AuthInput,
   AuthMessage,
@@ -11,6 +12,7 @@ import {
 } from "@/app/components/auth/AuthUi";
 
 export default function ContactPage() {
+  const { t } = useTranslation();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -23,7 +25,7 @@ export default function ContactPage() {
     setSubmitted(false);
 
     if (!name.trim() || !email.trim() || !message.trim()) {
-      setError("أكمل جميع الحقول المطلوبة.");
+      setError(t("contact.requiredFields"));
       return;
     }
 
@@ -34,13 +36,13 @@ export default function ContactPage() {
   };
 
   return (
-    <AuthShell title="الشكاوي والإقتراحات">
+    <AuthShell title={t("contact.title")}>
       <form className="space-y-3" onSubmit={handleSubmit}>
         <AuthInput
           type="text"
           value={name}
           onChange={(event) => setName(event.target.value)}
-          placeholder="الأسم"
+          placeholder={t("auth.name")}
           rightIcon={<User className="h-4 w-4" />}
         />
 
@@ -48,23 +50,23 @@ export default function ContactPage() {
           type="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          placeholder="البريد الإلكتروني"
+          placeholder={t("auth.email")}
           rightIcon={<Mail className="h-4 w-4" />}
         />
 
         <AuthTextarea
           value={message}
           onChange={(event) => setMessage(event.target.value)}
-          placeholder="اكتب النص...."
+          placeholder={t("contact.messagePlaceholder")}
         />
 
         {error ? <AuthMessage tone="error">{error}</AuthMessage> : null}
 
         {submitted ? (
-          <AuthMessage tone="success">تم إرسال رسالتك بنجاح.</AuthMessage>
+          <AuthMessage tone="success">{t("contact.success")}</AuthMessage>
         ) : null}
 
-        <AuthPrimaryButton type="submit">إرسال</AuthPrimaryButton>
+        <AuthPrimaryButton type="submit">{t("common.send")}</AuthPrimaryButton>
       </form>
     </AuthShell>
   );

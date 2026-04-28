@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { MessageSquareText } from 'lucide-react';
 import { RoomFeedItem, RoomTab } from './types';
 import { CommentCard } from './CommentCard';
@@ -13,16 +14,17 @@ interface RoomFeedListProps {
 }
 
 function EmptyState({ activeTab }: { activeTab: RoomTab }) {
+  const { t } = useTranslation();
   const messages = {
-    chat: 'لا توجد تفاعلات بعد. ابدأ تعليقاً جديداً ليظهر في الدردشة المباشرة.',
-    questions: 'لا توجد أسئلة مرسلة بعد. أرسل سؤالك للمحاضر من الأسفل.',
-    poll: 'لا توجد استطلاعات حالياً. أنشئ استطلاعاً جديداً ليظهر هنا.',
+    chat: t('dashboard.emptyChat'),
+    questions: t('dashboard.emptyQuestions'),
+    poll: t('dashboard.emptyPolls'),
   };
 
   return (
-    <div className="flex h-full min-h-64 flex-col items-center justify-center rounded-2xl border border-dashed border-[#e5d7cf] bg-[#fffaf7] px-6 text-center">
+    <div className="flex h-full min-h-64 flex-col items-center justify-center rounded-2xl border border-dashed border-[#e5d7cf] bg-[#fffaf7] px-6 text-center dark:border-slate-700 dark:bg-slate-800">
       <MessageSquareText className="h-10 w-10 text-[#d8c2b4]" />
-      <p className="mt-3 max-w-xs text-sm leading-7 text-[#8b8b8b]">{messages[activeTab]}</p>
+      <p className="mt-3 max-w-xs text-sm leading-7 text-[#8b8b8b] dark:text-slate-400">{messages[activeTab]}</p>
     </div>
   );
 }

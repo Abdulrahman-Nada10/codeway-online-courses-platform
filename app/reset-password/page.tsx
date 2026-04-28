@@ -4,6 +4,7 @@ import { FormEvent, Suspense, useState } from "react";
 import { Eye, EyeOff, Lock, LockKeyhole } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import PublicRoute from "@/app/components/auth/PublicRoute";
 import {
   AuthBadge,
@@ -29,7 +30,7 @@ type ResetFormData = {
 type ResetFormErrors = Partial<Record<keyof ResetFormData, string>>;
 type ResetFormTouched = Partial<Record<keyof ResetFormData, boolean>>;
 
-function validateReset(values: ResetFormData): ResetFormErrors {
+function validateReset(values: ResetFormData, t: (key: string) => string): ResetFormErrors {
   const errors: ResetFormErrors = {};
 
   const passwordError = validatePasswordStrength(values.password);
@@ -38,7 +39,7 @@ function validateReset(values: ResetFormData): ResetFormErrors {
   const confirmError = match(
     values.password,
     values.confirmPassword,
-    "كلمتا المرور غير متطابقتين"
+    t("validation.passwordMismatch")
   );
   if (confirmError && values.confirmPassword)
     errors.confirmPassword = confirmError;
@@ -47,6 +48,7 @@ function validateReset(values: ResetFormData): ResetFormErrors {
 }
 
 function ResetPasswordContent() {
+  const { t } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token") ?? "";
@@ -74,7 +76,7 @@ function ResetPasswordContent() {
 
   const handleBlur = (field: keyof ResetFormData) => {
     setTouched((current) => ({ ...current, [field]: true }));
-    const fieldErrors = validateReset(formData);
+    const fieldErrors = validateReset(formData, t);
     if (fieldErrors[field]) {
       setErrors((current) => ({ ...current, [field]: fieldErrors[field] }));
     }
@@ -84,11 +86,11 @@ function ResetPasswordContent() {
     event.preventDefault();
 
     if (!token) {
-      toast.error("رابط إعادة التعيين غير صالح.");
+      toast.error(t("auth.invalidResetLink"));
       return;
     }
 
-    const validationErrors = validateReset(formData);
+    const validationErrors = validateReset(formData, t);
     setErrors(validationErrors);
     setTouched({ password: true, confirmPassword: true });
 
@@ -99,7 +101,7 @@ function ResetPasswordContent() {
     if (getPasswordStrength(formData.password) === "weak") {
       setErrors((current) => ({
         ...current,
-        password: "من فضلك أدخل كلمة مرور أقوى",
+        password: t("auth.enterStrongerPassword"),
       }));
       return;
     }
@@ -108,9 +110,7 @@ function ResetPasswordContent() {
 
     try {
       await resetPassword({ token, password: formData.password });
-      toast.success(
-        "تم تحديث كلمة المرور بنجاح. سيتم تحويلك إلى صفحة الدخول."
-      );
+      toast.success(t("auth.resetPasswordSuccess"));
       setTimeout(() => {
         router.replace("/login");
       }, 1200);
@@ -118,7 +118,7 @@ function ResetPasswordContent() {
       toast.error(
         submissionError instanceof Error
           ? submissionError.message
-          : "تعذر إعادة تعيين كلمة المرور."
+          : t("auth.resetPasswordError")
       );
     } finally {
       setIsSubmitting(false);
@@ -127,8 +127,8 @@ function ResetPasswordContent() {
 
   return (
     <AuthShell
-      title="تعيين كلمة مرور جديدة"
-      subtitle="ادخل كلمة المرور الجديدة ثم أكدها"
+      title={t("auth.resetPassword")}
+      subtitle={t("auth.resetPasswordSubtitle")}
       icon={
         <AuthBadge>
           <LockKeyhole className="h-4 w-4" />
@@ -144,7 +144,7 @@ function ResetPasswordContent() {
               handleChange("password", event.target.value)
             }
             onBlur={() => handleBlur("password")}
-            placeholder="كلمة المرور الجديدة"
+            placeholder={t("auth.newPassword")}
             rightIcon={<Lock className="h-4 w-4" />}
             leftIcon={
               <button
@@ -153,8 +153,8 @@ function ResetPasswordContent() {
                 className="text-[#B6BCC5]"
                 aria-label={
                   showPassword
-                    ? "إخفاء كلمة المرور"
-                    : "إظهار كلمة المرور"
+                    ? t("auth.hidePassword")
+                    : t("auth.showPassword")
                 }
               >
                 {showPassword ? (
@@ -166,7 +166,7 @@ function ResetPasswordContent() {
             }
             autoComplete="new-password"
             error={touched.password ? errors.password : undefined}
-            helperText="8 أحرف على الأقل، حرف كبير، صغير، رقم، ورمز"
+            helperText={t("auth.passwordHint")}
           />
           {formData.password ? (
             <>
@@ -183,7 +183,7 @@ function ResetPasswordContent() {
             handleChange("confirmPassword", event.target.value)
           }
           onBlur={() => handleBlur("confirmPassword")}
-          placeholder="تأكيد كلمة المرور"
+          placeholder={t("auth.confirmPassword")}
           rightIcon={<Lock className="h-4 w-4" />}
           leftIcon={
             <button
@@ -194,8 +194,8 @@ function ResetPasswordContent() {
               className="text-[#B6BCC5]"
               aria-label={
                 showConfirmPassword
-                  ? "إخفاء تأكيد كلمة المرور"
-                  : "إظهار تأكيد كلمة المرور"
+                  ? t("auth.hideConfirmPassword")
+                  : t("auth.showConfirmPassword")
               }
             >
               {showConfirmPassword ? (
@@ -215,11 +215,11 @@ function ResetPasswordContent() {
           type="submit"
           disabled={isSubmitting || !token}
         >
-          {isSubmitting ? "جاري الحفظ..." : "حفظ كلمة المرور"}
+          {isSubmitting ? t("auth.saving") : t("common.saveChanges")}
         </AuthPrimaryButton>
 
         <AuthSecondaryLinkButton href="/login">
-          العودة لتسجيل الدخول
+          {t("auth.backToLogin")}
         </AuthSecondaryLinkButton>
       </form>
     </AuthShell>
@@ -227,10 +227,11 @@ function ResetPasswordContent() {
 }
 
 function ResetPasswordFallback() {
+  const { t } = useTranslation();
   return (
     <AuthShell
-      title="تعيين كلمة مرور جديدة"
-      subtitle="يتم تجهيز الصفحة..."
+      title={t("auth.resetPassword")}
+      subtitle={t("common.loading")}
       icon={
         <AuthBadge>
           <LockKeyhole className="h-4 w-4" />
@@ -238,7 +239,7 @@ function ResetPasswordFallback() {
       }
     >
       <div className="text-center text-[12px] text-[#A0A0A0]">
-        جاري التحميل...
+        {t("common.loading")}
       </div>
     </AuthShell>
   );
@@ -253,4 +254,3 @@ export default function ResetPasswordPage() {
     </PublicRoute>
   );
 }
-

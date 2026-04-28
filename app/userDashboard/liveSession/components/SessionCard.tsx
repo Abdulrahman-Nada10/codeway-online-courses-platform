@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Clock3, Eye, Radio, User, Users } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { useLocaleDirection } from '@/app/hooks/useLocaleDirection';
 import { LiveSession } from '../types';
 import { SessionCountdown } from './SessionCountdown';
 import { incrementSessionViewers, useLiveSessionMetrics } from './useLiveSessionMetrics';
@@ -20,25 +22,27 @@ function formatDuration(startTime?: string, endTime?: string) {
   return [hours, minutes, seconds].map((value) => value.toString().padStart(2, '0')).join(':');
 }
 
-function formatEndedSince(endTime?: string) {
+function useFormatEndedSince(endTime?: string) {
+  const { t } = useTranslation();
+
   if (!endTime) {
-    return 'انتهت منذ قليل';
+    return t('session.endedRecently');
   }
 
   const diffMs = Date.now() - new Date(endTime).getTime();
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
 
   if (diffHours < 24) {
-    return diffHours <= 1 ? 'انتهت منذ قليل' : `انتهت منذ ${diffHours} ساعات`;
+    return diffHours <= 1 ? t('session.endedRecently') : t('session.endedSinceHours', { count: diffHours });
   }
 
-  return `انتهت منذ ${Math.floor(diffHours / 24)} أيام`;
+  return t('session.endedSinceDays', { count: Math.floor(diffHours / 24) });
 }
 
 function LiveBadge({ label, muted = false }: { label: string; muted?: boolean }) {
   return (
     <div
-      className={`absolute right-4 top-4 rounded-full px-4 py-1.5 text-xs font-semibold ${
+      className={`absolute top-4 rtl:right-4 ltr:left-4 rounded-full px-4 py-1.5 text-xs font-semibold ${
         muted ? 'border border-[#717171] bg-[#e6e6e6] text-black' : 'bg-[#eb001b] text-white'
       }`}
     >
@@ -48,9 +52,12 @@ function LiveBadge({ label, muted = false }: { label: string; muted?: boolean })
 }
 
 export function SessionCard({ session }: { session: LiveSession }) {
+  const { t } = useTranslation();
+  const { dir } = useLocaleDirection();
   const href = `/userDashboard/liveSession/${session.slug}`;
   const { viewers, setViewers } = useLiveSessionMetrics(session);
   const liveCardTimeLabel = session.durationLabel ?? '42:15';
+  const endedSince = useFormatEndedSince(session.endTime);
 
   const handleJoinLive = () => {
     if (session.category !== 'live') {
@@ -62,17 +69,17 @@ export function SessionCard({ session }: { session: LiveSession }) {
   };
 
   return (
-    <article className="overflow-hidden rounded-[28px] bg-white shadow-[0_10px_35px_rgba(17,53,85,0.08)] transition-transform hover:-translate-y-1">
+    <article className="overflow-hidden rounded-[28px] bg-white shadow-[0_10px_35px_rgba(17,53,85,0.08)] transition-transform hover:-translate-y-1 dark:bg-slate-900" dir={dir}>
       <div className="relative aspect-video">
         <Image src={session.image} alt={session.title} fill className="object-cover" />
-        {session.category === 'live' ? <LiveBadge label="مباشرة الآن" /> : null}
-        {session.category === 'past' ? <LiveBadge label="تم الانتهاء" muted /> : null}
+        {session.category === 'live' ? <LiveBadge label={t('session.liveNow')} /> : null}
+        {session.category === 'past' ? <LiveBadge label={t('session.ended')} muted /> : null}
       </div>
 
-      <div className="space-y-4 p-5 text-right">
+      <div className="space-y-4 p-5 text-start">
         <div>
-          <h3 className="line-clamp-2 text-xl font-bold leading-9 text-[#113555]">{session.title}</h3>
-          <p className="mt-2 flex items-center justify-start gap-2 text-sm text-[#6b7280]">
+          <h3 className="line-clamp-2 text-xl font-bold leading-9 text-[#113555] dark:text-slate-100">{session.title}</h3>
+          <p className="mt-2 flex items-center gap-2 text-sm text-[#6b7280] dark:text-slate-400">
             <User className="h-4 w-4" />
             <span>{session.instructor}</span>
           </p>
@@ -83,7 +90,7 @@ export function SessionCard({ session }: { session: LiveSession }) {
         {session.category === 'live' ? (
           <div className="flex flex-wrap justify-end gap-2">
             <div className="flex items-center gap-2 rounded-full border border-[#ff6400] bg-[#fff3eb] px-4 py-2 text-sm text-[#113555]">
-              <span>{viewers} متعلم</span>
+              <span>{viewers} {t('session.learner')}</span>
               <Users className="h-4 w-4" />
             </div>
             <div className="flex items-center gap-2 rounded-full border border-[#ff6400] bg-[#fff3eb] px-4 py-2 text-sm text-[#113555]">
@@ -95,8 +102,8 @@ export function SessionCard({ session }: { session: LiveSession }) {
 
         {session.category === 'past' ? (
           <div className="grid grid-cols-3 gap-2  text-xs sm:text-sm">
-            <div className="flex items-center p-1 justify-rounded gap-2 rounded-full border border-[#ff6400] bg-[#fff3eb] text-[#113555] ">
-              <span>  {session.viewers ?? 0}مشاهدة </span>
+            <div className="flex items-center gap-2 rounded-full border border-[#ff6400] bg-[#fff3eb] p-1 text-[#113555] dark:bg-slate-800 dark:text-slate-100">
+              <span>{session.viewers ?? 0} {t('session.views')}</span>
               <Eye className="h-4 w-4" />
             </div>
             <div className="flex items-center justify-center gap-2 rounded-full border border-[#ff6400] bg-[#fff3eb] px-3 py-3 text-[#113555]">
@@ -104,7 +111,7 @@ export function SessionCard({ session }: { session: LiveSession }) {
               <Clock3 className="h-4 w-4" />
             </div>
             <div className="flex items-center justify-center rounded-full border border-[#717171] bg-[#e6e6e6] text-black">
-              <span>{formatEndedSince(session.endTime)}</span>
+              <span>{endedSince}</span>
             </div>
           </div>
         ) : null}
@@ -118,7 +125,7 @@ export function SessionCard({ session }: { session: LiveSession }) {
               : 'bg-[#ff6400] text-white hover:bg-[#eb5c00]'
           }`}
         >
-          {session.category === 'past' ? 'عرض التسجيل' : 'انضم الآن'}
+          {session.category === 'past' ? t('session.viewRecording') : t('session.joinNow')}
         </Link>
 
         {session.category === 'live' ? (

@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
+import { useLocaleDirection } from '@/app/hooks/useLocaleDirection';
 import { BarChart3 } from 'lucide-react';
 import { SessionPoll } from '../../types';
 import { formatRoomTime, getPollOptionPercentage, getPollTotalVotes } from './utils';
@@ -11,13 +13,15 @@ interface PollCardProps {
 }
 
 export function PollCard({ currentUserId, onEndPoll, onVote, poll }: PollCardProps) {
+  const { t } = useTranslation();
+  const { dir } = useLocaleDirection();
   const totalVotes = getPollTotalVotes(poll);
   const isEnded = poll.status === 'ended';
   const isOwner = poll.authorId === currentUserId;
 
   return (
-    <article className="rounded-2xl border border-[#ffd1b2] bg-[#fff7f1] p-4 text-right">
-      <div className="flex flex-row-reverse items-start gap-3">
+    <article className="rounded-2xl border border-[#ffd1b2] bg-[#fff7f1] p-4 text-start dark:bg-slate-800" dir={dir}>
+      <div className="flex flex-row items-start gap-3">
         <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-[#f2e7df]">
           <Image src={poll.avatar} alt={poll.author} fill className="object-cover" />
         </div>
@@ -30,7 +34,7 @@ export function PollCard({ currentUserId, onEndPoll, onVote, poll }: PollCardPro
                   isEnded ? 'bg-[#e5e7eb] text-[#4b5563]' : 'bg-[#ff6400] text-white'
                 }`}
               >
-                {isEnded ? 'استطلاع رأي منتهي' : 'استطلاع نشط'}
+                {isEnded ? t('dashboard.pollEnded') : t('dashboard.pollActive')}
               </span>
 
               {isOwner && !isEnded ? (
@@ -39,7 +43,7 @@ export function PollCard({ currentUserId, onEndPoll, onVote, poll }: PollCardPro
                   onClick={() => onEndPoll(poll.id)}
                   className="rounded-full border border-[#ffcfb3] bg-white px-3 py-1 text-[11px] font-medium text-[#ff6400]"
                 >
-                  إنهاء الاستطلاع
+                  {t('dashboard.endPoll')}
                 </button>
               ) : null}
             </div>
@@ -70,13 +74,13 @@ export function PollCard({ currentUserId, onEndPoll, onVote, poll }: PollCardPro
                   type="button"
                   disabled={isEnded}
                   onClick={() => onVote(poll.id, option.id)}
-                  className={`relative block w-full overflow-hidden rounded-xl border text-right transition ${
+                  className={`relative block w-full overflow-hidden rounded-xl border text-start transition ${
                     isSelected
                       ? 'border-[#ff6400] bg-white shadow-[0_8px_25px_rgba(255,100,0,0.12)]'
                       : 'border-[#ffcfb3] bg-white/90'
                   } ${isEnded ? 'cursor-default opacity-90' : 'hover:border-[#ff6400]'}`}
                 >
-                  <span className="absolute inset-y-0 right-0 bg-[#ffd9c2]" style={{ width: `${percentage}%` }} />
+                  <span className="absolute inset-y-0 bg-[#ffd9c2] rtl:right-0 ltr:left-0" style={{ width: `${percentage}%` }} />
 
                   <span className="relative flex items-center justify-between gap-3 px-3 py-3 text-sm text-[#6b3d21]">
                     <span>{percentage}%</span>
@@ -88,8 +92,8 @@ export function PollCard({ currentUserId, onEndPoll, onVote, poll }: PollCardPro
           </div>
 
           <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-[#9ca3af]">
-            <span>{totalVotes} صوت</span>
-            <span>{isEnded ? 'تم إغلاق التصويت' : 'يمكنك التصويت مرة واحدة وتغيير اختيارك قبل الإنهاء'}</span>
+            <span>{totalVotes} {t('dashboard.vote', { count: totalVotes })}</span>
+            <span>{isEnded ? t('dashboard.votingClosed') : t('dashboard.votingHint')}</span>
           </div>
         </div>
       </div>

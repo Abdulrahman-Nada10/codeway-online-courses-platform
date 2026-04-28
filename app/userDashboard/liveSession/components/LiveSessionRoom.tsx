@@ -7,9 +7,12 @@ import { SessionDetails } from './liveSessionRoom/SessionDetails';
 import { RoomInteractionPanel } from './liveSessionRoom/RoomInteractionPanel';
 import { VideoPanel } from './liveSessionRoom/VideoPanel';
 import { incrementSessionViewers, useLiveSessionMetrics } from './useLiveSessionMetrics';
+import { useLocaleDirection } from '@/app/hooks/useLocaleDirection';
 
 export function LiveSessionRoom({ session }: { session: LiveSession }) {
-  const { viewers, elapsedTime, totalDuration, setViewers } = useLiveSessionMetrics(session);
+  const { dir, isRTL } = useLocaleDirection();
+  const { viewers, elapsedTime, totalDuration, setViewers } =
+    useLiveSessionMetrics(session);
 
   useEffect(() => {
     if (session.category !== 'live') {
@@ -27,20 +30,30 @@ export function LiveSessionRoom({ session }: { session: LiveSession }) {
   }, [session.category, session.id, setViewers, viewers]);
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#fff3eb]" dir="rtl">
-      <div className="lg:mr-70 xl:mr-68 2xl:mr-75">
+    <div
+      className="min-h-screen overflow-x-hidden bg-[#fff3eb] dark:bg-slate-950"
+      dir={dir}
+    >
+      <div className="rtl:lg:mr-70 rtl:xl:mr-68 rtl:2xl:mr-75 ltr:lg:ml-70 ltr:xl:ml-68 ltr:2xl:ml-75">
         <main className="px-3 pb-6 pt-24 sm:px-4 sm:pb-8 sm:pt-28 lg:px-6 xl:px-8">
           <div className="mx-auto max-w-370">
-            <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_340px] xl:items-start 2xl:grid-cols-[minmax(0,1fr)_360px]" dir="ltr">
+            <div
+              className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_340px] xl:items-start 2xl:grid-cols-[minmax(0,1fr)_360px]"
+              dir={isRTL ? "ltr" : "rtl"}
+            >
               <div className="space-y-4">
-                <VideoPanel elapsedTime={elapsedTime} session={session} totalDuration={totalDuration} viewers={viewers} />
+                <VideoPanel
+                  elapsedTime={elapsedTime}
+                  session={session}
+                  totalDuration={totalDuration}
+                  viewers={viewers}
+                />
                 <SessionDetails session={session} />
               </div>
 
               <RoomInteractionPanel session={session} />
             </div>
-            </div>
-
+          </div>
         </main>
       </div>
 

@@ -1,5 +1,6 @@
 import {
   AUTH_MOCK_USERS_KEY,
+  AUTH_MOCK_VERSION_KEY,
   AUTH_RESET_TOKENS_KEY,
   AUTH_TOKEN_KEY,
   AUTH_USER_KEY,
@@ -12,6 +13,7 @@ import {
   RegisterPayload,
   ResetPasswordPayload,
   User,
+  Admin,
   UserRole,
 } from "@/types/auth";
 
@@ -45,16 +47,24 @@ const AUTH_ENDPOINTS = {
 const DEFAULT_AVATAR = "/profile.jpg";
 const MOCK_LATENCY_MS = 300;
 
+function simpleHash(str: string): string {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = (h * 31 + str.charCodeAt(i)) | 0;
+  }
+  return String(Math.abs(h));
+}
+
 const DEFAULT_MOCK_ACCOUNTS: MockAccount[] = [
   {
     password: "Password123!",
     user: {
       id: "usr-001",
-      name: "عمر محمد السيد",
-      email: "omar@example.com",
+      name: "عمر محمد ",
+      email: "os@example.com",
       phoneNumber: "+20 100 123 4567",
-      address: "القاهرة، مصر",
-      joinTime: "يناير 2024",
+      address: "Programming / Development",
+      joinTime: "30-12-2026",
       role: "user",
       avatar: DEFAULT_AVATAR,
     } satisfies User,
@@ -63,6 +73,19 @@ const DEFAULT_MOCK_ACCOUNTS: MockAccount[] = [
     password: "Password123!",
     user: {
       id: "ins-001",
+      name: "م. محمد خالد",
+      email: "mk@gmail.com",
+      phoneNumber: "010345678",
+      field: "Programming / Development",
+      joinTime: "30-12-2026",
+      role: "instructor",
+      avatar: DEFAULT_AVATAR,
+    } satisfies Instructor,
+  },
+  {
+    password: "Password123!",
+    user: {
+      id: "ins-002",
       name: "م. محمد محمود",
       email: "mohamedahmed@gmail.com",
       phoneNumber: "01012345678",
@@ -72,7 +95,36 @@ const DEFAULT_MOCK_ACCOUNTS: MockAccount[] = [
       avatar: DEFAULT_AVATAR,
     } satisfies Instructor,
   },
+  {
+    password: "Password123!",
+    user: {
+      id: "ins-002",
+      name: "م. محمد خالد",
+      email: "mk@gmail.com",
+      phoneNumber: "010345678",
+      field: "Programming / Development",
+      joinTime: "30-12-2026",
+      role: "instructor",
+      avatar: DEFAULT_AVATAR,
+    } satisfies Instructor,
+  },
+  {
+    password: "Password123!",
+    user: {
+      id: "adm-001",
+      name: "Admin",
+      email: "admin@example.com",
+      phoneNumber: "+20 100 999 9999",
+      joinTime: formatJoinTime(),
+      role: "admin",
+      avatar: DEFAULT_AVATAR,
+    } satisfies Admin,
+  },
 ];
+
+const MOCK_ACCOUNTS_VERSION = simpleHash(
+  JSON.stringify(DEFAULT_MOCK_ACCOUNTS)
+);
 
 export const isMockAuthEnabled =
   FORCE_MOCK_AUTH || API_BASE_URL.trim().length === 0;
@@ -177,7 +229,7 @@ function isValidAuthUser(user: unknown): user is AuthUser {
   const record = user as Record<string, unknown>;
   const role = record.role;
 
-  if (role !== "user" && role !== "instructor") {
+  if (role !== "user" && role !== "instructor" && role !== "admin") {
     return false;
   }
 
@@ -199,19 +251,27 @@ function isValidAuthUser(user: unknown): user is AuthUser {
     return typeof record.address === "string";
   }
 
-  return typeof record.field === "string";
+  if (role === "instructor") {
+    return typeof record.field === "string";
+  }
+
+  return true;
 }
 
 function normalizeRole(role: unknown): UserRole {
-  return String(role).toLowerCase() === "instructor" ? "instructor" : "user";
+  const normalized = String(role).toLowerCase();
+  if (normalized === "instructor") return "instructor";
+  if (normalized === "admin") return "admin";
+  return "user";
 }
 
 function normalizeAuthUser(rawUser: unknown): AuthUser {
   const user = (rawUser ?? {}) as Record<string, unknown>;
   const role = normalizeRole(user.role);
 
+  const idPrefix = role === "instructor" ? "ins" : role === "admin" ? "adm" : "usr";
   const common = {
-    id: String(user.id ?? generateId(role === "instructor" ? "ins" : "usr")),
+    id: String(user.id ?? generateId(idPrefix)),
     name: String(user.name ?? ""),
     email: String(user.email ?? ""),
     phoneNumber: String(user.phoneNumber ?? user.phone ?? ""),
@@ -225,6 +285,13 @@ function normalizeAuthUser(rawUser: unknown): AuthUser {
       ...common,
       role,
       field: String(user.field ?? ""),
+    };
+  }
+
+  if (role === "admin") {
+    return {
+      ...common,
+      role,
     };
   }
 
@@ -316,14 +383,16 @@ function getStoredMockAccounts(): MockAccount[] {
     return DEFAULT_MOCK_ACCOUNTS;
   }
 
+  const storedVersion = localStorage.getItem(AUTH_MOCK_VERSION_KEY);
   const stored = parseStoredJson<MockAccount[]>(
     localStorage.getItem(AUTH_MOCK_USERS_KEY)
   );
 
-  if (stored && stored.length > 0) {
+  if (stored && stored.length > 0 && storedVersion === MOCK_ACCOUNTS_VERSION) {
     return stored;
   }
 
+  localStorage.setItem(AUTH_MOCK_VERSION_KEY, MOCK_ACCOUNTS_VERSION);
   localStorage.setItem(
     AUTH_MOCK_USERS_KEY,
     JSON.stringify(DEFAULT_MOCK_ACCOUNTS)
@@ -609,22 +678,32 @@ async function mockUpdateProfile(updates: AuthUserUpdate): Promise<AuthUser> {
   }
 
   const currentUser = accounts[accountIndex].user;
-  const nextUser =
-    currentUser.role === "instructor"
-      ? ({
-          ...currentUser,
-          ...updates,
-          email: nextEmail ?? currentUser.email,
-          role: "instructor",
-          field: updates.field ?? currentUser.field,
-        } satisfies Instructor)
-      : ({
-          ...currentUser,
-          ...updates,
-          email: nextEmail ?? currentUser.email,
-          role: "user",
-          address: updates.address ?? currentUser.address,
-        } satisfies User);
+  let nextUser: AuthUser;
+
+  if (currentUser.role === "instructor") {
+    nextUser = {
+      ...currentUser,
+      ...updates,
+      email: nextEmail ?? currentUser.email,
+      role: "instructor",
+      field: updates.field ?? (currentUser as Instructor).field,
+    } satisfies Instructor;
+  } else if (currentUser.role === "admin") {
+    nextUser = {
+      ...currentUser,
+      ...updates,
+      email: nextEmail ?? currentUser.email,
+      role: "admin",
+    } satisfies Admin;
+  } else {
+    nextUser = {
+      ...currentUser,
+      ...updates,
+      email: nextEmail ?? currentUser.email,
+      role: "user",
+      address: updates.address ?? (currentUser as User).address,
+    } satisfies User;
+  }
 
   const updatedAccounts = [...accounts];
   updatedAccounts[accountIndex] = {
@@ -811,4 +890,3 @@ export async function updateProfile(
 export function logout(): void {
   clearSession();
 }
-

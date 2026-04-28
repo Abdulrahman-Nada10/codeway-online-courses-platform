@@ -2,14 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/app/hooks/useAuth';
+import { useLocaleDirection } from '@/app/hooks/useLocaleDirection';
 import { useAppDispatch } from '@/app/store/hooks';
 import { setContext } from '@/app/store/searchSlice';
-import ProfileSection from './components/ProfileSection';
-import NotificationsSection from './components/NotificationsSection';
-import SecuritySection from './components/SecuritySection';
-import PaymentsSection from './components/PaymentsSection';
-import SettingsTabs, { SettingsTab } from './components/SettingsTabs';
-import { User } from '@/types/auth';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import {
   email,
@@ -18,6 +14,13 @@ import {
   required,
   validatePasswordStrength,
 } from '@/app/libs/validation';
+import ProfileSection from './components/ProfileSection';
+import NotificationsSection from './components/NotificationsSection';
+import SecuritySection from './components/SecuritySection';
+import PaymentsSection from './components/PaymentsSection';
+import SettingsTabs from './components/SettingsTabs';
+import type { SettingsTab } from './components/SettingsTabs';
+import { User } from '@/types/auth';
 
 type UserFormState = {
   fullName: string;
@@ -45,6 +48,8 @@ type PaymentsErrors = Partial<Record<'accountHolderName' | 'bankName' | 'iban' |
 type PaymentsTouched = Partial<Record<'accountHolderName' | 'bankName' | 'iban' | 'swiftCode', boolean>>;
 
 export default function Settings() {
+  const { t } = useTranslation();
+  const { dir } = useLocaleDirection();
   const { user, updateProfile } = useAuth();
   const dispatch = useAppDispatch();
   const authUser = user?.role === 'user' ? user : null;
@@ -99,13 +104,13 @@ export default function Settings() {
     }
 
     if (file.size > 2 * 1024 * 1024) {
-      toast.error('حجم الملف يجب ألا يتجاوز 2 ميجابايت');
+      toast.error(t('validation.fileSizeError'));
       return;
     }
 
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
     if (!allowedTypes.includes(file.type)) {
-      toast.error('صيغة الملف يجب أن تكون jpg أو png أو gif');
+      toast.error(t('validation.fileFormatError'));
       return;
     }
 
@@ -131,16 +136,16 @@ export default function Settings() {
 
   const validateProfile = (): ProfileErrors => {
     const errors: ProfileErrors = {};
-    const nameError = required(userData.fullName, 'الاسم الكامل مطلوب');
+    const nameError = required(userData.fullName, t('validation.fullNameRequired'));
     if (nameError) errors.fullName = nameError;
 
     const emailError = email(userData.email);
     if (emailError) errors.email = emailError;
 
-    const phoneError = required(userData.phone, 'رقم التليفون مطلوب');
+    const phoneError = required(userData.phone, t('validation.phoneRequired'));
     if (phoneError) errors.phone = phoneError;
 
-    const addressError = required(userData.address, 'العنوان مطلوب');
+    const addressError = required(userData.address, t('validation.addressRequired'));
     if (addressError) errors.address = addressError;
 
     return errors;
@@ -164,12 +169,12 @@ export default function Settings() {
         avatar: previewUrl,
       });
 
-      toast.success('تم حفظ التغييرات بنجاح');
+      toast.success(t('dashboard.profileSaved'));
     } catch (saveError) {
       toast.error(
         saveError instanceof Error
           ? saveError.message
-          : 'تعذر حفظ التغييرات.'
+          : t('dashboard.profileSaveError')
       );
     }
   };
@@ -192,7 +197,7 @@ export default function Settings() {
   };
 
   const handleNotificationSave = () => {
-    toast.success('تم حفظ التغييرات بنجاح');
+    toast.success(t('dashboard.profileSaved'));
   };
 
   const handleNotificationCancel = () => {
@@ -207,13 +212,13 @@ export default function Settings() {
   const validateSecurity = (): SecurityErrors => {
     const errors: SecurityErrors = {};
 
-    const currentError = required(currentPassword, 'كلمة المرور الحالية مطلوبة');
+    const currentError = required(currentPassword, t('validation.currentPasswordRequired'));
     if (currentError) errors.currentPassword = currentError;
 
     const newError = validatePasswordStrength(newPassword);
     if (newError) errors.newPassword = newError;
 
-    const confirmError = match(newPassword, confirmPassword, 'كلمتا المرور غير متطابقتين');
+    const confirmError = match(newPassword, confirmPassword, t('validation.passwordMismatch'));
     if (confirmError && confirmPassword) errors.confirmPassword = confirmError;
 
     return errors;
@@ -231,12 +236,12 @@ export default function Settings() {
     if (getPasswordStrength(newPassword) === 'weak') {
       setSecurityErrors((current) => ({
         ...current,
-        newPassword: 'من فضلك أدخل كلمة مرور أقوى',
+        newPassword: t('auth.enterStrongerPassword'),
       }));
       return;
     }
 
-    toast.success('تم تغيير كلمة المرور بنجاح');
+    toast.success(t('dashboard.passwordChanged'));
     setCurrentPassword('');
     setNewPassword('');
     setConfirmPassword('');
@@ -255,16 +260,16 @@ export default function Settings() {
   const validatePayments = (): PaymentsErrors => {
     const errors: PaymentsErrors = {};
 
-    const holderError = required(bankData.accountHolderName, 'اسم صاحب الحساب مطلوب');
+    const holderError = required(bankData.accountHolderName, t('validation.accountHolderRequired'));
     if (holderError) errors.accountHolderName = holderError;
 
-    const bankError = required(bankData.bankName, 'اسم البنك مطلوب');
+    const bankError = required(bankData.bankName, t('validation.bankNameRequired'));
     if (bankError) errors.bankName = bankError;
 
-    const ibanError = required(bankData.iban, 'رقم IBAN مطلوب');
+    const ibanError = required(bankData.iban, t('validation.ibanRequired'));
     if (ibanError) errors.iban = ibanError;
 
-    const swiftError = required(bankData.swiftCode, 'رمز SWIFT مطلوب');
+    const swiftError = required(bankData.swiftCode, t('validation.swiftRequired'));
     if (swiftError) errors.swiftCode = swiftError;
 
     return errors;
@@ -295,7 +300,7 @@ export default function Settings() {
       return;
     }
 
-    toast.success('تم حفظ البيانات البنكية بنجاح');
+    toast.success(t('dashboard.paymentSaved'));
   };
 
   const handlePaymentsCancel = () => {
@@ -310,23 +315,23 @@ export default function Settings() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF3EB] overflow-x-hidden mt-26">
-      <div className="lg:mr-75">
+    <div className="mt-26 min-h-screen overflow-x-hidden bg-[#FFF3EB] dark:bg-slate-950" dir={dir}>
+      <div className="rtl:lg:mr-75 ltr:lg:ml-75">
         <main className="p-2 sm:p-3 lg:p-4 xl:p-6">
-          <div className="text-right mb-3 sm:mb-4 lg:mb-6">
-            <h1 className="font-cairo font-bold text-lg sm:text-xl lg:text-2xl text-[#113555]">
-              الإعدادات
+          <div className="mb-3 text-start sm:mb-4 lg:mb-6">
+            <h1 className="font-cairo text-lg font-bold text-[#113555] dark:text-slate-100 sm:text-xl lg:text-2xl">
+              {t('dashboard.settings')}
             </h1>
-            <p className="font-cairo text-xs sm:text-sm text-gray-600 mt-1">
-              إدارة حسابك وتفضيلاتك
+            <p className="mt-1 font-cairo text-xs text-gray-600 dark:text-slate-400 sm:text-sm">
+              {t('dashboard.settingsSubtitle')}
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl p-3 sm:p-4 lg:p-6 shadow-sm  mb-4 sm:mb-6">
+          <div className="mb-4 rounded-2xl bg-white p-3 shadow-sm dark:bg-slate-900 sm:mb-6 sm:p-4 lg:p-6">
             <SettingsTabs activeTab={activeTab} onTabChange={setActiveTab} />
           </div>
 
-          <div className="bg-white rounded-2xl p-3 sm:p-4 lg:p-6 shadow-sm mb-50">
+          <div className="mb-50 rounded-2xl bg-white p-3 shadow-sm dark:bg-slate-900 sm:p-4 lg:p-6">
             <div className="mt-2 sm:mt-4">
               {activeTab === 'profile' && (
                 <ProfileSection
@@ -384,3 +389,4 @@ export default function Settings() {
     
   );
 }
+

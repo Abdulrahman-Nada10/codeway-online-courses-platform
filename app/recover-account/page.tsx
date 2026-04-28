@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { ArrowUpToLine, User } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import PublicRoute from "@/app/components/auth/PublicRoute";
 import {
   AuthFooterLine,
@@ -21,23 +22,24 @@ type RecoverFormData = {
 type RecoverFormErrors = Partial<Record<keyof RecoverFormData, string>>;
 type RecoverFormTouched = Partial<Record<keyof RecoverFormData, boolean>>;
 
-function validateRecover(values: RecoverFormData, hasFile: boolean): RecoverFormErrors {
+function validateRecover(values: RecoverFormData, hasFile: boolean, t: (key: string) => string): RecoverFormErrors {
   const errors: RecoverFormErrors = {};
 
-  const nameError = required(values.name, "اسم العائلة مطلوب");
+  const nameError = required(values.name, t("validation.familyNameRequired"));
   if (nameError) errors.name = nameError;
 
-  const proofTypeError = required(values.proofType, "نوع الإثبات مطلوب");
+  const proofTypeError = required(values.proofType, t("validation.proofTypeRequired"));
   if (proofTypeError) errors.proofType = proofTypeError;
 
   if (!hasFile) {
-    (errors as Record<string, string>).proofFile = "أرفق لقطة الشاشة";
+    (errors as Record<string, string>).proofFile = t("validation.screenshotRequired");
   }
 
   return errors;
 }
 
 export default function RecoverAccountPage() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<RecoverFormData>({ name: "", proofType: "" });
   const [proofFile, setProofFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<RecoverFormErrors & { proofFile?: string }>({});
@@ -57,7 +59,7 @@ export default function RecoverAccountPage() {
 
   const handleBlur = (field: keyof RecoverFormData) => {
     setTouched((current) => ({ ...current, [field]: true }));
-    const fieldErrors = validateRecover(formData, Boolean(proofFile));
+    const fieldErrors = validateRecover(formData, Boolean(proofFile), t);
     if (fieldErrors[field]) {
       setErrors((current) => ({ ...current, [field]: fieldErrors[field] }));
     }
@@ -78,7 +80,7 @@ export default function RecoverAccountPage() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const validationErrors = validateRecover(formData, Boolean(proofFile));
+    const validationErrors = validateRecover(formData, Boolean(proofFile), t);
     setErrors(validationErrors);
     setTouched({ name: true, proofType: true, proofFile: true });
 
@@ -90,24 +92,24 @@ export default function RecoverAccountPage() {
 
     setTimeout(() => {
       setIsSubmitting(false);
-      toast.success("تم إرسال طلب استرجاع الحساب بنجاح");
+      toast.success(t("auth.recoverAccountSuccess"));
     }, 450);
   };
 
   return (
     <PublicRoute>
       <AuthShell
-        title="بيانات استرجاع الحساب"
+        title={t("auth.recoverAccountTitle")}
         footer={
           <div className="space-y-2">
             <AuthFooterLine
-              text="لديك حساب بالفعل؟"
-              linkLabel="تسجيل الدخول"
+              text={t("auth.haveAccount")}
+              linkLabel={t("auth.login")}
               href="/login"
             />
             <AuthFooterLine
-              text="ليس لديك حساب؟"
-              linkLabel="إنشاء حساب"
+              text={t("auth.noAccount")}
+              linkLabel={t("auth.register")}
               href="/register"
             />
             <AuthSocialLinks />
@@ -120,7 +122,7 @@ export default function RecoverAccountPage() {
             value={formData.name}
             onChange={(event) => handleChange("name", event.target.value)}
             onBlur={() => handleBlur("name")}
-            placeholder="اسم عائلتك"
+            placeholder={t("auth.familyName")}
             rightIcon={<User className="h-4 w-4" />}
             error={touched.name ? errors.name : undefined}
           />
@@ -130,7 +132,7 @@ export default function RecoverAccountPage() {
             value={formData.proofType}
             onChange={(event) => handleChange("proofType", event.target.value)}
             onBlur={() => handleBlur("proofType")}
-            placeholder="نوع إثباتك"
+            placeholder={t("auth.proofType")}
             error={touched.proofType ? errors.proofType : undefined}
           />
 
@@ -143,7 +145,7 @@ export default function RecoverAccountPage() {
               }`}
             >
               <ArrowUpToLine className="h-4 w-4" />
-              <span>{proofFile ? proofFile.name : "خذ لقطة شاشة"}</span>
+              <span>{proofFile ? proofFile.name : t("auth.screenshotUpload")}</span>
               <input
                 type="file"
                 accept="image/*"
@@ -159,11 +161,10 @@ export default function RecoverAccountPage() {
           </div>
 
           <AuthPrimaryButton type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "جاري الإرسال..." : "إرسال"}
+            {isSubmitting ? t("auth.sending") : t("common.send")}
           </AuthPrimaryButton>
         </form>
       </AuthShell>
     </PublicRoute>
   );
 }
-

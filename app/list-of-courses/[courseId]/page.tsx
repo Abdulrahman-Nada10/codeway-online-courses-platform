@@ -136,12 +136,12 @@ if(isError)
     return <CourseErrorState/>
   }    
   return (
-    <div className="min-h-screen bg-[#FFF3EB] overflow-x-hidden  mt-26">
+    <div className="min-h-screen bg-[#FFF3EB] overflow-x-hidden ">
       <Navbar />
       {isLoading ? <CourseHeaderSkeleton /> : <CourseHeader course={courseDetails} />}
    
 
-        <section className=" pr-7 sm:pr-10 md:pr-15 lg:pr-25 pl-10 py-20 flex flex-col space-y-15">
+        <section className=" pr-7 sm:pr-10 md:pr-15 lg:pr-25 pl-10 py-20 pb-20 flex flex-col space-y-15">
           
           {isLoading ? (
   <WhatYouWillLearnSkeleton />

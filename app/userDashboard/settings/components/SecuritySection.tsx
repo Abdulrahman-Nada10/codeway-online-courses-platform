@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Check, Eye, EyeOff } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import DashboardInput from '@/app/components/ui/DashboardInput';
 import {
   PasswordRulesChecklist,
@@ -33,15 +34,16 @@ export default function SecuritySection({
   onSave,
   onCancel
 }: SecuritySectionProps) {
+  const { t } = useTranslation();
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   return (
     <div className="space-y-8">
-      <div className="text-right pb-4">
-        <h3 className="font-cairo font-bold text-lg text-[#113555]">
-          الأمان و كلمة المرور
+      <div className="pb-4 text-start">
+        <h3 className="font-cairo text-lg font-bold text-[#113555] dark:text-slate-100">
+          {t('dashboard.securityAndPassword')}
         </h3>
       </div>
 
@@ -50,7 +52,7 @@ export default function SecuritySection({
           id="current-password"
           type={showCurrent ? 'text' : 'password'}
           className='2xl:w-135'
-          label="كلمة المرور الحالية"
+          label={t('dashboard.currentPassword')}
           value={currentPassword}
           onChange={(e) => onCurrentPasswordChange(e.target.value)}
           error={touched.currentPassword ? errors.currentPassword : undefined}
@@ -59,7 +61,7 @@ export default function SecuritySection({
               type="button"
               onClick={() => setShowCurrent((c) => !c)}
               className="text-[#B6BCC5] hover:text-[#113555] transition-colors"
-              aria-label={showCurrent ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'}
+              aria-label={showCurrent ? t('auth.hidePassword') : t('auth.showPassword')}
             >
               {showCurrent ? (
                 <EyeOff className="h-4 w-4" />
@@ -75,17 +77,17 @@ export default function SecuritySection({
             <DashboardInput
               id="new-password"
               type={showNew ? 'text' : 'password'}
-              label="كلمة المرور الجديدة"
+              label={t('auth.newPassword')}
               value={newPassword}
               onChange={(e) => onNewPasswordChange(e.target.value)}
               error={touched.newPassword ? errors.newPassword : undefined}
-              helperText="8 أحرف على الأقل، حرف كبير، صغير، رقم، ورمز"
+              helperText={t('auth.passwordHint')}
               leftIcon={
                 <button
                   type="button"
                   onClick={() => setShowNew((c) => !c)}
                   className="text-[#B6BCC5] hover:text-[#113555] transition-colors"
-                  aria-label={showNew ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'}
+                  aria-label={showNew ? t('auth.hidePassword') : t('auth.showPassword')}
                 >
                   {showNew ? (
                     <EyeOff className="h-4 w-4" />
@@ -106,7 +108,7 @@ export default function SecuritySection({
           <DashboardInput
             id="confirm-password"
             type={showConfirm ? 'text' : 'password'}
-            label="تاكيد كلمة المرور"
+            label={t('auth.confirmPassword')}
             value={confirmPassword}
             onChange={(e) => onConfirmPasswordChange(e.target.value)}
             error={touched.confirmPassword ? errors.confirmPassword : undefined}
@@ -115,7 +117,7 @@ export default function SecuritySection({
                 type="button"
                 onClick={() => setShowConfirm((c) => !c)}
                 className="text-[#B6BCC5] hover:text-[#113555] transition-colors"
-                aria-label={showConfirm ? 'إخفاء تأكيد كلمة المرور' : 'إظهار تأكيد كلمة المرور'}
+                aria-label={showConfirm ? t('auth.hideConfirmPassword') : t('auth.showConfirmPassword')}
               >
                 {showConfirm ? (
                   <EyeOff className="h-4 w-4" />
@@ -133,14 +135,14 @@ export default function SecuritySection({
           onClick={onCancel}
           className="px-6 py-3 border-2 border-[#FF6400] text-[#FF6400] rounded-xl font-cairo font-medium text-sm hover:bg-[#FFF3EB] transition-colors w-full sm:w-auto"
         >
-          الغاء
+          {t('common.cancel')}
         </button>
         <button
           onClick={onSave}
           className="px-6 py-3 bg-[#FF6400] text-white rounded-xl font-cairo font-medium text-sm hover:bg-[#E55A00] transition-colors w-full sm:w-auto flex items-center justify-center gap-2"
         >
           <Check className="w-5 h-5" />
-          حفظ التغيرات
+          {t('common.saveChanges')}
         </button>
       </div>
     </div>

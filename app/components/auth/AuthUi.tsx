@@ -7,6 +7,7 @@ import type {
 } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 import {
   Check,
   ChevronDown,
@@ -22,13 +23,14 @@ import {
   getPasswordStrengthLabel,
   type PasswordStrength,
 } from "@/app/libs/validation";
+import { useLocaleDirection } from "@/app/hooks/useLocaleDirection";
 
 function cn(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
 
 const baseFieldClasses =
-  "h-10 w-full rounded-[4px] border border-[#E7E7E7] bg-white text-right text-[13px] text-[#6B7280] placeholder:text-[#D6D6D6] outline-none transition focus:border-[#FF6A00]";
+  "h-10 w-full rounded-[4px] border border-[#E7E7E7] bg-white text-start text-[13px] text-[#6B7280] placeholder:text-[#D6D6D6] outline-none transition focus:border-[#FF6A00] dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500";
 
 type AuthShellProps = {
   title: string;
@@ -71,14 +73,16 @@ export function AuthShell({
   footer,
   cardClassName,
 }: AuthShellProps) {
+  const { dir } = useLocaleDirection();
+
   return (
     <div
-      className="min-h-screen bg-[#FFF6F0] px-4 py-10 sm:flex sm:items-center sm:justify-center"
-      dir="rtl"
+      className="min-h-screen bg-[#FFF6F0] px-4 py-10 dark:bg-slate-950 sm:flex sm:items-center sm:justify-center"
+      dir={dir}
     >
       <div
         className={cn(
-          "mx-auto w-full max-w-108 rounded-[14px] border border-white/80 bg-white px-4 py-7 shadow-[0_16px_34px_rgba(255,106,0,0.14)] sm:px-6",
+          "mx-auto w-full max-w-108 rounded-[14px] border border-white/80 bg-white px-4 py-7 shadow-[0_16px_34px_rgba(255,106,0,0.14)] dark:border-slate-800 dark:bg-slate-900 dark:shadow-[0_16px_34px_rgba(0,0,0,0.35)] sm:px-6",
           cardClassName
         )}
       >
@@ -118,17 +122,19 @@ export function AuthShell({
 export function AuthGoogleButton(
   props: ButtonHTMLAttributes<HTMLButtonElement>
 ) {
+  const { t } = useTranslation();
+
   return (
     <button
       type="button"
       {...props}
       className={cn(
-        "flex h-10 w-full items-center justify-center gap-2 rounded-sm border border-[#E7E7E7] bg-white text-[12px] font-semibold text-[#222] transition hover:bg-[#FFF8F2]",
+        "flex h-10 w-full items-center justify-center gap-2 rounded-sm border border-[#E7E7E7] bg-white text-[12px] font-semibold text-[#222] transition hover:bg-[#FFF8F2] dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700",
         props.className
       )}
     >
       <GoogleIcon />
-      <span>Continue with Google</span>
+      <span>{t("auth.continueWithGoogle")}</span>
     </button>
   );
 }
@@ -164,7 +170,7 @@ function FieldMessage({
   return (
     <p
       className={cn(
-        'mt-1 text-right text-[11px] font-medium transition-all duration-300 ease-out animate-fade-in-up',
+        'mt-1 text-start text-[11px] font-medium transition-all duration-300 ease-out animate-fade-in-up',
         error && 'text-red-500',
         success && 'text-green-600',
         !error && !success && 'text-gray-400'
@@ -220,7 +226,7 @@ export function PasswordStrengthBar({ password }: { password: string }) {
       </div>
       <p
         className={cn(
-          'text-right text-[11px] font-semibold transition-colors duration-300',
+          'text-start text-[11px] font-semibold transition-colors duration-300',
           STRENGTH_TEXT_COLORS[strength]
         )}
       >
@@ -243,7 +249,7 @@ export function PasswordRulesChecklist({ password }: { password: string }) {
         <li
           key={rule.key}
           className={cn(
-            'flex items-center gap-1.5 text-right text-[11px] font-medium transition-colors duration-300',
+            'flex items-center gap-1.5 text-start text-[11px] font-medium transition-colors duration-300',
             rule.met ? 'text-green-600' : 'text-gray-400'
           )}
         >
@@ -288,8 +294,8 @@ export function AuthInput({
         {...props}
         className={cn(
           baseFieldClasses,
-          rightIcon ? 'pr-10' : 'pr-3',
-          leftIcon ? 'pl-10' : 'pl-3',
+          rightIcon ? 'rtl:pr-10 rtl:pl-3 ltr:pl-10 ltr:pr-3' : 'px-3',
+          leftIcon ? 'rtl:pl-10 ltr:pr-10' : '',
           state === 'error' && 'border-red-400 bg-red-50/40 text-red-900 placeholder:text-red-300',
           state === 'success' && 'border-green-400 bg-green-50/40 text-green-900 placeholder:text-green-300',
           className
@@ -297,13 +303,13 @@ export function AuthInput({
       />
 
       {rightIcon ? (
-        <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[#B6BCC5]">
+        <span className="pointer-events-none absolute inset-y-0 rtl:right-3 ltr:left-3 flex items-center text-[#B6BCC5]">
           {rightIcon}
         </span>
       ) : null}
 
       {leftIcon ? (
-        <span className="absolute inset-y-0 left-3 flex items-center text-[#B6BCC5]">
+        <span className="absolute inset-y-0 rtl:left-3 ltr:right-3 flex items-center text-[#B6BCC5]">
           {leftIcon}
         </span>
       ) : null}
@@ -329,7 +335,7 @@ export function AuthSelect({
         {...props}
         className={cn(
           baseFieldClasses,
-          'appearance-none pr-3 pl-9 text-[#A1A1AA]',
+          'appearance-none rtl:pr-3 rtl:pl-9 ltr:pl-3 ltr:pr-9 text-[#A1A1AA]',
           state === 'error' && 'border-red-400 bg-red-50/40 text-red-900',
           state === 'success' && 'border-green-400 bg-green-50/40 text-green-900',
           className
@@ -338,7 +344,7 @@ export function AuthSelect({
         {children}
       </select>
 
-      <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-[#7C7C7C]">
+      <span className="pointer-events-none absolute inset-y-0 rtl:left-3 ltr:right-3 flex items-center text-[#7C7C7C]">
         <ChevronDown className="h-4 w-4" />
       </span>
 
@@ -362,8 +368,8 @@ export function AuthTextarea({
       <textarea
         {...props}
         className={cn(
-          'min-h-21.5 w-full resize-none rounded-sm border border-[#E7E7E7] bg-white px-3 py-3 text-right text-[13px] text-[#6B7280] placeholder:text-[#D6D6D6] outline-none transition focus:border-[#FF6A00]',
-          rightIcon ? 'pr-10' : '',
+          'min-h-21.5 w-full resize-none rounded-sm border border-[#E7E7E7] bg-white px-3 py-3 text-start text-[13px] text-[#6B7280] placeholder:text-[#D6D6D6] outline-none transition focus:border-[#FF6A00] dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500',
+          rightIcon ? 'rtl:pr-10 ltr:pl-10' : '',
           state === 'error' && 'border-red-400 bg-red-50/40 text-red-900 placeholder:text-red-300',
           state === 'success' && 'border-green-400 bg-green-50/40 text-green-900 placeholder:text-green-300',
           className
@@ -371,7 +377,7 @@ export function AuthTextarea({
       />
 
       {rightIcon ? (
-        <span className="pointer-events-none absolute right-3 top-3 text-[#B6BCC5]">
+        <span className="pointer-events-none absolute rtl:right-3 ltr:left-3 top-3 text-[#B6BCC5]">
           {rightIcon}
         </span>
       ) : null}
@@ -405,7 +411,7 @@ export function AuthSecondaryLinkButton({
   return (
     <Link
       href={href}
-      className="flex h-10 w-full items-center justify-center rounded-sm border border-[#FFB07E] bg-white text-[13px] font-bold text-[#5D5D5D] transition hover:bg-[#FFF8F2]"
+      className="flex h-10 w-full items-center justify-center rounded-sm border border-[#FFB07E] bg-white text-[13px] font-bold text-[#5D5D5D] transition hover:bg-[#FFF8F2] dark:border-[#A85C34] dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
     >
       {children}
     </Link>
@@ -422,7 +428,7 @@ export function AuthMessage({
   return (
     <div
       className={cn(
-        "rounded-md px-3 py-2 text-right text-[12px]",
+        "rounded-md px-3 py-2 text-start text-[12px]",
         tone === "error"
           ? "bg-red-50 text-red-600"
           : "bg-green-50 text-green-700"
@@ -461,6 +467,7 @@ export function AuthFooterLine({
 }
 
 export function AuthSocialLinks() {
+  const { t } = useTranslation();
   const iconClassName = "h-4 w-4 stroke-[2.2px]";
 
   return (
@@ -468,28 +475,28 @@ export function AuthSocialLinks() {
       <a
         target="_blank"
         rel="noopener"
-        aria-label="LinkedIn"
+        aria-label={t("social.linkedin")}
       >
         <Linkedin className={iconClassName} />
       </a>
       <a
         target="_blank"
         rel="noopener"
-        aria-label="Facebook"
+        aria-label={t("social.facebook")}
       >
         <Facebook className={iconClassName} />
       </a>
       <a
         target="_blank"
         rel="noopener"
-        aria-label="Youtube"
+        aria-label={t("social.youtube")}
       >
         <Youtube className={iconClassName} />
       </a>
       <a
         target="_blank"
         rel="noopener"
-        aria-label="Instagram"
+        aria-label={t("social.instagram")}
       >
         <Instagram className={iconClassName} />
       </a>

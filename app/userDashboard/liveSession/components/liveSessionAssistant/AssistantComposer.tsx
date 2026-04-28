@@ -1,4 +1,6 @@
 import { ChangeEvent, FormEvent, KeyboardEvent, RefObject } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useLocaleDirection } from '@/app/hooks/useLocaleDirection';
 import { ArrowUp, FileText, LoaderCircle, Mic, Paperclip, X } from 'lucide-react';
 import { PendingAttachment } from './types';
 
@@ -31,6 +33,9 @@ export function AssistantComposer({
   onTextareaKeyDown,
   onVoiceInput,
 }: AssistantComposerProps) {
+  const { t } = useTranslation();
+  const { dir } = useLocaleDirection();
+
   return (
     <div className="mt-4 space-y-3 border-t border-[#f7e2d4] pt-4">
       {pendingAttachments.length ? (
@@ -46,8 +51,8 @@ export function AssistantComposer({
                 type="button"
                 onClick={() => onRemoveAttachment(attachment.id)}
                 className="rounded-full p-0.5 text-[#a1a1aa] transition hover:text-[#ef4444]"
-                aria-label={`إزالة ${attachment.file.name}`}
-                title={`إزالة ${attachment.file.name}`}
+                aria-label={`${t('common.remove')} ${attachment.file.name}`}
+                title={`${t('common.remove')} ${attachment.file.name}`}
               >
                 <X className="h-3.5 w-3.5" />
               </button>
@@ -56,9 +61,9 @@ export function AssistantComposer({
         </div>
       ) : null}
 
-      {composerError ? <p className="text-sm text-[#d23f21]">{composerError}</p> : null}
+      {composerError ? <p className="text-sm text-[#d23f21] dark:text-red-400">{composerError}</p> : null}
 
-      <form onSubmit={onSubmit} className="rounded-[22px] bg-[#fff3eb] px-3 py-3 shadow-[0_8px_24px_rgba(17,53,85,0.05)]">
+      <form onSubmit={onSubmit} className="rounded-[22px] bg-[#fff3eb] px-3 py-3 shadow-[0_8px_24px_rgba(17,53,85,0.05)] dark:bg-slate-800" dir={dir}>
         <div className="flex items-end gap-2 sm:gap-3">
           <button
             type="button"
@@ -66,8 +71,8 @@ export function AssistantComposer({
             className={`rounded-full p-2 transition ${
               isListening ? 'bg-[#113555] text-white' : 'text-[#7a7a7a] hover:bg-white hover:text-[#113555]'
             }`}
-            aria-label={isListening ? 'إيقاف التسجيل الصوتي' : 'إدخال صوتي'}
-            title={isListening ? 'إيقاف التسجيل الصوتي' : 'إدخال صوتي'}
+            aria-label={isListening ? t('assistant.stopVoiceInput') : t('assistant.voiceInput')}
+            title={isListening ? t('assistant.stopVoiceInput') : t('assistant.voiceInput')}
           >
             <Mic className="h-4 w-4" />
           </button>
@@ -76,8 +81,8 @@ export function AssistantComposer({
             type="submit"
             disabled={isLoading || (!composerValue.trim() && pendingAttachments.length === 0)}
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#ff6400] text-white transition hover:bg-[#ec5b00] disabled:cursor-not-allowed disabled:opacity-60"
-            aria-label="إرسال"
-            title="إرسال"
+            aria-label={t('common.send')}
+            title={t('common.send')}
           >
             {isLoading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <ArrowUp className="h-4 w-4" />}
           </button>
@@ -88,8 +93,8 @@ export function AssistantComposer({
               value={composerValue}
               onChange={(event) => onComposerChange(event.target.value)}
               onKeyDown={onTextareaKeyDown}
-              placeholder="...اسأل المساعد الذكي عن أي شيء"
-              className="min-h-9 max-h-28 w-full resize-none bg-transparent px-2 py-2 text-right text-sm text-[#374151] outline-none placeholder:text-[#b4b4b8]"
+              placeholder={t('assistant.askPlaceholder')}
+              className="min-h-9 max-h-28 w-full resize-none bg-transparent px-2 py-2 text-start text-sm text-[#374151] outline-none placeholder:text-[#b4b4b8] dark:text-slate-100 dark:placeholder:text-slate-500"
             />
           </div>
 
@@ -97,8 +102,8 @@ export function AssistantComposer({
             type="button"
             onClick={() => fileInputRef.current?.click()}
             className="rounded-full p-2 text-[#7a7a7a] transition hover:bg-white hover:text-[#113555]"
-            aria-label="إرفاق ملف"
-            title="إرفاق ملف"
+            aria-label={t('assistant.attachFile')}
+            title={t('assistant.attachFile')}
           >
             <Paperclip className="h-4 w-4" />
           </button>
@@ -106,7 +111,7 @@ export function AssistantComposer({
 
         <input
           ref={fileInputRef}
-          aria-label="uploadFiles"
+          aria-label={t('assistant.uploadFiles')}
           type="file"
           multiple
           className="hidden"

@@ -1,7 +1,9 @@
 import { UserRole } from "@/types/auth";
 
 const AUTH_REDIRECT_PATH_KEY = "auth_redirect_path";
-const USER_ROUTE_PREFIXES = ["/userDashboard"];
+const USER_ROUTE_PREFIXES = [
+  "/userDashboard/profile",
+  ];
 const INSTRUCTOR_ROUTE_PREFIXES = [
   "/ins-dashboard",
   "/ins-courses",
@@ -17,7 +19,14 @@ function isBrowser(): boolean {
 }
 
 export function getDashboardRoute(role: UserRole | null | undefined): string {
-  return role === "instructor" ? "/ins-dashboard" : "/userDashboard";
+  switch (role) {
+    case "instructor":
+      return "/ins-dashboard";
+    case "admin":
+      return "/admin";
+    default:
+      return "/userDashboard/profile";
+  }
 }
 
 export function getRequiredRoleForPath(pathname: string): UserRole | null {

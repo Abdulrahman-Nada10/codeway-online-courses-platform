@@ -1,17 +1,28 @@
 'use client';
 
-import React from 'react';
-import { FilterType, filters as filterOptions, allCourses } from '../data/courses';
+import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FilterType, getCourseFilters, getAllCourses } from '../data/courses';
 
 interface FilterSectionProps {
   activeFilter: FilterType;
   onFilterChange: (filter: FilterType) => void;
 }
 
-const FilterSection: React.FC<FilterSectionProps> = ({ activeFilter, onFilterChange }) => {
+const FilterSection: React.FC<FilterSectionProps> = ({
+  activeFilter,
+  onFilterChange,
+}) => {
+  const { t, i18n } = useTranslation();
+  const filterOptions = useMemo(
+    () => getCourseFilters(t),
+    [t, i18n.language]
+  );
+  const allCourses = useMemo(() => getAllCourses(t), [t, i18n.language]);
+
   return (
-    <div className="mb-4 sm:mb-6 relative right-6">
-      <div className="flex flex-col gap-2 rounded-2xl border border-gray-200 bg-white p-2 sm:grid sm:grid-cols-2 sm:gap-3 sm:p-3 lg:flex lg:flex-row lg:p-4">
+    <div className="relative mb-4 rtl:right-6 ltr:left-6 sm:mb-6">
+      <div className="flex flex-col gap-2 rounded-2xl border border-gray-200 bg-white p-2 dark:border-slate-800 dark:bg-slate-900 sm:grid sm:grid-cols-2 sm:gap-3 sm:p-3 lg:flex lg:flex-row lg:p-4">
         {filterOptions.map((filter) => {
           const count = allCourses.filter((course) => {
             if (filter.id === 'all') return true;
@@ -28,7 +39,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({ activeFilter, onFilterCha
                 ${
                   activeFilter === filter.id
                     ? 'border-transparent bg-linear-to-r from-[#FF6400] to-[#FF8C42] text-white shadow-md'
-                    : 'border-gray-300 bg-white text-[#113555] hover:border-[#FF6400] hover:shadow-sm'
+                    : 'border-gray-300 bg-white text-[#113555] hover:border-[#FF6400] hover:shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100'
                 }
               `}
             >
@@ -37,7 +48,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({ activeFilter, onFilterCha
               <span
                 className={`
                   shrink-0 rounded-full px-2 py-0.5 text-[10px] transition-all duration-300 sm:px-4 sm:py-1 sm:text-xs
-                  ${activeFilter === filter.id ? 'text-white' : 'text-black group-hover:bg-orange-50'}
+                  ${activeFilter === filter.id ? 'text-white' : 'text-black group-hover:bg-orange-50 dark:text-slate-200 dark:group-hover:bg-slate-800'}
                 `}
               >
                 ({count})
