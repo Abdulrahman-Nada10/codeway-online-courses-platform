@@ -44,11 +44,11 @@ export default function MyCourses() {
   });
 
   return (
-    <div className="mt-24 min-h-screen overflow-x-hidden bg-[#FFF3EB] dark:bg-slate-950 sm:mt-26 rtl:lg:mr-52 ltr:lg:ml-52" dir={dir}>
+    <div className="mt-24 min-h-screen overflow-x-hidden bg-page-bg sm:mt-26 rtl:lg:mr-52 ltr:lg:ml-52" dir={dir}>
       <main className="mx-auto max-w-375 p-3 sm:p-4 lg:p-6">
         <div className="mb-4 text-start sm:mb-6 rtl:lg:mr-15 ltr:lg:ml-15">
-          <h1 className="font-cairo text-xl font-bold text-[#113555] dark:text-slate-100 sm:text-2xl">{t('dashboard.courses')}</h1>
-          <p className="mt-1 font-cairo text-xs text-gray-600 dark:text-slate-400 sm:text-sm">{t('dashboard.coursesSubtitle')}</p>
+          <h1 className="font-cairo text-xl font-bold text-main-text sm:text-2xl">{t('dashboard.courses')}</h1>
+          <p className="mt-1 font-cairo text-xs text-sub-text  sm:text-sm">{t('dashboard.coursesSubtitle')}</p>
         </div>
         <FilterSection activeFilter={activeFilter} onFilterChange={setActiveFilter} />
 
@@ -61,9 +61,9 @@ export default function MyCourses() {
         {filteredCourses.length === 0 && (
           <div className="py-10 text-center sm:py-12">
             <div className="flex flex-col items-center justify-center gap-3 sm:gap-4">
-              <CircleHelp className="h-12 w-12 text-gray-300 sm:h-16 sm:w-16" />
-              <p className="font-cairo text-sm text-gray-500 sm:text-base lg:text-lg">{t('dashboard.noCoursesMatch')}</p>
-              <p className="font-cairo text-xs text-gray-400 sm:text-sm">{t('dashboard.tryDifferentSearch')}</p>
+              <CircleHelp className="h-12 w-12 text-sub-text sm:h-16 sm:w-16" />
+              <p className="font-cairo text-sm text-sub-text sm:text-base lg:text-lg">{t('dashboard.noCoursesMatch')}</p>
+              <p className="font-cairo text-xs text-sub-text sm:text-sm">{t('dashboard.tryDifferentSearch')}</p>
             </div>
           </div>
         )}

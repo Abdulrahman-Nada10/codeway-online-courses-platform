@@ -19,7 +19,7 @@ export function LiveSessionTabs({ activeTab, counts, onChange }: LiveSessionTabs
   ];
 
   return (
-    <div className="grid gap-2 rounded-[28px] border border-[#eeded3] bg-white p-2 dark:border-slate-700 dark:bg-slate-900 sm:gap-3 sm:p-3 md:grid-cols-3" dir={dir}>
+    <div className="grid gap-2 rounded-[28px]  bg-background p-2  sm:gap-3 sm:p-3 md:grid-cols-3" dir={dir}>
       {tabs.map((tab) => {
         const isActive = tab.id === activeTab;
 
@@ -40,7 +40,7 @@ export function LiveSessionTabs({ activeTab, counts, onChange }: LiveSessionTabs
                 <span className={`h-2.5 w-2.5 rounded-full ${isActive ? 'bg-[#eb001b]' : 'bg-[#113555]'}`} />
               ) : null}
             </span>
-            <span className={`shrink-0 rounded-full px-3 py-1 text-[11px] sm:text-xs ${isActive ? 'bg-white/10' : 'bg-[#fff3eb]'}`}>
+            <span className={`shrink-0 rounded-full px-3 py-1 text-[11px] sm:text-xs ${isActive ? 'bg-white/10' : 'bg-page-bg'}`}>
               ({counts[tab.id]})
             </span>
           </button>

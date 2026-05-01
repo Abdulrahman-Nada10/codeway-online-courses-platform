@@ -101,35 +101,43 @@ export default function VideoPlayerLayout({ course }: { course: VideoPlayerCours
     }
   };
 
-  const gridCols = isRTL
-    ? 'lg:grid-cols-[minmax(0,1fr)_300px] xl:grid-cols-[minmax(0,702px)_358px]'
-    : 'lg:grid-cols-[300px_minmax(0,1fr)] xl:grid-cols-[358px_minmax(0,702px)]';
-
-  const contentOrder = isRTL ? 'order-1' : 'order-2';
-  const sidebarOrder = isRTL ? 'order-2' : 'order-1';
+const gridCols = isRTL
+  ? 'lg:grid-cols-[minmax(0,1fr)_300px] xl:grid-cols-[minmax(0,802px)_708px]'
+  : 'lg:grid-cols-[300px_minmax(0,1fr)] xl:grid-cols-[minmax(0,802px)_708px]'
 
   return (
-    <div className="min-h-screen overflow-x-hidden overflow-y-auto bg-[#FFF3EB] pt-22 dark:bg-slate-950 lg:h-screen lg:overflow-hidden lg:pt-14" dir={dir}>
-      <div className="min-h-[calc(100vh-5.5rem)] md:mr-0 lg:h-[calc(100vh-6.5rem)] lg:min-h-0 rtl:lg:mr-24 rtl:xl:mr-28 ltr:lg:ml-24 ltr:xl:ml-58" dir={dir} >
+    <div className="min-h-screen overflow-x-hidden overflow-y-auto bg-page-bg pt-2 lg:h-screen lg:overflow-hidden lg:pt-14">
+      <div className="min-h-[calc(100vh-5.5rem)] md:mr-0 lg:h-[calc(100vh-6.5rem)] lg:min-h-0 rtl:lg:mr-24 rtl:xl:mr-44 ltr:lg:ml-24 ltr:xl:ml-48" >
         <main className="h-full w-full overflow-visible p-2.5 sm:p-4 lg:overflow-hidden lg:px-5 lg:py-0 xl:px-6">
-          <div className="mx-auto flex h-full max-w-269 flex-col gap-2 pt-4 lg:gap-2.5 lg:pt-6 xl:pt-7 rtl:lg:mr-21 ltr:lg:ml-21" dir={dir}>
-            <div className="flex w-full flex-col items-start gap-1 text-start xl:max-w-175.5 rtl:lg:mr-12 ltr:lg:ml-12" dir={dir}>
+          <div className="mx-auto flex h-full max-w-269 flex-col gap-2 pt-4 lg:gap-2.5 lg:pt-6 xl:pt-7 rtl:lg:mr-21 ltr:lg:ml-21">
+            <div className="flex w-full flex-col items-start gap-1 text-start xl:max-w-175.5 rtl:lg:mr-4 ltr:lg:ml-4">
               <Link
                 href="/userDashboard/my-courses"
-                className="inline-flex items-center gap-1.5 text-[15px] font-bold transition hover:text-[#FF6400]"
+                className="inline-flex items-center gap-1.5 text-[15px] font-bold transition hover:text-primary"
               >
-                  <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-[#ffff]">
-                    <ArrowRight className="h-6 w-6 text-[#FF6400] ltr:rotate-180" />
+                  <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-input-bg">
+                    <ArrowRight className="h-6 w-6 text-primary ltr:rotate-180" />
                   </div>
                 {course.breadcrumbLabel}
               </Link>
-              <h1 className="text-[15px] font-extrabold text-[#111111] sm:text-[14px] lg:text-[16px] xl:text-[18px]">
+              <h1 className="text-[15px] font-extrabold text-sub-text sm:text-[14px] lg:text-[16px] xl:text-[18px]">
                 {course.title}
               </h1>
             </div>
-            <div className={`grid gap-3 lg:h-[calc(100%-3.75rem)] lg:gap-2 lg:justify-center xl:items-start ${gridCols}`} dir={dir}>
-              <section className={`${contentOrder} flex min-w-0 flex-col gap-2 lg:h-full xl:w-175.5 ${isRTL ? 'xl:-translate-x-14' : 'xl:translate-x-14'} xl:-translate-y-11`}>
-                <div
+            <div className={`grid gap-3 lg:h-[calc(100%-3.75rem)] lg:gap-2 lg:justify-center xl:items-start ${gridCols}`}>
+          <div className={`w-full lg:h-full lg:w-75 xl:w-89.5 max-x-89.5`}>
+                <LessonSidebar
+                  lessons={sidebarLessons}
+                  activeLessonId={activeLesson.id}
+                  onLessonSelect={(lessonId) => {
+                    setActiveLessonId(lessonId);
+                    setActivePanel('content');
+                    setActiveTab('overview');
+                  }}
+                />
+              </div>
+          <section className="flex min-w-0 flex-col gap-2 lg:h-full w-full max-w-175.5 xl:-translate-y-11">             
+               <div
                   className={`grid w-full gap-2 ${
                     activePanel === 'comments'
                       ? 'grid-rows-[198px_54px_minmax(0,1fr)] sm:grid-rows-[228px_54px_minmax(0,1fr)] md:grid-rows-[260px_54px_minmax(0,1fr)] lg:h-full lg:grid-rows-[270px_54px_minmax(0,1fr)] xl:grid-rows-[236px_54px_minmax(0,1fr)]'
@@ -191,17 +199,6 @@ export default function VideoPlayerLayout({ course }: { course: VideoPlayerCours
                 </div>
               </section>
 
-              <div className={`${sidebarOrder} w-full lg:h-full lg:w-75 xl:w-89.5`}>
-                <LessonSidebar
-                  lessons={sidebarLessons}
-                  activeLessonId={activeLesson.id}
-                  onLessonSelect={(lessonId) => {
-                    setActiveLessonId(lessonId);
-                    setActivePanel('content');
-                    setActiveTab('overview');
-                  }}
-                />
-              </div>
             </div>
           </div>
         </main>

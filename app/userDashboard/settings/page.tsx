@@ -1,26 +1,26 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useAuth } from '@/app/hooks/useAuth';
-import { useLocaleDirection } from '@/app/hooks/useLocaleDirection';
-import { useAppDispatch } from '@/app/store/hooks';
-import { setContext } from '@/app/store/searchSlice';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
+import { useEffect, useState } from "react";
+import { useAuth } from "@/app/hooks/useAuth";
+import { useLocaleDirection } from "@/app/hooks/useLocaleDirection";
+import { useAppDispatch } from "@/app/store/hooks";
+import { setContext } from "@/app/store/searchSlice";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import {
   email,
   getPasswordStrength,
   match,
   required,
   validatePasswordStrength,
-} from '@/app/libs/validation';
-import ProfileSection from './components/ProfileSection';
-import NotificationsSection from './components/NotificationsSection';
-import SecuritySection from './components/SecuritySection';
-import PaymentsSection from './components/PaymentsSection';
-import SettingsTabs from './components/SettingsTabs';
-import type { SettingsTab } from './components/SettingsTabs';
-import { User } from '@/types/auth';
+} from "@/app/libs/validation";
+import ProfileSection from "./components/ProfileSection";
+import NotificationsSection from "./components/NotificationsSection";
+import SecuritySection from "./components/SecuritySection";
+import PaymentsSection from "./components/PaymentsSection";
+import SettingsTabs from "./components/SettingsTabs";
+import type { SettingsTab } from "./components/SettingsTabs";
+import { User } from "@/types/auth";
 
 type UserFormState = {
   fullName: string;
@@ -31,31 +31,31 @@ type UserFormState = {
 
 function getDefaultUserData(user: User | null): UserFormState {
   return {
-    fullName: user?.name ?? '',
-    email: user?.email ?? '',
-    phone: user?.phoneNumber ?? '',
-    address: user?.address ?? '',
+    fullName: user?.name ?? "",
+    email: user?.email ?? "",
+    phone: user?.phoneNumber ?? "",
+    address: user?.address ?? "",
   };
 }
 
 type ProfileErrors = Partial<Record<keyof UserFormState, string>>;
 type ProfileTouched = Partial<Record<keyof UserFormState, boolean>>;
 
-type SecurityErrors = Partial<Record<'currentPassword' | 'newPassword' | 'confirmPassword', string>>;
-type SecurityTouched = Partial<Record<'currentPassword' | 'newPassword' | 'confirmPassword', boolean>>;
+type SecurityErrors = Partial<Record<"currentPassword" | "newPassword" | "confirmPassword", string>>;
+type SecurityTouched = Partial<Record<"currentPassword" | "newPassword" | "confirmPassword", boolean>>;
 
-type PaymentsErrors = Partial<Record<'accountHolderName' | 'bankName' | 'iban' | 'swiftCode', string>>;
-type PaymentsTouched = Partial<Record<'accountHolderName' | 'bankName' | 'iban' | 'swiftCode', boolean>>;
+type PaymentsErrors = Partial<Record<"accountHolderName" | "bankName" | "iban" | "swiftCode", string>>;
+type PaymentsTouched = Partial<Record<"accountHolderName" | "bankName" | "iban" | "swiftCode", boolean>>;
 
 export default function Settings() {
   const { t } = useTranslation();
   const { dir } = useLocaleDirection();
   const { user, updateProfile } = useAuth();
   const dispatch = useAppDispatch();
-  const authUser = user?.role === 'user' ? user : null;
-  const [activeTab, setActiveTab] = useState<SettingsTab>('profile');
+  const authUser = user?.role === "user" ? user : null;
+  const [activeTab, setActiveTab] = useState<SettingsTab>("profile");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string>(authUser?.avatar ?? '/profile.jpg');
+  const [previewUrl, setPreviewUrl] = useState<string>(authUser?.avatar ?? "/profile.jpg");
   const [userData, setUserData] = useState<UserFormState>(() => getDefaultUserData(authUser));
 
   const [notificationSettings, setNotificationSettings] = useState({
@@ -71,23 +71,22 @@ export default function Settings() {
 
   useEffect(() => {
     setUserData(getDefaultUserData(authUser));
-    setPreviewUrl(authUser?.avatar ?? '/profile.jpg');
+    setPreviewUrl(authUser?.avatar ?? "/profile.jpg");
     setSelectedFile(null);
   }, [authUser]);
 
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [bankData, setBankData] = useState({
-    accountHolderName: '',
-    bankName: '',
-    iban: '',
-    swiftCode: '',
+    accountHolderName: "",
+    bankName: "",
+    iban: "",
+    swiftCode: "",
   });
 
-  /* ─── Errors & Touched ─── */
-  const [profileErrors, setProfileErrors] = useState<ProfileErrors>({});
+const [profileErrors, setProfileErrors] = useState<ProfileErrors>({});
   const [profileTouched, setProfileTouched] = useState<ProfileTouched>({});
 
   const [securityErrors, setSecurityErrors] = useState<SecurityErrors>({});
@@ -104,13 +103,13 @@ export default function Settings() {
     }
 
     if (file.size > 2 * 1024 * 1024) {
-      toast.error(t('validation.fileSizeError'));
+      toast.error(t("validation.fileSizeError"));
       return;
     }
 
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
     if (!allowedTypes.includes(file.type)) {
-      toast.error(t('validation.fileFormatError'));
+      toast.error(t("validation.fileFormatError"));
       return;
     }
 
@@ -136,16 +135,16 @@ export default function Settings() {
 
   const validateProfile = (): ProfileErrors => {
     const errors: ProfileErrors = {};
-    const nameError = required(userData.fullName, t('validation.fullNameRequired'));
+    const nameError = required(userData.fullName, t("validation.fullNameRequired"));
     if (nameError) errors.fullName = nameError;
 
     const emailError = email(userData.email);
     if (emailError) errors.email = emailError;
 
-    const phoneError = required(userData.phone, t('validation.phoneRequired'));
+    const phoneError = required(userData.phone, t("validation.phoneRequired"));
     if (phoneError) errors.phone = phoneError;
 
-    const addressError = required(userData.address, t('validation.addressRequired'));
+    const addressError = required(userData.address, t("validation.addressRequired"));
     if (addressError) errors.address = addressError;
 
     return errors;
@@ -169,26 +168,26 @@ export default function Settings() {
         avatar: previewUrl,
       });
 
-      toast.success(t('dashboard.profileSaved'));
+      toast.success(t("dashboard.profileSaved"));
     } catch (saveError) {
       toast.error(
         saveError instanceof Error
           ? saveError.message
-          : t('dashboard.profileSaveError')
+          : t("dashboard.profileSaveError")
       );
     }
   };
 
   const handleProfileCancel = () => {
     setUserData(getDefaultUserData(authUser));
-    setPreviewUrl(authUser?.avatar ?? '/profile.jpg');
+    setPreviewUrl(authUser?.avatar ?? "/profile.jpg");
     setSelectedFile(null);
     setProfileErrors({});
     setProfileTouched({});
   };
 
   const handleNotificationToggle = (
-    key: 'emailNotifications' | 'newCourses' | 'studyReminders' | 'offersAndDiscounts'
+    key: "emailNotifications" | "newCourses" | "studyReminders" | "offersAndDiscounts"
   ) => {
     setNotificationSettings((current) => ({
       ...current,
@@ -197,7 +196,7 @@ export default function Settings() {
   };
 
   const handleNotificationSave = () => {
-    toast.success(t('dashboard.profileSaved'));
+    toast.success(t("dashboard.profileSaved"));
   };
 
   const handleNotificationCancel = () => {
@@ -212,13 +211,13 @@ export default function Settings() {
   const validateSecurity = (): SecurityErrors => {
     const errors: SecurityErrors = {};
 
-    const currentError = required(currentPassword, t('validation.currentPasswordRequired'));
+    const currentError = required(currentPassword, t("validation.currentPasswordRequired"));
     if (currentError) errors.currentPassword = currentError;
 
     const newError = validatePasswordStrength(newPassword);
     if (newError) errors.newPassword = newError;
 
-    const confirmError = match(newPassword, confirmPassword, t('validation.passwordMismatch'));
+    const confirmError = match(newPassword, confirmPassword, t("validation.passwordMismatch"));
     if (confirmError && confirmPassword) errors.confirmPassword = confirmError;
 
     return errors;
@@ -233,26 +232,26 @@ export default function Settings() {
       return;
     }
 
-    if (getPasswordStrength(newPassword) === 'weak') {
+    if (getPasswordStrength(newPassword) === "weak") {
       setSecurityErrors((current) => ({
         ...current,
-        newPassword: t('auth.enterStrongerPassword'),
+        newPassword: t("auth.enterStrongerPassword"),
       }));
       return;
     }
 
-    toast.success(t('dashboard.passwordChanged'));
-    setCurrentPassword('');
-    setNewPassword('');
-    setConfirmPassword('');
+    toast.success(t("dashboard.passwordChanged"));
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
     setSecurityErrors({});
     setSecurityTouched({});
   };
 
   const handlePasswordCancel = () => {
-    setCurrentPassword('');
-    setNewPassword('');
-    setConfirmPassword('');
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
     setSecurityErrors({});
     setSecurityTouched({});
   };
@@ -260,16 +259,16 @@ export default function Settings() {
   const validatePayments = (): PaymentsErrors => {
     const errors: PaymentsErrors = {};
 
-    const holderError = required(bankData.accountHolderName, t('validation.accountHolderRequired'));
+    const holderError = required(bankData.accountHolderName, t("validation.accountHolderRequired"));
     if (holderError) errors.accountHolderName = holderError;
 
-    const bankError = required(bankData.bankName, t('validation.bankNameRequired'));
+    const bankError = required(bankData.bankName, t("validation.bankNameRequired"));
     if (bankError) errors.bankName = bankError;
 
-    const ibanError = required(bankData.iban, t('validation.ibanRequired'));
+    const ibanError = required(bankData.iban, t("validation.ibanRequired"));
     if (ibanError) errors.iban = ibanError;
 
-    const swiftError = required(bankData.swiftCode, t('validation.swiftRequired'));
+    const swiftError = required(bankData.swiftCode, t("validation.swiftRequired"));
     if (swiftError) errors.swiftCode = swiftError;
 
     return errors;
@@ -300,40 +299,40 @@ export default function Settings() {
       return;
     }
 
-    toast.success(t('dashboard.paymentSaved'));
+    toast.success(t("dashboard.paymentSaved"));
   };
 
   const handlePaymentsCancel = () => {
     setBankData({
-      accountHolderName: '',
-      bankName: '',
-      iban: '',
-      swiftCode: '',
+      accountHolderName: "",
+      bankName: "",
+      iban: "",
+      swiftCode: "",
     });
     setPaymentsErrors({});
     setPaymentsTouched({});
   };
 
   return (
-    <div className="mt-26 min-h-screen overflow-x-hidden bg-[#FFF3EB] dark:bg-slate-950" dir={dir}>
+    <div className="mt-26 min-h-screen overflow-x-hidden bg-page-bg dark:bg-page-bg" dir={dir}>
       <div className="rtl:lg:mr-75 ltr:lg:ml-75">
         <main className="p-2 sm:p-3 lg:p-4 xl:p-6">
           <div className="mb-3 text-start sm:mb-4 lg:mb-6">
-            <h1 className="font-cairo text-lg font-bold text-[#113555] dark:text-slate-100 sm:text-xl lg:text-2xl">
-              {t('dashboard.settings')}
+            <h1 className="font-cairo text-lg font-bold text-main-text dark:text-main-text sm:text-xl lg:text-2xl">
+              {t("dashboard.settings")}
             </h1>
-            <p className="mt-1 font-cairo text-xs text-gray-600 dark:text-slate-400 sm:text-sm">
-              {t('dashboard.settingsSubtitle')}
+            <p className="mt-1 font-cairo text-xs text-sub-text dark:text-sub-text sm:text-sm">
+              {t("dashboard.settingsSubtitle")}
             </p>
           </div>
 
-          <div className="mb-4 rounded-2xl bg-white p-3 shadow-sm dark:bg-slate-900 sm:mb-6 sm:p-4 lg:p-6">
+          <div className="mb-4 rounded-2xl bg-background p-3 shadow-sm dark:bg-background sm:mb-6 sm:p-4 lg:p-6">
             <SettingsTabs activeTab={activeTab} onTabChange={setActiveTab} />
           </div>
 
-          <div className="mb-50 rounded-2xl bg-white p-3 shadow-sm dark:bg-slate-900 sm:p-4 lg:p-6">
+          <div className="mb-50 rounded-2xl bg-background p-3 shadow-sm dark:bg-background sm:p-4 lg:p-6">
             <div className="mt-2 sm:mt-4">
-              {activeTab === 'profile' && (
+              {activeTab === "profile" && (
                 <ProfileSection
                   previewUrl={previewUrl}
                   selectedFile={selectedFile}
@@ -347,7 +346,7 @@ export default function Settings() {
                 />
               )}
 
-              {activeTab === 'notifications' && (
+              {activeTab === "notifications" && (
                 <NotificationsSection
                   notificationSettings={notificationSettings}
                   onToggle={handleNotificationToggle}
@@ -356,7 +355,7 @@ export default function Settings() {
                 />
               )}
 
-              {activeTab === 'security' && (
+              {activeTab === "security" && (
                 <SecuritySection
                   currentPassword={currentPassword}
                   newPassword={newPassword}
@@ -371,7 +370,7 @@ export default function Settings() {
                 />
               )}
 
-              {activeTab === 'payments' && (
+              {activeTab === "payments" && (
                 <PaymentsSection
                   bankData={bankData}
                   errors={paymentsErrors}
@@ -386,7 +385,5 @@ export default function Settings() {
         </main>
       </div>
     </div>
-    
   );
 }
-

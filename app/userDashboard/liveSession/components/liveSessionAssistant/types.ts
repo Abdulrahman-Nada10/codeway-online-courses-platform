@@ -33,11 +33,9 @@ export interface PendingAttachment {
 export interface LiveSessionAssistantProps {
   contextTitle?: string;
   storageKey?: string;
-  courseId?: string;
+courseId?: string;
   lessonId?: string;
-  /** Optional session slug for course inference */
   sessionSlug?: string;
-  /** Optional session data for richer context */
   sessionContextData?: {
     title?: string;
     description?: string;

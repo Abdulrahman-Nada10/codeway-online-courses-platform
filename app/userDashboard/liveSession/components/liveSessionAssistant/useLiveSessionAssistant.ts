@@ -92,8 +92,7 @@ export function useLiveSessionAssistant({
   const routeParams = useParams<Record<string, string | string[]>>();
   const searchParams = useSearchParams();
 
-  // Redux state for course resolution
-  const reduxSelectedCourse = useAppSelector((state) => state.courses.selectedCourse);
+const reduxSelectedCourse = useAppSelector((state) => state.courses.selectedCourse);
   const reduxCourses = useAppSelector((state) => state.courses.courses);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -108,8 +107,7 @@ export function useLiveSessionAssistant({
   const [introPhase, setIntroPhase] = useState<'idle' | 'title' | 'suggestions'>('idle');
   const [composerError, setComposerError] = useState<string | null>(null);
 
-  // Session context from localStorage for persistence across chats
-  const [sessionContext, setSessionContext] = useState<AiSessionContext>(getDefaultSessionContext);
+const [sessionContext, setSessionContext] = useState<AiSessionContext>(getDefaultSessionContext);
 
   function getDefaultSessionContext(): AiSessionContext {
     if (typeof window === 'undefined') {
@@ -139,12 +137,8 @@ export function useLiveSessionAssistant({
 
   const activeMessages = activeConversation?.messages ?? [];
 
-  /**
-   * INTELLIGENT COURSE RESOLUTION
-   * Multi-source priority resolution with debug logging.
-   */
-  const resolvedCourseId = useMemo(() => {
-    const resolved = resolveCourseId({
+const resolvedCourseId = useMemo(() => {
+const resolved = resolveCourseId({
       directCourseId: courseId,
       searchCourseId: searchParams.get('courseId'),
       routeCourseId: getOptionalParamValue(routeParams.courseId),
@@ -153,20 +147,6 @@ export function useLiveSessionAssistant({
       reduxCourses,
       contextTitle: contextTitle ?? sessionContextData?.title,
       sessionContext,
-    });
-
-    // eslint-disable-next-line no-console
-    console.log('[AI DEBUG] Resolved courseId:', resolved);
-    // eslint-disable-next-line no-console
-    console.log('[AI DEBUG] Resolution sources:', {
-      directCourseId: courseId,
-      searchCourseId: searchParams.get('courseId'),
-      routeCourseId: getOptionalParamValue(routeParams.courseId),
-      routeSessionId: getOptionalParamValue(routeParams.sessionId) ?? sessionSlug,
-      reduxSelectedCourseId: reduxSelectedCourse?.id,
-      reduxCoursesCount: reduxCourses?.length,
-      contextTitle,
-      sessionContextCourseId: sessionContext.courseId,
     });
 
     return resolved;
@@ -328,9 +308,7 @@ export function useLiveSessionAssistant({
       return;
     }
 
-    // INTELLIGENT COURSE RESOLUTION WITH MESSAGE CONTEXT
-    // Try to infer from message if still not resolved
-    const messageInferredCourseId = resolveCourseId({
+const messageInferredCourseId = resolveCourseId({
       directCourseId: courseId,
       searchCourseId: searchParams.get('courseId'),
       routeCourseId: getOptionalParamValue(routeParams.courseId),
@@ -342,15 +320,10 @@ export function useLiveSessionAssistant({
       sessionContext,
     });
 
-    const finalCourseId = messageInferredCourseId ?? resolvedCourseId;
-
-    // eslint-disable-next-line no-console
-    console.log('[AI DEBUG] Final courseId before send:', finalCourseId);
+const finalCourseId = messageInferredCourseId ?? resolvedCourseId;
 
     if (!isValidCourseId(finalCourseId)) {
       setComposerError(t('assistant.selectCourseFirst'));
-      // eslint-disable-next-line no-console
-      console.warn('[AI DEBUG] Blocked send: no valid courseId resolved.');
       return;
     }
 
@@ -430,9 +403,8 @@ export function useLiveSessionAssistant({
         courseId: finalCourseId!,
         history: buildHistory(previousMessages, RECENT_HISTORY_LIMIT),
       });
-      const reply = getAssistantReply(replyPayload);
+const reply = getAssistantReply(replyPayload);
 
-      // Persist resolved courseId to session context
       saveSessionContext({
         courseId: finalCourseId,
         lessonId: resolvedLessonId,
@@ -446,9 +418,7 @@ export function useLiveSessionAssistant({
         lastResolvedAt: Date.now(),
       }));
 
-      if (isDuplicateAssistantMessage(activeConversation.messages, reply)) {
-        // eslint-disable-next-line no-console
-        console.warn('[useLiveSessionAssistant] Duplicate assistant message detected; skipping append.');
+if (isDuplicateAssistantMessage(activeConversation.messages, reply)) {
       } else {
         const assistantMessage = {
           id: createId(),
@@ -463,10 +433,7 @@ export function useLiveSessionAssistant({
           messages: [...conversation.messages, assistantMessage],
         }));
       }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('[useLiveSessionAssistant] AI chat error:', error);
-
+} catch (error) {
       let errorText = t('assistant.aiConnectionError');
 
       if (error instanceof TypeError) {

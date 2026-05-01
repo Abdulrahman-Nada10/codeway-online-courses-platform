@@ -1,13 +1,4 @@
-/**
- * API Client — Future-Ready Fetch Wrapper
- * =======================================
- * Automatically attaches the Authorization header.
- * Handles 401 responses by clearing the session and redirecting.
- *
- * BACKEND COMPATIBILITY RULE:
- * When switching to real JWT auth, this file needs ZERO changes.
- * It already reads the token from localStorage and sends it as Bearer.
- */
+
 
 import { getStoredToken, clearSession } from "@/services/auth";
 

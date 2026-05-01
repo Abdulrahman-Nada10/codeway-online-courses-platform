@@ -11,12 +11,10 @@ import { useTranslation } from "react-i18next";
 import {
   Check,
   ChevronDown,
-  Facebook,
-  Instagram,
-  Linkedin,
   X,
-  Youtube,
 } from "lucide-react";
+import { FaFacebook, FaInstagram ,FaYoutube ,FaLinkedin  } from "react-icons/fa"
+import {FcGoogle } from "react-icons/fc"
 import {
   getPasswordStrength,
   getPasswordStrengthDetails,
@@ -133,8 +131,8 @@ export function AuthGoogleButton(
         props.className
       )}
     >
-      <GoogleIcon />
       <span>{t("auth.continueWithGoogle")}</span>
+      <GoogleIcon />
     </button>
   );
 }
@@ -180,8 +178,6 @@ function FieldMessage({
     </p>
   );
 }
-
-/* ─────────────── Password Strength Bar ─────────────── */
 
 const STRENGTH_COLORS: Record<PasswordStrength, string> = {
   weak: 'bg-red-500',
@@ -236,7 +232,6 @@ export function PasswordStrengthBar({ password }: { password: string }) {
   );
 }
 
-/* ─────────────── Password Rules Checklist ─────────────── */
 
 export function PasswordRulesChecklist({ password }: { password: string }) {
   const details = getPasswordStrengthDetails(password);
@@ -265,7 +260,6 @@ export function PasswordRulesChecklist({ password }: { password: string }) {
   );
 }
 
-/* ─────────────── Helpers for dynamic border coloring ─────────────── */
 
 export function getPasswordBorderClasses(password: string): string {
   const strength = getPasswordStrength(password);
@@ -275,7 +269,6 @@ export function getPasswordBorderClasses(password: string): string {
 
 export { STRENGTH_BORDER_COLORS, STRENGTH_BG_COLORS };
 
-/* ─────────────── AuthInput ─────────────── */
 
 export function AuthInput({
   leftIcon,
@@ -477,28 +470,28 @@ export function AuthSocialLinks() {
         rel="noopener"
         aria-label={t("social.linkedin")}
       >
-        <Linkedin className={iconClassName} />
+        <FaLinkedin className={iconClassName} />
       </a>
       <a
         target="_blank"
         rel="noopener"
         aria-label={t("social.facebook")}
       >
-        <Facebook className={iconClassName} />
+        <FaFacebook className={iconClassName} />
       </a>
       <a
         target="_blank"
         rel="noopener"
         aria-label={t("social.youtube")}
       >
-        <Youtube className={iconClassName} />
+        <FaYoutube className={iconClassName} />
       </a>
       <a
         target="_blank"
         rel="noopener"
         aria-label={t("social.instagram")}
       >
-        <Instagram className={iconClassName} />
+        <FaInstagram className={iconClassName} />
       </a>
     </div>
   );
@@ -513,30 +506,6 @@ export function AuthBadge({ children }: { children: ReactNode }) {
 }
 
 function GoogleIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      className="h-4 w-4"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M21.6 12.23c0-.78-.07-1.53-.2-2.23H12v4.23h5.4a4.62 4.62 0 0 1-2 3.03v2.52h3.24c1.9-1.75 2.96-4.33 2.96-7.55Z"
-        fill="#4285F4"
-      />
-      <path
-        d="M12 22c2.7 0 4.96-.9 6.62-2.44l-3.24-2.52c-.9.6-2.05.96-3.38.96-2.6 0-4.8-1.75-5.58-4.1H3.08v2.6A10 10 0 0 0 12 22Z"
-        fill="#34A853"
-      />
-      <path
-        d="M6.42 13.9A5.98 5.98 0 0 1 6.1 12c0-.66.12-1.3.32-1.9V7.5H3.08A10 10 0 0 0 2 12c0 1.61.39 3.14 1.08 4.5l3.34-2.6Z"
-        fill="#FBBC05"
-      />
-      <path
-        d="M12 5.98c1.47 0 2.78.5 3.82 1.47l2.87-2.87C16.95 2.96 14.7 2 12 2A10 10 0 0 0 3.08 7.5l3.34 2.6C7.2 7.73 9.4 5.98 12 5.98Z"
-        fill="#EA4335"
-      />
-    </svg>
-  );
+  return <FcGoogle className="h-4 w-4" />;
 }
 

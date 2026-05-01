@@ -1,5 +1,6 @@
 {
   "common": {
+    "from":"From",
     "welcome": "Welcome to the learning platform",
     "courses": "Courses",
     "about": "About Us",
@@ -101,6 +102,7 @@
     "myCourses": "My Courses",
     "favorites": "Favorites",
     "certificates": "Certificates",
+    "quizzes": "Quizzes",
     "settings": "Settings",
     "liveSession": "Live Session",
     "student": "Student",
@@ -111,10 +113,31 @@
     "brand": "EGC",
     "changeLanguage": "Change language"
   },
+"quiz": {
+    "description": "Test your knowledge in HTML, CSS, JavaScript and modern web concepts.",
+    "instantResult": "Instant Results",
+    "minutes": "minutes",
+    "questions": "questions",
+    "start": "Start Quiz",
+    "note": "Interactive quiz - Auto correction - Full review",
+    "question": "Question",
+    "next": "Next",
+    "prev": "Previous",
+    "progress": "Progress Summary",
+    "answered": "Answered",
+    "remaining": "Remaining",
+    "submit": "Submit",
+    "completed": "Quiz completed",
+    "result": "Result",
+    "notAnswered": "Not answered",
+    "score": "Score",
+    "reviewAnswers": "Review Answers"
+  },
   "dashboard": {
     "profile": "Profile",
     "profileSubtitle": "View and manage your personal information",
     "courses": "My Courses",
+    "quizzes": "Quizzes",
     "coursesSubtitle": "Track your progress in enrolled courses",
     "favorites": "Favorites",
     "favoritesSubtitle": "Courses you've added to your favorites list",

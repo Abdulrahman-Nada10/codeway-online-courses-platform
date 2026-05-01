@@ -42,15 +42,15 @@ export default function Profile() {
   }));
 
   return (
-    <div className="mt-26 min-h-screen overflow-x-hidden bg-[#FFF3EB] dark:bg-slate-950" dir={dir}>
+    <div className="mt-26 min-h-screen overflow-x-hidden bg-page-bg" dir={dir}>
       <div className="rtl:lg:mr-75 ltr:lg:ml-75">
         <main className="p-3 sm:p-4 lg:p-3">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
             <div className="text-start">
-              <h1 className="font-cairo text-xl font-bold text-[#113555] dark:text-slate-100 sm:text-2xl">
+              <h1 className="font-cairo text-xl font-bold text-main-text sm:text-2xl">
                 {t('dashboard.profile')}
               </h1>
-              <p className="mt-1 font-cairo text-sm text-gray-600 dark:text-slate-400">
+              <p className="mt-1 font-cairo text-sm text-sub-text">
                 {t('dashboard.profileSubtitle')}
               </p>
             </div>
@@ -59,7 +59,7 @@ export default function Profile() {
               onClick={() => {
                 window.location.href = '/userDashboard/settings';
               }}
-              className="flex items-center gap-2 rounded-xl bg-[#FF6400] px-3 py-2 font-cairo text-sm font-medium text-white transition-colors hover:bg-[#E55A00] sm:px-4"
+              className="flex items-center gap-2 rounded-xl bg-primary px-3 py-2 font-cairo text-sm font-medium text-white transition-colors hover:bg-primary-hover sm:px-4"
             >
               <Pencil className="h-4 w-4" />
               <span className="hidden sm:inline">{t('common.editProfile')}</span>

@@ -8,9 +8,10 @@ html {
   --background: #ffffff;
   --foreground: #171717;
   --primary: #ff6400;
+  --primary-hover:#E55A00;
   --secondary: #113555;
   --main-text:#113555;
-  --sub-text:#1E3A8A;
+  --sub-text:#4a5565;
   --input-bg: #fff3eb;
   --page-bg: #fff3eb;
   --font-sans: var(--font-cairo);
@@ -19,7 +20,8 @@ html {
 html.dark {
   --background: #0f172a;
   --foreground: #f8fafc;
-  --primary: #ff8533;
+  --primary: #ff6400;
+  --primary-hover:#E55A00;
   --secondary: #191C33;
   --main-text:#CAD5E2;
   --sub-text:#90A1B9;
@@ -34,6 +36,7 @@ html.dark {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
   --color-secondary: var(--secondary);
   --color-input-bg: var(--input-bg);
   --color-main-text: var(--main-text);

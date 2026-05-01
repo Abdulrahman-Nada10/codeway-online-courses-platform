@@ -1,5 +1,6 @@
 {
   "common": {
+    "from":"من",
     "welcome": "أهلاً بك في منصة التعلم",
     "courses": "الدورات",
     "about": "من نحن",
@@ -101,6 +102,7 @@
     "myCourses": "دوراتي",
     "favorites": "المفضلة",
     "certificates": "شهاداتي",
+    "quizzes": "الاختبارات",
     "settings": "الإعدادات",
     "liveSession": "حصة مباشرة",
     "student": "طالب",
@@ -111,6 +113,27 @@
     "brand": "EGC",
     "changeLanguage": "تغيير اللغة"
   },
+"quiz": {
+    "description": "اختبر معلوماتك في HTML و CSS و JavaScript ومفاهيم الويب الحديثة.",
+    "instantResult": "نتائج فورية",
+    "minutes": "دقائق",
+    "questions": "أسئلة",
+    "start": "ابدأ الاختبار",
+    "note": "اختبار تفاعلي - تصحيح تلقائي - مراجعة شاملة",
+    "question": "السؤال",
+    "next": "التالي",
+    "prev": "السابق",
+    "progress": "ملخص التقدم",
+    "answered": "تمت الإجابة",
+    "remaining": "متبقي",
+    "submit": "تسليم",
+    "result": "النتيجة",
+    "completed": "انتهى الاختبار",
+    "notAnswered": "لم يتم الإجابة",
+    "score": "الدرجة",
+    "reviewAnswers": "مراجعة الإجابات"
+  },
+
   "dashboard": {
     "profile": "الملف الشخصي",
     "profileSubtitle": "عرض و إدارة معلوماتك الشخصية",
@@ -120,6 +143,7 @@
     "favoritesSubtitle": "الدورات التي أضفتها إلى قائمتك المفضلة",
     "certificates": "شهاداتي",
     "certificatesSubtitle": "جميع الشهادات التي حصلت عليها",
+    "quizzes": "الاختبارات",
     "settings": "الإعدادات",
     "settingsSubtitle": "إدارة حسابك وتفضيلاتك",
     "liveSession": "حصصي المباشرة",

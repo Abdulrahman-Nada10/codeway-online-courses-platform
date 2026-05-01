@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { Check, Clock3, Lock, MessageCircle, Play, ThumbsUp } from 'lucide-react';
-import { useLocaleDirection } from '@/app/hooks/useLocaleDirection';
 import { VideoPlayerLesson, LessonStatus } from './types';
 import { getLessonStatusColor, getLessonStatusLabel } from './utils';
 
@@ -39,7 +38,6 @@ export default function LessonSidebarItem({
   isActive: boolean;
   onClick: () => void;
 }) {
-  const { dir } = useLocaleDirection();
   const bgClass =
     lesson.status === 'locked' ? 'bg-[#D9D9D9]' : !isActive ? 'bg-[#FFF3EB]' : 'bg-white';
 
@@ -47,13 +45,33 @@ export default function LessonSidebarItem({
     <button
       type="button"
       onClick={onClick}
-      className={`grid w-full grid-cols-[1fr_68px_18px] items-center gap-1.5 border-b border-[#E7D8CC] px-4 py-2 text-start transition hover:bg-[#FFF3EB] dark:border-slate-700 dark:hover:bg-slate-800 min-[360px]:grid-cols-[1fr_78px_20px] min-[360px]:gap-2 min-[360px]:px-2.5 sm:grid-cols-[1fr_84px_22px] sm:px-3 lg:grid-cols-[1fr_66px_18px] lg:px-2 xl:grid-cols-[1fr_72px_18px] ${bgClass}`}
-      dir={dir}
+      className={`flex w-full items-center gap-3 border-b border-[#E7D8CC] px-3 py-2 text-start transition hover:bg-[#FFF3EB] dark:border-slate-700 dark:hover:bg-slate-800 ${bgClass}`}
     >
-      <div className="min-w-0 ">
-        <p className="line-clamp-2 text-[9px] leading-3.5 text-[#5B5B5B] dark:text-slate-300 min-[360px]:text-[10px] min-[360px]:leading-4 sm:text-[11px] lg:text-[9px] xl:text-[10px]">{lesson.title}</p>
+=      <span className="w-6 shrink-0 text-center text-[10px] text-[#6B7280] sm:text-[11px] lg:text-[10px]">
+        {lesson.id}
+      </span>
 
-        <div className="mt-1 flex items-center justify-start gap-1.5 text-[8px] text-[#6B7280] min-[360px]:gap-2 min-[360px]:text-[9px] sm:text-[10px] lg:text-[8px] xl:text-[9px]">
+      <div className="relative h-10 w-18 shrink-0 overflow-hidden rounded-sm sm:h-12 lg:h-10">
+        <Image 
+          src={lesson.thumbnail} 
+          alt={lesson.title} 
+          fill 
+          className="object-cover" 
+          sizes="72px" 
+        />
+        <div className="absolute inset-0 bg-[#113555]/10" />
+        <StatusBadge status={lesson.status} />
+        <span className="absolute bottom-0.5 rounded bg-[#1f293785] px-1 py-px text-[7px] font-semibold text-white ltr:right-0.5 rtl:left-0.5">
+          {lesson.videoDuration}
+        </span>
+      </div>
+
+      <div className="min-w-0 flex-1">
+        <p className="line-clamp-2 text-[10px] leading-3.5 text-[#5B5B5B] dark:text-slate-300 lg:text-[9px]">
+          {lesson.title}
+        </p>
+
+        <div className="mt-1 flex flex-row-reverse items-center gap-2 text-[8px] text-[#6B7280] lg:text-[8px]">
           <span className={`font-medium ${getLessonStatusColor(lesson.status)}`}>
             {getLessonStatusLabel(lesson.status)}
           </span>
@@ -71,17 +89,6 @@ export default function LessonSidebarItem({
           </span>
         </div>
       </div>
-
-      <div className="relative h-10 overflow-hidden rounded-sm min-[360px]:h-11.5 sm:h-12.5 lg:h-10 xl:h-10.5">
-        <Image src={lesson.thumbnail} alt={lesson.title} fill className="object-cover" sizes="(max-width: 359px) 68px, (max-width: 640px) 78px, (max-width: 1024px) 84px, 72px" />
-        <div className="absolute inset-0 bg-[#113555]/10" />
-        <StatusBadge status={lesson.status} />
-        <span className="absolute bottom-0.5 rounded bg-[#1F2937]/85 px-1 py-px text-[7px] font-semibold text-white rtl:left-0.5 ltr:right-0.5">
-          {lesson.videoDuration}
-        </span>
-      </div>
-
-      <span className="text-center text-[10px] text-[#6B7280] sm:text-[11px] lg:text-[10px]">{lesson.id}</span>
     </button>
   );
 }

@@ -17,6 +17,7 @@ import {
   Menu,
   X,
   PlaySquare,
+  ClipboardList
 } from 'lucide-react';
 
 interface MenuItem {
@@ -79,6 +80,12 @@ const Sidebar = () => {
       label: t('dashboard.certificates'),
       href: '/userDashboard/certificates',
       icon: <Award className="h-5 w-5" />,
+    },
+    {
+      id: 'quizzes',
+      label: t('dashboard.quizzes'),
+      href: '/userDashboard/quizzes',
+      icon: <ClipboardList className="h-5 w-5" />,
     },
   ];
 

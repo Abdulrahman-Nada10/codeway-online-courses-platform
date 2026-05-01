@@ -1,9 +1,9 @@
 'use client';
 
-import Image from 'next/image';
-import { Camera, Check } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import DashboardInput from '@/app/components/ui/DashboardInput';
+import Image from "next/image";
+import { Camera, Check } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import DashboardInput from "@/app/components/ui/DashboardInput";
 
 interface ProfileSectionProps {
   previewUrl: string;
@@ -14,8 +14,8 @@ interface ProfileSectionProps {
     phone: string;
     address: string;
   };
-  errors?: Partial<Record<keyof ProfileSectionProps['userData'], string>>;
-  touched?: Partial<Record<keyof ProfileSectionProps['userData'], boolean>>;
+  errors?: Partial<Record<keyof ProfileSectionProps["userData"], string>>;
+  touched?: Partial<Record<keyof ProfileSectionProps["userData"], boolean>>;
   onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSave: () => void;
@@ -30,33 +30,33 @@ export default function ProfileSection({
   onFileChange,
   onInputChange,
   onSave,
-  onCancel
+  onCancel,
 }: ProfileSectionProps) {
   const { t } = useTranslation();
 
   return (
     <div className="space-y-8">
       <div className="pb-4 text-start">
-        <h3 className="font-cairo text-lg font-bold text-[#113555] dark:text-slate-100">
-          {t('dashboard.basicInfo')}
+        <h3 className="font-cairo text-lg font-bold text-main-text dark:text-main-text">
+          {t("dashboard.basicInfo")}
         </h3>
       </div>
 
       <div className="flex flex-col items-start gap-6">
         <div className="flex flex-row items-center gap-4 w-full justify-start">
-          <div className="w-32 h-32 sm:w-36 sm:h-36 lg:w-40 lg:h-40 rounded-full overflow-hidden border-4 border-[#FF6400] p-1 bg-white">
+          <div className="w-32 h-32 sm:w-36 sm:h-36 lg:w-40 lg:h-40 rounded-full overflow-hidden border-4 border-primary p-1 bg-background">
             <Image
               src={previewUrl}
-              alt={t('common.profileImage')}
+              alt={t("common.profileImage")}
               width={160}
               height={160}
               className="w-full h-full object-cover rounded-full"
             />
           </div>
           <div className="flex flex-col items-start gap-2">
-            <label className="cursor-pointer flex items-center gap-2 px-4 py-2 border-2 border-[#FF6400] text-[#FF6400] rounded-xl font-cairo font-medium text-sm hover:bg-[#FFF3EB] transition-colors">
+            <label className="cursor-pointer flex items-center gap-2 px-4 py-2 border-2 border-primary text-primary rounded-xl font-cairo font-medium text-sm hover:bg-page-bg/50 transition-colors">
               <Camera className="w-4 h-4" />
-              {t('dashboard.changeImage')}
+              {t("dashboard.changeImage")}
               <input
                 type="file"
                 accept="image/jpeg,image/png,image/gif"
@@ -64,10 +64,10 @@ export default function ProfileSection({
                 className="hidden"
               />
             </label>
-            <p className="text-start font-cairo text-xs text-gray-500 dark:text-slate-400">
-              {t('dashboard.imageFormat')}
+            <p className="text-start font-cairo text-xs text-muted-foreground dark:text-muted-foreground">
+              {t("dashboard.imageFormat")}
               <br />
-              {t('dashboard.imageSize')}
+              {t("dashboard.imageSize")}
             </p>
           </div>
         </div>
@@ -77,7 +77,7 @@ export default function ProfileSection({
             id="fullName"
             name="fullName"
             type="text"
-            label={t('auth.fullName')}
+            label={t("auth.fullName")}
             value={userData.fullName}
             onChange={onInputChange}
             error={touched.fullName ? errors.fullName : undefined}
@@ -87,7 +87,7 @@ export default function ProfileSection({
             id="email"
             name="email"
             type="email"
-            label={t('auth.email')}
+            label={t("auth.email")}
             value={userData.email}
             onChange={onInputChange}
             error={touched.email ? errors.email : undefined}
@@ -97,7 +97,7 @@ export default function ProfileSection({
             id="phone"
             name="phone"
             type="tel"
-            label={t('dashboard.phone')}
+            label={t("dashboard.phone")}
             value={userData.phone}
             onChange={onInputChange}
             error={touched.phone ? errors.phone : undefined}
@@ -107,7 +107,7 @@ export default function ProfileSection({
             id="address"
             name="address"
             type="text"
-            label={t('dashboard.address')}
+            label={t("dashboard.address")}
             value={userData.address}
             onChange={onInputChange}
             error={touched.address ? errors.address : undefined}
@@ -118,19 +118,18 @@ export default function ProfileSection({
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-6 justify-end">
         <button
           onClick={onCancel}
-          className="px-6 py-3 border-2 border-[#FF6400] text-[#FF6400] rounded-xl font-cairo font-medium text-sm hover:bg-[#FFF3EB] transition-colors w-full sm:w-auto"
+          className="px-6 py-3 border-2 border-primary text-primary rounded-xl font-cairo font-medium text-sm hover:bg-page-bg/50 transition-colors w-full sm:w-auto"
         >
-          {t('common.cancel')}
+          {t("common.cancel")}
         </button>
         <button
           onClick={onSave}
-          className="px-6 py-3 bg-[#FF6400] text-white rounded-xl font-cairo font-medium text-sm hover:bg-[#E55A00] transition-colors w-full sm:w-auto flex items-center justify-center gap-2"
+          className="px-6 py-3 bg-primary text-background rounded-xl font-cairo font-medium text-sm hover:bg-primary/90 transition-colors w-full sm:w-auto flex items-center justify-center gap-2"
         >
           <Check className="w-5 h-5" />
-          {t('common.saveChanges')}
+          {t("common.saveChanges")}
         </button>
       </div>
     </div>
   );
 }
-

@@ -38,14 +38,14 @@ export default function Favorites() {
   }, [localizedFavorites, searchQuery]);
 
   return (
-    <div className="mt-26 min-h-screen overflow-x-hidden bg-[#FFF3EB] dark:bg-slate-950" dir={dir}>
+    <div className="mt-26 min-h-screen overflow-x-hidden bg-page-bg dark:bg-page-bg" dir={dir}>
       <div className="mr-0 rtl:lg:mr-68 rtl:xl:mr-70 ltr:lg:ml-68 ltr:xl:ml-70">
         <main className="p-2 sm:p-3 lg:p-6">
           <div className="mb-3 text-start sm:mb-6">
-            <h1 className="font-cairo text-lg font-bold text-[#113555] dark:text-slate-100 sm:text-xl lg:text-2xl">
+            <h1 className="font-cairo text-lg font-bold text-main-text dark:text-main-text sm:text-xl lg:text-2xl">
               {t('dashboard.favorites')}
             </h1>
-            <p className="mt-0.5 font-cairo text-xs text-gray-600 dark:text-slate-400 sm:mt-1 sm:text-sm">
+            <p className="mt-0.5 font-cairo text-xs text-sub-text dark:text-sub-text sm:mt-1 sm:text-sm">
               {t('dashboard.favoritesSubtitle')}
             </p>
           </div>
@@ -59,11 +59,11 @@ export default function Favorites() {
           {filteredFavorites.length === 0 && (
             <div className="text-center py-10 sm:py-12">
               <div className="flex flex-col items-center justify-center gap-3 sm:gap-4">
-                <Heart className="h-12 w-12 sm:h-16 sm:w-16 text-gray-300" />
-                <p className="text-gray-500 text-sm sm:text-base lg:text-lg font-cairo">
+                <Heart className="h-12 w-12 sm:h-16 sm:w-16 text-muted" />
+                <p className="text-muted-foreground text-sm sm:text-base lg:text-lg font-cairo">
                   {t('dashboard.noFavorites')}
                 </p>
-                <p className="text-gray-400 text-xs sm:text-sm font-cairo">
+                <p className="text-muted-foreground/80 text-xs sm:text-sm font-cairo">
                   {t('dashboard.noFavoritesDesc')}
                 </p>
               </div>
@@ -74,4 +74,3 @@ export default function Favorites() {
     </div>
   );
 }
-

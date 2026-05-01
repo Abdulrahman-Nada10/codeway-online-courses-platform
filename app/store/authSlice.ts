@@ -91,7 +91,6 @@ export const { setUser, setToken, setLoading, setAuth, clearAuth, restoreAuth } 
 
 export default authSlice.reducer;
 
-/* ─── Selectors ─────────────────────────────────────────────── */
 
 export const selectAuthUser = (state: { auth: AuthReduxState }) => state.auth.user;
 export const selectAuthToken = (state: { auth: AuthReduxState }) => state.auth.token;

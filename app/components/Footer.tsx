@@ -2,11 +2,14 @@ import {
   Mail,
   Phone,
   MapPin,
-  Linkedin,
-  Facebook,
-  Youtube,
-  Instagram,
 } from "lucide-react";
+import Link from "next/link";
+import { 
+  FaLinkedin,
+  FaFacebook,
+  FaYoutube,
+  FaInstagram,
+} from 'react-icons/fa'
 
 export default function Footer() {
   return (
@@ -17,11 +20,11 @@ export default function Footer() {
         <div>
           <h4 className="font-bold text-orange-600 mb-3 sm:mb-4 text-base sm:text-lg">الدعم</h4>
           <ul className="space-y-2 text-xs sm:text-sm">
-            <li><a href="/help" className="hover:text-orange-500">مركز المساعدة</a></li>
-            <li><a href="/faq" className="hover:text-orange-500">الأسئلة الشائعة</a></li>
-            <li><a href="/contact" className="hover:text-orange-500">تواصل معنا</a></li>
-            <li><a href="/terms" className="hover:text-orange-500">الشروط والأحكام</a></li>
-            <li><a href="/privacy" className="hover:text-orange-500">سياسة الخصوصية</a></li>
+            <li><Link href="/help" className="hover:text-orange-500">مركز المساعدة</Link></li>
+            <li><Link href="/faq" className="hover:text-orange-500">الأسئلة الشائعة</Link></li>
+            <li><Link href="/contact" className="hover:text-orange-500">تواصل معنا</Link></li>
+            <li><Link href="/terms" className="hover:text-orange-500">الشروط والأحكام</Link></li>
+            <li><Link href="/privacy" className="hover:text-orange-500">سياسة الخصوصية</Link></li>
           </ul>
         </div>
 
@@ -29,11 +32,11 @@ export default function Footer() {
         <div>
           <h4 className="font-bold text-orange-600 mb-3 sm:mb-4 text-base sm:text-lg">التصنيفات</h4>
           <ul className="space-y-2 text-xs sm:text-sm">
-            <li><a href="/courses" className="hover:text-orange-500">البرمجه</a></li>
-            <li><a href="/tracks" className="hover:text-orange-500"> التصميم</a></li>
-            <li><a href="/certificates" className="hover:text-orange-500">التسويق</a></li>
-            <li><a href="/pricing" className="hover:text-orange-500">الاداره</a></li>
-            <li><a href="/pricing" className="hover:text-orange-500">اللغات</a></li>
+            <li><Link href="/courses" className="hover:text-orange-500">البرمجه</Link></li>
+            <li><Link href="/tracks" className="hover:text-orange-500"> التصميم</Link></li>
+            <li><Link href="/certificates" className="hover:text-orange-500">التسويق</Link></li>
+            <li><Link href="/pricing" className="hover:text-orange-500">الاداره</Link></li>
+            <li><Link href="/pricing" className="hover:text-orange-500">اللغات</Link></li>
           </ul>
         </div>
 
@@ -41,11 +44,11 @@ export default function Footer() {
         <div>
           <h4 className="font-bold text-orange-600 mb-3 sm:mb-4 text-base sm:text-lg">المنصة</h4>
           <ul className="space-y-2 text-xs sm:text-sm">
-            <li><a href="/about" className="hover:text-orange-500">عن EGC</a></li>
-            <li><a href="/instructors" className="hover:text-orange-500">كيف تعمل</a></li>
-            <li><a href="/blog" className="hover:text-orange-500">المدربين</a></li>
-            <li><a href="/careers" className="hover:text-orange-500">الشهادات</a></li>
-            <li><a href="/price" className="hover:text-orange-500">الاسعار</a></li>
+            <li><Link href="/about" className="hover:text-orange-500">عن EGC</Link></li>
+            <li><Link href="/instructors" className="hover:text-orange-500">كيف تعمل</Link></li>
+            <li><Link href="/blog" className="hover:text-orange-500">المدربين</Link></li>
+            <li><Link href="/careers" className="hover:text-orange-500">الشهادات</Link></li>
+            <li><Link href="/price" className="hover:text-orange-500">الاسعار</Link></li>
           </ul>
         </div>
 
@@ -64,16 +67,16 @@ export default function Footer() {
           <div className="space-y-2 text-xs mt-10 sm:text-sm">
             <div className="flex items-center gap-2 justify-end">
               <Mail size={14} className="sm:w-4 sm:h-4" />
-              <a href="mailto:info@egc.com" className="hover:text-orange-500">
+              <Link href="mailto:info@egc.com" className="hover:text-orange-500">
                 info@egc.com
-              </a>
+              </Link>
             </div>
 
             <div className="flex items-center gap-2 justify-end">
               <Phone size={14} className="sm:w-4 sm:h-4" />
-              <a href="tel:+201001589726" className="hover:text-orange-500">
+              <Link href="tel:+201001589726" className="hover:text-orange-500">
                 +20 100 158 9726
-              </a>
+              </Link>
             </div>
 
             <div className="flex items-center gap-2 justify-end">
@@ -95,37 +98,37 @@ export default function Footer() {
       {/* Social */}
       <div className="max-w-7xl mx-auto top-20 px-4 sm:px-6">
         <div className="flex justify-start lg:justify-end gap-2 sm:gap-3 mt-4 sm:mt-5">
-          <a
+          <Link
             href="https://linkedin.com"
             target="_blank"
             className="w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center hover:bg-orange-500 hover:text-white transition"
           >
-            <Linkedin size={14} className="sm:w-4 sm:h-4" />
-          </a>
+            <FaLinkedin size={14} className="sm:w-4 sm:h-4" />
+          </Link>
 
-          <a
+          <Link
             href="https://facebook.com"
             target="_blank"
             className="w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center hover:bg-orange-500 hover:text-white transition"
           >
-            <Facebook size={14} className="sm:w-4 sm:h-4" />
-          </a>
+            <FaFacebook size={14} className="sm:w-4 sm:h-4" />
+          </Link>
 
-          <a
+          <Link
             href="https://youtube.com"
             target="_blank"
             className="w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center hover:bg-orange-500 hover:text-white transition"
           >
-            <Youtube size={14} className="sm:w-4 sm:h-4" />
-          </a>
+            <FaYoutube size={14} className="sm:w-4 sm:h-4" />
+          </Link>
 
-          <a
+          <Link
             href="https://instagram.com"
             target="_blank"
             className="w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center hover:bg-orange-500 hover:text-white transition"
           >
-            <Instagram size={14} className="sm:w-4 sm:h-4" />
-          </a>
+            <FaInstagram size={14} className="sm:w-4 sm:h-4" />
+          </Link>
         </div>
       </div>
 

@@ -36,7 +36,7 @@ export default function LiveSessionPage() {
 
   return (
     <div
-      className="min-h-screen overflow-x-hidden bg-[#fff3eb] dark:bg-slate-950"
+      className="min-h-screen overflow-x-hidden bg-page-bg dark:bg-page-bg"
       dir={dir}
     >
       <div className="rtl:lg:mr-20 rtl:xl:mr-64 ltr:lg:ml-20 ltr:xl:ml-64">
