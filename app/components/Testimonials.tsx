@@ -2,6 +2,7 @@ type TestimonialItem = {
   name: string;
   job: string;
   letter: string;
+  text: string;
   color: string;
 };
 
@@ -10,73 +11,81 @@ export default function Testimonials() {
     {
       name: "نورة القحطاني",
       job: "محللة بيانات",
-      letter: "ن",
-      color: "bg-orange-500",
+      letter: "N",
+      text: "دورة تحليل البيانات كانت نقطة تحول في مسيرتي. المشاريع العملية ساعدتني على تطبيق ماتعلمته فوراً",
+      color: "#F97316",
     },
     {
-      name: "خالد العتيبي",
-      job: "مطور ويب",
-      letter: "خ",
-      color: "bg-purple-600",
+      name: "نورة القحطاني",
+      job: "محللة بيانات",
+      letter: "N",
+      text: "دورة تحليل البيانات كانت نقطة تحول في مسيرتي. المشاريع العملية ساعدتني على تطبيق ماتعلمته فوراً",
+      color: "#A855F7",
     },
     {
-      name: "سارة أحمد",
-      job: "مصممة UX",
-      letter: "س",
-      color: "bg-green-500",
+      name: "نورة القحطاني",
+      job: "نورة بيانات",
+      letter: "N",
+      text: "دورة تحليل البيانات كانت نقطة تحول في مسيرتي. المشاريع العملية ساعدتني على تطبيق ماتعلمته فوراً",
+      color: "#22C55E",
     },
     {
-      name: "محمد سالم",
-      job: "مهندس برمجيات",
-      letter: "م",
-      color: "bg-pink-500",
+      name: "نورة القحطاني",
+      job: "محللة بيانات",
+      letter: "N",
+      text: "دورة تحليل البيانات كانت نقطة تحول في مسيرتي. المشاريع العملية ساعدتني على تطبيق ماتعلمته فوراً",
+      color: "#F97316",
     },
   ];
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-[#FFE6D4]">
+    <section className="py-12 sm:py-16 md:py-20 bg-[#FFF8F0]" dir="rtl">
       {/* Title */}
-      <div className="text-center mb-10 sm:mb-14 px-4">
-        <span className="inline-block text-xs sm:text-sm font-semibold text-orange-500 bg-orange-100 px-3 sm:px-4 py-1 rounded-full mb-3">
+      <div className="text-center mb-8 sm:mb-12 px-4">
+        <span className="inline-block text-xs sm:text-sm font-bold text-primary bg-primary/10 px-4 py-1.5 rounded-full mb-3">
           آراء المتدربين
         </span>
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">
-          ماذا يقول <span className="text-orange-500">طلابنا</span> عنا
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black">
+          ماذا يقول <span className="text-primary">طلابنا</span> عنا
         </h2>
       </div>
 
       {/* Cards */}
-      <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 px-4 sm:px-6">
         {testimonials.map((item: TestimonialItem, i: number) => (
           <div
             key={i}
-            className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-6 text-center"
+            className="bg-white rounded-2xl shadow-sm p-5 sm:p-6 text-right flex flex-col justify-between"
           >
             {/* Stars */}
-            <div className="flex justify-center text-yellow-400 mb-3 sm:mb-4 text-lg sm:text-xl">
-              ★★★★★
+            <div>
+              <div className="flex gap-0.5 justify-end text-yellow-400 mb-4 text-sm sm:text-base">
+                {"★★★★★".split("").map((star, idx) => (
+                  <span key={idx}>{star}</span>
+                ))}
+              </div>
+
+              {/* Text */}
+              <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-6">
+                &ldquo;{item.text}&rdquo;
+              </p>
             </div>
 
-            {/* Text */}
-            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6">
-              "دورة تحليل البيانات كانت نقطة تحول في مسيرتي. المشاريع العملية
-              ساعدتني على تطبيق ما تعلمته فوراً."
-            </p>
-
             {/* User */}
-            <div className="flex items-center justify-center gap-2 sm:gap-3 border-t pt-3 sm:pt-4">
-              <div
-                className={`w-9 h-9 sm:w-10 sm:h-10 ${item.color} rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base`}
-              >
-                {item.letter}
-              </div>
+            <div className="flex items-center gap-3 justify-end">
               <div className="text-right">
-                <h4 className="font-bold text-xs sm:text-sm text-gray-800">
+                <h4 className="font-bold text-sm text-gray-900">
                   {item.name}
                 </h4>
-                <span className="text-xs text-gray-400">
+                <span className="text-[11px] text-gray-400 font-medium">
                   {item.job}
                 </span>
+              </div>
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-base shrink-0"
+                style={{ backgroundColor: item.color }}
+              >
+                {item.letter}
               </div>
             </div>
           </div>

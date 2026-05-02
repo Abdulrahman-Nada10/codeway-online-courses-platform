@@ -2,11 +2,8 @@ import {
   Mail,
   Phone,
   MapPin,
-  Linkedin,
-  Facebook,
-  Youtube,
-  Instagram,
 } from "lucide-react";
+import { FaLinkedin, FaFacebook, FaYoutube, FaInstagram } from "react-icons/fa";
 
 export default function Footer() {
   return (
@@ -15,37 +12,37 @@ export default function Footer() {
 
         {/* الدعم */}
         <div>
-          <h4 className="font-bold text-orange-600 mb-3 sm:mb-4 text-base sm:text-lg">الدعم</h4>
+          <h4 className="font-bold text-primary mb-3 sm:mb-4 text-base sm:text-lg">الدعم</h4>
           <ul className="space-y-2 text-xs sm:text-sm">
-            <li><a href="/help" className="hover:text-orange-500">مركز المساعدة</a></li>
-            <li><a href="/faq" className="hover:text-orange-500">الأسئلة الشائعة</a></li>
-            <li><a href="/contact" className="hover:text-orange-500">تواصل معنا</a></li>
-            <li><a href="/terms" className="hover:text-orange-500">الشروط والأحكام</a></li>
-            <li><a href="/privacy" className="hover:text-orange-500">سياسة الخصوصية</a></li>
+            <li><a href="/help" className="hover:text-primary">مركز المساعدة</a></li>
+            <li><a href="/faq" className="hover:text-primary">الأسئلة الشائعة</a></li>
+            <li><a href="/contact" className="hover:text-primary">تواصل معنا</a></li>
+            <li><a href="/terms" className="hover:text-primary">الشروط والأحكام</a></li>
+            <li><a href="/privacy" className="hover:text-primary">سياسة الخصوصية</a></li>
           </ul>
         </div>
 
         {/* المنتجات */}
         <div>
-          <h4 className="font-bold text-orange-600 mb-3 sm:mb-4 text-base sm:text-lg">التصنيفات</h4>
+          <h4 className="font-bold text-primary mb-3 sm:mb-4 text-base sm:text-lg">التصنيفات</h4>
           <ul className="space-y-2 text-xs sm:text-sm">
-            <li><a href="/courses" className="hover:text-orange-500">البرمجه</a></li>
-            <li><a href="/tracks" className="hover:text-orange-500"> التصميم</a></li>
-            <li><a href="/certificates" className="hover:text-orange-500">التسويق</a></li>
-            <li><a href="/pricing" className="hover:text-orange-500">الاداره</a></li>
-            <li><a href="/pricing" className="hover:text-orange-500">اللغات</a></li>
+            <li><a href="/courses" className="hover:text-primary">البرمجه</a></li>
+            <li><a href="/tracks" className="hover:text-primary"> التصميم</a></li>
+            <li><a href="/certificates" className="hover:text-primary">التسويق</a></li>
+            <li><a href="/pricing" className="hover:text-primary">الاداره</a></li>
+            <li><a href="/pricing" className="hover:text-primary">اللغات</a></li>
           </ul>
         </div>
 
         {/* المنصة */}
         <div>
-          <h4 className="font-bold text-orange-600 mb-3 sm:mb-4 text-base sm:text-lg">المنصة</h4>
+          <h4 className="font-bold text-primary mb-3 sm:mb-4 text-base sm:text-lg">المنصة</h4>
           <ul className="space-y-2 text-xs sm:text-sm">
-            <li><a href="/about" className="hover:text-orange-500">عن EGC</a></li>
-            <li><a href="/instructors" className="hover:text-orange-500">كيف تعمل</a></li>
-            <li><a href="/blog" className="hover:text-orange-500">المدربين</a></li>
-            <li><a href="/careers" className="hover:text-orange-500">الشهادات</a></li>
-            <li><a href="/price" className="hover:text-orange-500">الاسعار</a></li>
+            <li><a href="/about" className="hover:text-primary">عن EGC</a></li>
+            <li><a href="/instructors" className="hover:text-primary">كيف تعمل</a></li>
+            <li><a href="/blog" className="hover:text-primary">المدربين</a></li>
+            <li><a href="/careers" className="hover:text-primary">الشهادات</a></li>
+            <li><a href="/price" className="hover:text-primary">الاسعار</a></li>
           </ul>
         </div>
 
@@ -63,26 +60,26 @@ export default function Footer() {
 
           <div className="space-y-2 text-xs mt-10 sm:text-sm">
             <div className="flex items-center gap-2 justify-end">
-              <Mail size={14} className="sm:w-4 sm:h-4" />
-              <a href="mailto:info@egc.com" className="hover:text-orange-500">
+              <Mail size={14} className="sm:w-4 sm:h-4 text-primary" />
+              <a href="mailto:info@egc.com" className="hover:text-primary">
                 info@egc.com
               </a>
             </div>
 
             <div className="flex items-center gap-2 justify-end">
-              <Phone size={14} className="sm:w-4 sm:h-4" />
-              <a href="tel:+201001589726" className="hover:text-orange-500">
+              <Phone size={14} className="sm:w-4 sm:h-4 text-primary" />
+              <a href="tel:+201001589726" className="hover:text-primary">
                 +20 100 158 9726
               </a>
             </div>
 
             <div className="flex items-center gap-2 justify-end">
-  <MapPin size={14} className="sm:w-4 sm:h-4" />
+  <MapPin size={14} className="sm:w-4 sm:h-4 text-primary" />
   <a
     href="https://www.google.com/maps?q=القاهرة+مصر+EEP+Education+Platform"
     target="_blank"
     rel="noopener noreferrer"
-    className="hover:underline hover:text-orange-500"
+    className="hover:underline hover:text-primary"
   >
     القاهرة – مصر
   </a>
@@ -98,33 +95,33 @@ export default function Footer() {
           <a
             href="https://linkedin.com"
             target="_blank"
-            className="w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center hover:bg-orange-500 hover:text-white transition"
+            className="w-7 h-7 sm:w-8 sm:h-8 text-primary bg-white rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition"
           >
-            <Linkedin size={14} className="sm:w-4 sm:h-4" />
+            <FaLinkedin size={14} className="sm:w-4 sm:h-4" />
           </a>
 
           <a
             href="https://facebook.com"
             target="_blank"
-            className="w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center hover:bg-orange-500 hover:text-white transition"
+            className="w-7 h-7 sm:w-8 sm:h-8 text-primary bg-white rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition"
           >
-            <Facebook size={14} className="sm:w-4 sm:h-4" />
+            <FaFacebook size={14} className="sm:w-4 sm:h-4" />
           </a>
 
           <a
             href="https://youtube.com"
             target="_blank"
-            className="w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center hover:bg-orange-500 hover:text-white transition"
+            className="w-7 h-7 sm:w-8 sm:h-8 text-primary bg-white rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition"
           >
-            <Youtube size={14} className="sm:w-4 sm:h-4" />
+            <FaYoutube size={14} className="sm:w-4 sm:h-4" />
           </a>
 
           <a
             href="https://instagram.com"
             target="_blank"
-            className="w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center hover:bg-orange-500 hover:text-white transition"
+            className="w-7 h-7 sm:w-8 sm:h-8 text-primary bg-white rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition"
           >
-            <Instagram size={14} className="sm:w-4 sm:h-4" />
+            <FaInstagram size={14} className="sm:w-4 sm:h-4" />
           </a>
         </div>
       </div>

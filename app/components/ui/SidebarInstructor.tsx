@@ -36,17 +36,18 @@ type NavItem = {
 // ─── Config ──────────────────────────────────────────────────────────────────
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "نظرة عامة",    href: "/ins-dashboard",     icon: ChartArea, exact: true },
-  { label: "دوراتي",       href: "/ins-courses",        icon: BookOpen                    },
-  { label: "الطلاب",       href: "/ins-students",       icon: BookUser                       },
-  { label: "الأرباح",      href: "/ins-earnings",       icon: CircleDollarSign                  },
-  { label: "الشهادات",     href: "/ins-certificates",   icon: Award                       },
-  { label: "الملف الشخصي", href: "/ins-profile",        icon: UserCircle                  },
+  { label: "نظرة عامة", href: "/ins-dashboard", icon: ChartArea, exact: true },
+  { label: "دوراتي", href: "/ins-courses", icon: BookOpen },
+  { label: "الحصص المباشرة", href: "/ins-live", icon: GraduationCap, exact: true },
+  { label: "الطلاب", href: "/ins-students", icon: BookUser },
+  { label: "الأرباح", href: "/ins-earnings", icon: CircleDollarSign },
+  { label: "الشهادات", href: "/ins-certificates", icon: Award },
+  { label: "الملف الشخصي", href: "/ins-profile", icon: UserCircle },
 ];
 
 const FOOTER_ITEMS: NavItem[] = [
-  { label: "الإعدادات",  href: "/ins-settings", icon: Settings, exact: true },
-  { label: "تسجيل خروج", href: "/ins-logout",   icon: LogOut,   exact: true },
+  { label: "الإعدادات", href: "/ins-settings", icon: Settings, exact: true },
+  { label: "تسجيل خروج", href: "/ins-logout", icon: LogOut, exact: true },
 ];
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -139,7 +140,7 @@ export default function Sidebar() {
 
         {/* Mobile nav */}
         <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-4">
-         
+
           {renderNavItems(NAV_ITEMS, false)}
         </nav>
 
@@ -190,19 +191,17 @@ export default function Sidebar() {
           <ChevronRight
             size={14}
             strokeWidth={1.75}
-            className={`text-gray-500 transition-transform duration-200 ${
-              isCollapsed ? "rotate-180" : ""
-            }`}
+            className={`text-gray-500 transition-transform duration-200 ${isCollapsed ? "rotate-180" : ""
+              }`}
           />
         </button>
 
         {/* Section label */}
         <div
-          className={`overflow-hidden transition-all duration-200 ${
-            isCollapsed ? "h-0 opacity-0" : "h-auto opacity-100"
-          }`}
+          className={`overflow-hidden transition-all duration-200 ${isCollapsed ? "h-0 opacity-0" : "h-auto opacity-100"
+            }`}
         >
-          
+
         </div>
 
         {/* Navigation */}
@@ -218,17 +217,15 @@ export default function Sidebar() {
         {/* User avatar area */}
         <div className="border-t border-gray-100 px-3 py-3">
           <div
-            className={`flex items-center gap-3 rounded-xl bg-gray-50 p-2.5 transition-all duration-200 ease-in-out hover:bg-gray-100 cursor-pointer ${
-              isCollapsed ? "justify-center" : ""
-            }`}
+            className={`flex items-center gap-3 rounded-xl bg-gray-50 p-2.5 transition-all duration-200 ease-in-out hover:bg-gray-100 cursor-pointer ${isCollapsed ? "justify-center" : ""
+              }`}
           >
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-orange-400 to-orange-500 text-sm font-bold text-white shadow-sm">
               م
             </div>
             <div
-              className={`overflow-hidden transition-all duration-200 ${
-                isCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"
-              }`}
+              className={`overflow-hidden transition-all duration-200 ${isCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"
+                }`}
             >
               <p className="whitespace-nowrap text-sm font-medium text-gray-800">
                 المدرّس
