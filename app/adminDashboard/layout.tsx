@@ -22,8 +22,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         </header>
 
         {/* Content */}
-        <main className="flex-1 p-6 overflow-y-auto">
-          <div className="bg-white rounded-2xl shadow p-6 min-h-full">
+        <main className="flex-1 -auto">
+          <div className="bg-[#F9F1E9]  p-6 min-h-full">
             {children}
           </div>
         </main>

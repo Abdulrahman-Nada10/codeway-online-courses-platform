@@ -8,7 +8,7 @@ import {
   Bell, CheckCircle, Award, Book, ChevronDown 
 } from 'lucide-react';
 
-// تعريف أنواع البيانات
+
 interface StatCardProps {
   title: string;
   value: string;
@@ -19,11 +19,11 @@ interface StatCardProps {
 
 const DashboardMain: React.FC = () => {
   return (
-    <main className="flex-1 p-6 bg-[#FFF5F0] min-h-screen font-sans" dir="rtl">
+    <main className="flex-1 p-6 bg-[#F9F1E9] min-h-screen font-sans" dir="rtl">
       
    
-      <div className="mb-8 bg-[#FFF5F0] text-right ">
-        <h1 className="text-2xl bg-[#FFF5F0] font-bold text-[#1A1A1A]">لوحة التحكم الرئيسية</h1>
+      <div className="mb-8 bg-[#F9F1E9] text-right ">
+        <h1 className="text-2xl bg-[#F9F1E9] font-bold text-[#1A1A1A]">لوحة التحكم الرئيسية</h1>
         <p className="text-gray-500 text-sm">مرحباً بك في لوحة تحكم مدير النظام</p>
       </div>
 
@@ -75,13 +75,13 @@ const DashboardMain: React.FC = () => {
             </div>
           </div>
           
-          {/* مساحة الرسم البياني */}
+      
           <div className="w-full h-64 flex items-center justify-center border-t border-dashed border-gray-100">
              <div className="text-gray-300">مساحة المخطط البياني</div>
           </div>
         </motion.div>
 
-        {/* صندوق الإشعارات */}
+        
         <div className="bg-white rounded-[2rem] p-6 shadow-sm border border-orange-50">
           <div className="flex   items-center gap-2 mb-6">
             <div className="bg-[#FFF5F0] p-2 rounded-full">

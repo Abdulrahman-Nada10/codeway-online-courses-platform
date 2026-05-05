@@ -3,10 +3,14 @@ import { Search, Bell, Menu } from 'lucide-react';
 
 export default function NavbarAdmin() {
   return (
-    <nav className=" h-20 m-6 bg-white rounded-3xl flex items-center justify-between px-8 " dir="ltr">
-      
+   
+<nav 
+  className="w-[calc(100%-48px)] mx-10 mt-6 h-20 bg-white rounded-[2rem] flex items-center justify-between px-6 shadow-sm border border-orange-50/50" 
+  style={{ marginRight: '50px', marginLeft: '24px' }} 
+  dir="ltr"
+>
     
-      <div className="flex items-center gap-4 shrink-0 ml-10">
+      <div className="flex items-center gap-4 shrink-0 " style={{marginLeft:'60px'}}>
       
         <div className="flex items-center gap-3 bg-white p-2 pr-4 rounded-[20px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-50">
           <div className="text-right">
