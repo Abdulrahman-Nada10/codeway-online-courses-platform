@@ -1,6 +1,7 @@
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { useTranslation } from "react-i18next";
-const {t}= useTranslation()
+const {t}= useTranslation();
+
 export const QuestionCard = ({ question, answers, onAnswer, onNext, onPrev, isLast, isFinished, currentLang, optionLabels, isRTL, t }: any) => {
   const userAnswer = answers[question.id];
   

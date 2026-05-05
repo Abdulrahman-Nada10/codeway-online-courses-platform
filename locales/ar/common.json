@@ -568,6 +568,52 @@
     "noResources": "لا توجد ملفات أو مصادر متاحة",
     "downloadFile": "تحميل الملف",
     "playLesson": "تشغيل الدرس",
+    "lessonStatus": {
+      "completed": "مكتمل",
+      "available": "متاح",
+      "locked": "مغلق"
+    },
+    "video": {
+      "loading": "جاري تحميل الفيديو",
+      "instructorAvatarAlt": "الصورة الشخصية للمدرب {{name}}",
+      "menu": {
+        "quality": "الجودة",
+        "speed": "السرعة",
+        "subtitles": "الترجمة"
+      },
+      "subtitles": {
+        "off": "إيقاف",
+        "arabic": "العربية",
+        "english": "الإنجليزية"
+      },
+      "aria": {
+        "play": "تشغيل الفيديو",
+        "pause": "إيقاف الفيديو مؤقتًا",
+        "seek": "تقديم أو تأخير الفيديو",
+        "volume": "مستوى صوت الفيديو",
+        "mute": "كتم صوت الفيديو",
+        "unmute": "إلغاء كتم صوت الفيديو",
+        "moreOptions": "مزيد من خيارات الفيديو",
+        "fullscreen": "فتح ملء الشاشة",
+        "exitFullscreen": "الخروج من ملء الشاشة",
+        "qualityOption": "اختيار جودة {{quality}}",
+        "speedOption": "ضبط السرعة على {{speed}}"
+      },
+      "subtitleCues": {
+        "1": {
+          "ar": "مرحبًا بك في الدرس. سنبدأ بمراجعة الفكرة الأساسية بسرعة.",
+          "en": "Welcome to the lesson. We will start with a quick look at the core idea."
+        },
+        "2": {
+          "ar": "تابع شريط التقدم ويمكنك تغيير الجودة أو السرعة في أي وقت.",
+          "en": "Follow the progress bar, and change quality or speed whenever you need."
+        },
+        "3": {
+          "ar": "يمكنك أيضًا تشغيل الترجمة بالعربية أو الإنجليزية أثناء المشاهدة.",
+          "en": "You can also turn Arabic or English captions on while watching."
+        }
+      }
+    },
     "lessons": {
       "1": {
         "title": "مقدمة الدورة",

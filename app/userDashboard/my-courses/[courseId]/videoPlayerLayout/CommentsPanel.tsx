@@ -62,7 +62,7 @@ export default function CommentsPanel({
         />
       </div>
 
-      <div className="relative h-87 overflow-hidden rounded-2xl border border-[#E8D8CA] bg-white shadow-[0_8px_20px_rgba(17,53,85,0.06)] dark:bg-slate-900 lg:h-99 xl:h-108">
+      <div className="relative h-87 overflow-hidden rounded-2xl border border-[#E8D8CA] bg-background shadow-[0_8px_20px_rgba(17,53,85,0.06)] dark:bg-slate-900 lg:h-99 xl:h-108">
         <button
           type="button"
           onClick={onClose}

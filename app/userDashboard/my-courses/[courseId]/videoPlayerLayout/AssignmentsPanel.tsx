@@ -18,7 +18,7 @@ export default function AssignmentsPanel({ assignments }: { assignments: LessonA
 
   if (assignments.length === 0) {
     return (
-      <div className="flex h-44 flex-col items-center justify-center rounded-2xl border border-[#E8D8CA] bg-page-bg text-sub-text shadow-[0_10px_24px_rgba(17,53,85,0.06)]">
+      <div className="flex h-44 flex-col items-center justify-center rounded-2xl border border-[#E8D8CA] bg-background text-sub-text shadow-[0_10px_24px_rgba(17,53,85,0.06)]">
         <FileText className=" mb-3 h-19 w-12 text-[#C1C1C1]" />
         <p className="text-[12px] pb-4">{t('dashboard.noAssignments')}</p>
       </div>
@@ -26,7 +26,7 @@ export default function AssignmentsPanel({ assignments }: { assignments: LessonA
   }
 
   return (
-    <div className="h-44 overflow-hidden rounded-2xl  bg-page-bg px-5 py-3 shadow-[0_10px_24px_rgba(17,53,85,0.06)] dark:bg-slate-900" dir={dir}>
+    <div className="h-44 overflow-hidden rounded-2xl  bg-background px-5 py-3 shadow-[0_10px_24px_rgba(17,53,85,0.06)] dark:bg-slate-900" dir={dir}>
       <div className="custom-scrollbar h-full space-y-4 overflow-y-auto pr-1">
         {assignments.map((assignment) => {
           const isDownloaded = downloadedIds.includes(assignment.id);

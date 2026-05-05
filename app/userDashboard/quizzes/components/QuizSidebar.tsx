@@ -21,6 +21,7 @@ export const QuizSidebar = ({ questions, answers, currentIndex, onGoTo, remainin
         </div>
       </div>
       <div className="mb-4 h-2 w-full rounded-full bg-gray-200">
+        {/* eslint-disable-next-line react/no-inline-styles */}
         <div className="h-2 rounded-full bg-primary" style={{ width: `${progress}%` }} />
       </div>
       <div className="space-y-2 max-h-105 overflow-y-auto">

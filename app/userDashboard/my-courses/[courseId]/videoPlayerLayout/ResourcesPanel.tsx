@@ -35,7 +35,7 @@ export default function ResourcesPanel({ resources }: { resources: LessonResourc
           return (
             <div
               key={resource.id}
-              className="flex items-center justify-between rounded-xl bg-white px-2 py-2.5 text-[#113555] dark:bg-slate-800 dark:text-slate-100"
+              className="flex items-center justify-between rounded-xl bg-background px-2 py-2.5 text-[#113555] dark:bg-slate-800 dark:text-slate-100"
             >
               <button
                 type="button"

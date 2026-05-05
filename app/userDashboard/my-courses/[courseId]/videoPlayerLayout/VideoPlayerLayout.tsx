@@ -16,7 +16,7 @@ import VideoHero from './VideoHero';
 import { getEffectiveLessonStatus } from './utils';
 
 export default function VideoPlayerLayout({ course }: { course: VideoPlayerCourse }) {
-  const { dir, isRTL } = useLocaleDirection();
+  const { isRTL } = useLocaleDirection();
   const [activeLessonId, setActiveLessonId] = useState(course.lessons[0]?.id ?? 1);
   const [activeTab, setActiveTab] = useState<VideoPlayerTab>('overview');
   const [previousTab, setPreviousTab] = useState<VideoPlayerTab>('overview');
@@ -146,7 +146,14 @@ const gridCols = isRTL
                 >
                   <div className="row-span-1">
                     <div className="h-full w-full">
-                      <VideoHero image={course.heroImage} title={activeLesson.shortTitle} status={effectiveStatus} />
+                      <VideoHero
+                        key={activeLesson.id}
+                        image={course.heroImage}
+                        title={activeLesson.shortTitle}
+                        status={effectiveStatus}
+                        instructorName={course.instructorName}
+                        instructorAvatar={course.instructorAvatar}
+                      />
                     </div>
                   </div>
 
@@ -206,4 +213,3 @@ const gridCols = isRTL
     </div>
   );
 }
-

@@ -567,6 +567,52 @@
     "noResources": "No resources or files available",
     "downloadFile": "Download file",
     "playLesson": "Play lesson",
+    "lessonStatus": {
+      "completed": "Completed",
+      "available": "Available",
+      "locked": "Locked"
+    },
+    "video": {
+      "loading": "Loading video",
+      "instructorAvatarAlt": "{{name}} profile image",
+      "menu": {
+        "quality": "Quality",
+        "speed": "Speed",
+        "subtitles": "Subtitles"
+      },
+      "subtitles": {
+        "off": "Off",
+        "arabic": "Arabic",
+        "english": "English"
+      },
+      "aria": {
+        "play": "Play video",
+        "pause": "Pause video",
+        "seek": "Seek video",
+        "volume": "Video volume",
+        "mute": "Mute video",
+        "unmute": "Unmute video",
+        "moreOptions": "More video options",
+        "fullscreen": "Enter fullscreen",
+        "exitFullscreen": "Exit fullscreen",
+        "qualityOption": "Select {{quality}} quality",
+        "speedOption": "Set speed to {{speed}}"
+      },
+      "subtitleCues": {
+        "1": {
+          "ar": "مرحبا بك في الدرس. سنبدأ بمراجعة الفكرة الأساسية بسرعة.",
+          "en": "Welcome to the lesson. We will start with a quick look at the core idea."
+        },
+        "2": {
+          "ar": "تابع شريط التقدم ويمكنك تغيير الجودة أو السرعة في أي وقت.",
+          "en": "Follow the progress bar, and change quality or speed whenever you need."
+        },
+        "3": {
+          "ar": "يمكنك أيضاً تشغيل الترجمة بالعربية أو الإنجليزية أثناء المشاهدة.",
+          "en": "You can also turn Arabic or English captions on while watching."
+        }
+      }
+    },
     "lessons": {
       "1": {
         "title": "Course Introduction",

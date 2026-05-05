@@ -27,7 +27,7 @@ export default function OverviewPanel({
   }
 
   return (
-    <div className="h-50 overflow-hidden rounded-2xl border border-[#E8D8CA] bg-white px-5 py-3 shadow-[0_4px_4px_rgba(0,0,0,0.25)] dark:border-slate-800 dark:bg-slate-900">
+    <div className="h-50 overflow-hidden rounded-2xl border border-[#E8D8CA] bg-background px-5 py-3 shadow-[0_4px_4px_rgba(0,0,0,0.25)] dark:border-slate-800 dark:bg-slate-900">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5 text-[#7B7B7B] dark:text-slate-400">
           <Clock3 className="h-4 w-4" />

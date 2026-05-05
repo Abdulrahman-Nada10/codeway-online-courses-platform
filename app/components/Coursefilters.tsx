@@ -28,7 +28,7 @@ export function CourseFilters() {
   return (
     <div className="flex items-center gap-3 flex-wrap" role="search" aria-label="فلترة الدورات">
       {/* Search */}
-      <div className="relative flex-1 min-w-[200px] sm:min-w-[220px]">
+      <div className="relative flex-1 min-w-50 sm:min-w-55">
         <Search
           size={16}
           className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none"
@@ -45,7 +45,7 @@ export function CourseFilters() {
       </div>
 
       {/* Status Filter */}
-      <div className="relative min-w-[140px] sm:min-w-[160px]">
+      <div className="relative min-w-35 sm:min-w-40">
         <SlidersHorizontal
           size={16}
           className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none"

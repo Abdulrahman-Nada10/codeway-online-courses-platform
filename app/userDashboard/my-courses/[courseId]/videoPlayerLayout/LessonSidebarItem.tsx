@@ -2,8 +2,9 @@
 
 import Image from 'next/image';
 import { Check, Clock3, Lock, MessageCircle, Play, ThumbsUp } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { VideoPlayerLesson, LessonStatus } from './types';
-import { getLessonStatusColor, getLessonStatusLabel } from './utils';
+import { getLessonStatusColor } from './utils';
 
 function StatusBadge({ status }: { status: LessonStatus }) {
   if (status === 'completed') {
@@ -38,6 +39,7 @@ export default function LessonSidebarItem({
   isActive: boolean;
   onClick: () => void;
 }) {
+  const { t } = useTranslation();
   const bgClass =
     lesson.status === 'locked' ? 'bg-[#D9D9D9]' : !isActive ? 'bg-[#FFF3EB]' : 'bg-white';
 
@@ -47,7 +49,7 @@ export default function LessonSidebarItem({
       onClick={onClick}
       className={`flex w-full items-center gap-3 border-b border-[#E7D8CC] px-3 py-2 text-start transition hover:bg-[#FFF3EB] dark:border-slate-700 dark:hover:bg-slate-800 ${bgClass}`}
     >
-=      <span className="w-6 shrink-0 text-center text-[10px] text-[#6B7280] sm:text-[11px] lg:text-[10px]">
+      <span className="w-6 shrink-0 text-center text-[10px] text-[#6B7280] sm:text-[11px] lg:text-[10px]">
         {lesson.id}
       </span>
 
@@ -73,7 +75,7 @@ export default function LessonSidebarItem({
 
         <div className="mt-1 flex flex-row-reverse items-center gap-2 text-[8px] text-[#6B7280] lg:text-[8px]">
           <span className={`font-medium ${getLessonStatusColor(lesson.status)}`}>
-            {getLessonStatusLabel(lesson.status)}
+            {t(`player.lessonStatus.${lesson.status}`)}
           </span>
           <span className="flex items-center gap-0.5">
             {lesson.durationMinutes}

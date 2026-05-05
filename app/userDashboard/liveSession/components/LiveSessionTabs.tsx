@@ -19,7 +19,7 @@ export function LiveSessionTabs({ activeTab, counts, onChange }: LiveSessionTabs
   ];
 
   return (
-    <div className="grid gap-2 rounded-[28px]  bg-background p-2  sm:gap-3 sm:p-3 md:grid-cols-3" dir={dir}>
+    <div className="grid gap-2 rounded-3xl border border-secondary  bg-background p-2  sm:gap-3 sm:p-3 md:grid-cols-3" dir={dir}>
       {tabs.map((tab) => {
         const isActive = tab.id === activeTab;
 
