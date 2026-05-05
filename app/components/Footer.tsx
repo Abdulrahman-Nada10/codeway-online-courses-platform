@@ -74,16 +74,16 @@ export default function Footer() {
             </div>
 
             <div className="flex items-center gap-2 justify-end">
-  <MapPin size={14} className="sm:w-4 sm:h-4 text-primary" />
-  <a
-    href="https://www.google.com/maps?q=القاهرة+مصر+EEP+Education+Platform"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="hover:underline hover:text-primary"
-  >
-    القاهرة – مصر
-  </a>
-</div>
+              <MapPin size={14} className="sm:w-4 sm:h-4 text-primary" />
+              <a
+                href="https://www.google.com/maps?q=القاهرة+مصر+EEP+Education+Platform"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline hover:text-primary"
+              >
+                القاهرة – مصر
+              </a>
+            </div>
 
           </div>
         </div>
