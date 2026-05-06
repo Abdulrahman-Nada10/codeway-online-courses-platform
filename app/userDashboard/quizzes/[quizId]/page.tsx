@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 
 import { Bell, Clock } from 'lucide-react';
 import { BsListCheck } from 'react-icons/bs';
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
@@ -164,7 +163,6 @@ export default function QuizPage() {
             answers={answers}
             studentName={String(displayName)}
             currentLang={currentLang}
-            t={(key: string) => t(`quiz.${key}`)}
           />
         ) : (
           <>
@@ -289,7 +287,6 @@ export default function QuizPage() {
                   currentLang={currentLang}
                   optionLabels={optionLabels}
                   isRTL={isRTL}
-                  t={(key: string) => t(`quiz.${key}`)}
                   onAnswer={handleAnswer}
                   onNext={handleNext}
                   onPrev={handlePrev}

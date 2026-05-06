@@ -132,5 +132,45 @@ export const mockQuizzes: Quiz[] = [
         correctAnswerId: 'ca1',
       }
     ],
-  }
+  },
+    {
+    id: 'web-basics',
+    title: {
+      ar: 'أساسيات تطوير الويب',
+      en: 'Web Development Basics'
+    },
+    duration: 10,
+    startAt: Date.now() + 30 * 60 * 1000,
+    endAt: Date.now() + 2 * 60 * 60 * 1000,
+    questions: [
+      {
+        id: 'q1',
+        text: { 
+          ar: 'ما هو HTML؟', 
+          en: 'What is HTML?' 
+        },
+        answers: [
+          { id: 'a1', text: { ar: 'لغة برمجة', en: 'Programming Language' } },
+          { id: 'a2', text: { ar: 'لغة توصيف صفحات', en: 'Markup Language' } },
+          { id: 'a3', text: { ar: 'قاعدة بيانات', en: 'Database' } },
+          { id: 'a4', text: { ar: 'نظام تشغيل', en: 'Operating System' } },
+        ],
+        correctAnswerId: 'a2',
+      },
+      {
+        id: 'q2',
+        text: { 
+          ar: 'ما وظيفة CSS؟', 
+          en: 'What is the function of CSS?' 
+        },
+        answers: [
+          { id: 'a1', text: { ar: 'هيكلة الصفحة', en: 'Page Structuring' } },
+          { id: 'a2', text: { ar: 'تنسيق وتصميم', en: 'Styling and Design' } },
+          { id: 'a3', text: { ar: 'برمجة السيرفر', en: 'Server Programming' } },
+          { id: 'a4', text: { ar: 'تخزين بيانات', en: 'Data Storage' } },
+        ],
+        correctAnswerId: 'a2',
+      }
+    ],
+  },
 ];

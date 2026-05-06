@@ -3,7 +3,7 @@
 import { Check, X } from 'lucide-react';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 import { useTranslation } from "react-i18next";
-const {t}= useTranslation()
+
 interface QuestionDisplayProps {
   question: {
     id: string;
@@ -18,7 +18,6 @@ interface QuestionDisplayProps {
   currentLang: 'ar' | 'en';
   optionLabels: string[];
   isRTL: boolean;
-  t: (key: string) => string;
   onAnswer: (questionId: string, answerId: string) => void;
   onNext: () => void;
   onPrev: () => void;
@@ -33,11 +32,11 @@ export const QuestionDisplay = ({
   currentLang,
   optionLabels,
   isRTL,
-  t,
   onAnswer,
   onNext,
   onPrev,
 }: QuestionDisplayProps) => {
+  const { t } = useTranslation();
   const userAnswer = answers[question.id];
 
   const progress = ((currentIndex + 1) / totalQuestions) * 100;
@@ -77,7 +76,7 @@ export const QuestionDisplay = ({
           {question.answers.map((ans, i) => {
             const selected = answers[question.id] === ans.id;
             const isCorrectAnswer = ans.id === question.correctAnswerId;
-            const isUserWrong = selected && !isCorrectAnswer && isFinished;
+            // const isUserWrong = selected && !isCorrectAnswer && isFinished;
 
             let borderClass = 'border-gray-100';
             let bgClass = '';

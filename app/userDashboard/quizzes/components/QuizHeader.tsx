@@ -6,10 +6,9 @@ interface QuizHeaderProps {
   seconds: string;
   timeProgress: number;
   isDanger: boolean;
-  t: any;
 }
 
-export const QuizHeader = ({ title, minutes, seconds, timeProgress, isDanger, t }: QuizHeaderProps) => (
+export const QuizHeader = ({ title, minutes, seconds, timeProgress, isDanger}: QuizHeaderProps) => (
   <div className="mb-4 flex items-center justify-between rounded-3xl px-6 py-3 bg-background">
     <h1 className="font-bold text-main-text">{title}</h1>
     <div className="relative w-28 overflow-hidden rounded-full bg-page-bg px-3 py-1.5">

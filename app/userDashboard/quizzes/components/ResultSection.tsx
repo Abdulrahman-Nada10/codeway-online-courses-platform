@@ -2,6 +2,7 @@
 
 import { Check, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+
 interface ResultSectionProps {
   quiz: {
     id: string;
@@ -16,16 +17,16 @@ interface ResultSectionProps {
   answers: Record<string, string>;
   studentName: string;
   currentLang: 'ar' | 'en';
-  t: (key: string) => string;
 }
-const {t}= useTranslation()
+
 export const ResultSection = ({
   quiz,
   answers,
   studentName,
   currentLang,
-  t,
+
 }: ResultSectionProps) => {
+  const { t } = useTranslation();
   let correctCount = 0;
   const totalQuestions = quiz.questions.length;
 
@@ -89,9 +90,9 @@ export const ResultSection = ({
           const userAnswerId = answers[question.id];
           const isCorrect = userAnswerId === question.correctAnswerId;
           const isNotAnswered = !userAnswerId;
-          const correctAnswer = question.answers.find(
-            (a) => a.id === question.correctAnswerId
-          );
+          // const correctAnswer = question.answers.find(
+          //   (a) => a.id === question.correctAnswerId
+          // );
 
           return (
             <div
@@ -113,7 +114,7 @@ export const ResultSection = ({
                   const isCorrectAnswer = answer.id === question.correctAnswerId;
 
                   let borderClass = 'border-gray-100';
-                  let bgClass = '';
+                  const bgClass = '';
                   let icon = null;
 
                   if (isCorrectAnswer) {

@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Quiz } from '../userDashboard/quizzes/models/types';
+import { markQuizCompleted } from '../userDashboard/quizzes/utils/quizUtils';
+
+
+
+
 
 
 interface QuizState {
@@ -245,11 +250,13 @@ const quizSlice = createSlice({
       
       if (state.quizId && state.userId) {
         setQuizCompletedFlag(state.quizId, state.userId);
+        markQuizCompleted(state.quizId);
         state.isCompleted = true;
       }
       
       saveToStorage(state);
     },
+
 
 
     resetQuiz: (state, action: PayloadAction<{ quizId: string; userId: string }>) => {
