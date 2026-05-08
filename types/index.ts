@@ -165,3 +165,43 @@ export interface IModalContent {
   primaryBtn?: string;
   secondaryBtn?: string;
 }
+
+
+
+export type UserRole = 'student' | 'instructor';
+export type UserStatus = 'active' | 'inactive' | 'pending' | 'under_review';
+
+export interface CourseProgress {
+  id: string;
+  name: string;
+  progress: number;
+  status: 'ongoing' | 'completed';
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  location?: string;
+  role: UserRole;
+  coursesCount: number;
+  completedCoursesCount?: number;
+  certificatesCount?: number;
+  learningHours?: number;
+  joinDate: string;
+  status: UserStatus;
+  avatar?: string;
+  bio?: string; // Admin Dashboard Edit Page
+  enrolledCourses?: CourseProgress[];
+}
+
+export interface UpdateUserFormValues {
+  name: string;
+  email: string;
+  phone?: string;
+  location?: string;
+  role: UserRole;
+  status: UserStatus;
+  bio?: string;
+}

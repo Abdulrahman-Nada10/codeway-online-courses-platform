@@ -14,7 +14,7 @@ function getFieldState(error?: string, success?: string): FieldState {
   if (success) return "success";
   return "default";
 }
-
+2
 function FieldMessage({
   error,
   success,
@@ -30,7 +30,7 @@ function FieldMessage({
   return (
     <p
       className={cn(
-        "mt-1.5 text-right text-xs font-medium transition-all duration-300 ease-out animate-fade-in-up",
+        "mt-1.5 text-start text-xs font-medium transition-all duration-300 ease-out animate-fade-in-up",
         error && "text-red-500",
         success && "text-green-600",
         !error && !success && "text-gray-400"
@@ -67,7 +67,7 @@ export default function DashboardInput({
       {label ? (
         <label
           htmlFor={props.id}
-          className="block font-cairo font-medium text-sm text-[#113555] mb-2"
+          className="block font-cairo font-semibold text-sm text-[#000000] mb-2"
         >
           {label}
         </label>
@@ -78,9 +78,9 @@ export default function DashboardInput({
           {...props}
           className={cn(
             baseClasses,
-            "text-[#113555] placeholder:text-gray-400",
-            rightIcon ? "pr-11" : "pr-4",
-            leftIcon ? "pl-11" : "pl-4",
+            "text-[#000000] placeholder:text-gray-400",
+            rightIcon ? "pe-11" : "pe-4",
+            leftIcon ? "ps-11" : "ps-4",
             state === "error" &&
               "border-red-400 bg-red-50/40 text-red-900 placeholder:text-red-300",
             state === "success" &&
@@ -91,13 +91,13 @@ export default function DashboardInput({
         />
 
         {rightIcon ? (
-          <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-[#B6BCC5]">
+          <span className="pointer-events-none absolute inset-y-0 inset-e-3 flex items-center text-[#B6BCC5]">
             {rightIcon}
           </span>
         ) : null}
 
         {leftIcon ? (
-          <span className="absolute inset-y-0 left-3 flex items-center text-[#B6BCC5]">
+          <span className="absolute inset-y-0 inset-s-3 flex items-center text-[#B6BCC5]">
             {leftIcon}
           </span>
         ) : null}

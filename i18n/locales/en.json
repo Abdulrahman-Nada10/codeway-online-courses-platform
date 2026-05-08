@@ -36,6 +36,114 @@
     "features": "Features",
     "contact": "Contact Us",
     "user_name": "Eng. Mohamed Mahmoud"
+  },
+  "admin": {
+    "users": {
+      "title": "User Management",
+      "subtitle": "View and manage all users on the platform",
+      "addUser": "Add User",
+      "searchPlaceholder": "Search by name or email...",
+      "filters": {
+        "roles": "All Roles",
+        "statuses": "All Statuses",
+        "selectData": "Select Data"
+      },
+      "table": {
+        "columns": {
+          "name": "Name",
+          "email": "Email",
+          "role": "Role",
+          "courses": "Courses",
+          "joinDate": "Join Date",
+          "status": "Status",
+          "control": "Control"
+        },
+        "roles": {
+          "student": "Student",
+          "instructor": "Instructor"
+        },
+        "statuses": {
+          "active": "Active",
+          "inactive": "Inactive",
+          "pending": "Pending",
+          "under_review": "Under Review"
+        }
+      },
+      "pagination": {
+        "info": "Showing data from {{start}} to {{end}} of total {{total}} users"
+      },
+      "details": {
+        "back": "Back to Users",
+        "title": "User Details",
+        "subtitle": "View user information and activity log",
+        "editData": "Edit Data",
+        "roles": {
+          "student": "Student",
+          "instructor": "Instructor"
+        },
+        "stats": {
+          "enrolled": "Enrolled Courses",
+          "completed": "Completed Courses",
+          "certificates": "Certificates",
+          "learningHours": "Learning Hours"
+        },
+        "courses": {
+          "title": "Enrolled Courses",
+          "searchPlaceholder": "Search by course name or major...",
+          "major": "Major",
+          "allStatuses": "All Statuses",
+          "status": {
+            "ongoing": "Ongoing",
+            "completed": "Completed"
+          }
+        },
+        "contact": {
+          "joined": "Joined on"
+        }
+      },
+      "edit": {
+        "backToDetails": "Back to Details",
+        "title": "Edit User Details",
+        "subtitle": "Edit basic user information",
+        "basicInfo": "Basic Information",
+        "labels": {
+          "fullName": "Full Name",
+          "email": "Email Address",
+          "phone": "Phone Number",
+          "location": "Location",
+          "role": "Role",
+          "status": "Status",
+          "bio": "Bio"
+        },
+        "buttons": {
+          "save": "Save Changes",
+          "cancel": "Cancel"
+        },
+        "validation": {
+          "nameRequired": "Full Name is required",
+          "nameMin": "Name must be at least 3 characters",
+          "emailRequired": "Email is required",
+          "emailInvalid": "Invalid email format",
+          "phoneNumeric": "Phone number must contain only numbers",
+          "roleRequired": "Role is required",
+          "statusRequired": "Status is required"
+        }
+      }
+    },
+    "sidebar": {
+      "overview": "Overview",
+      "users": "Users",
+      "instructors": "Instructors",
+      "courses": "Courses",
+      "payments": "Payments",
+      "reports": "Reports",
+      "certificates": "Certificates",
+      "settings": "Settings",
+      "logout": "Logout"
+    },
+    "navbar": {
+      "searchPlaceholder": "Search for courses, instructors..."
+    }
   }
 }
 

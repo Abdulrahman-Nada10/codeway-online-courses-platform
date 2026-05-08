@@ -138,7 +138,7 @@ export default function PaymentManagementFinal() {
 }
 
 
-const StatCard = ({ label, value, icon }) => (
+const StatCard = ({label, value, icon }: {label: string, value: string, icon: React.ReactNode}) => (
   <div className="bg-white p-5 rounded-2xl border border-gray-100 flex items-center justify-between shadow-sm">
     <div className="flex flex-col text-right">
       <span className="text-gray-400 text-[10px] font-black mb-1">{label}</span>
@@ -148,7 +148,7 @@ const StatCard = ({ label, value, icon }) => (
   </div>
 );
 
-const PageBtn = ({ label, icon, active, orange }) => (
+const PageBtn = ({label, icon, active, orange }: {label?: string, icon?: React.ReactNode, active?: boolean, orange?: boolean}) => (
   <button className={`w-9 h-9 rounded-xl flex items-center justify-center text-[13px] font-black transition-all border outline-none focus:outline-none
     ${active ? 'bg-[#FF6B00] text-white border-[#FF6B00] shadow-sm' : 
       orange ? 'bg-[#FF6B00] text-white border-[#FF6B00]' : 

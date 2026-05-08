@@ -36,6 +36,114 @@
     "features": "المميزات",
     "contact": "تواصل معنا",
     "user_name": "م. محمد محمود"
+  },
+  "admin": {
+    "users": {
+      "title": "إدارة المستخدمين",
+      "subtitle": "عرض وإدارة جميع المستخدمين في المنصة",
+      "addUser": "إضافة مستخدم",
+      "searchPlaceholder": "بحث بالاسم أو البريد الإلكتروني...",
+      "filters": {
+        "roles": "جميع الأدوار",
+        "statuses": "جميع الحالات",
+        "selectData": "تحديد بيانات"
+      },
+      "table": {
+        "columns": {
+          "name": "الاسم",
+          "email": "البريد الإلكتروني",
+          "role": "الدور",
+          "courses": "الدورات",
+          "joinDate": "تاريخ الانضمام",
+          "status": "الحالة",
+          "control": "التحكم"
+        },
+        "roles": {
+          "student": "طالب",
+          "instructor": "مدرب"
+        },
+        "statuses": {
+          "active": "نشط",
+          "inactive": "غير نشط",
+          "pending": "معلق",
+          "under_review": "قيد المراجعة"
+        }
+      },
+      "pagination": {
+        "info": "عرض البيانات من {{start}} إلى {{end}} من أصل {{total}} مستخدم"
+      },
+      "details": {
+        "back": "العودة للمستخدمين",
+        "title": "تفاصيل المستخدم",
+        "subtitle": "عرض معلومات المستخدم وسجل نشاطه",
+        "editData": "تعديل البيانات",
+        "roles": {
+          "student": "طالب",
+          "instructor": "مدرب"
+        },
+        "stats": {
+          "enrolled": "الدورات المسجلة",
+          "completed": "الدورات المكتملة",
+          "certificates": "الشهادات",
+          "learningHours": "ساعات التعلم"
+        },
+        "courses": {
+          "title": "الدورات المسجلة",
+          "searchPlaceholder": "بحث باسم الدورة أو التخصص...",
+          "major": "التخصص",
+          "allStatuses": "جميع الحالات",
+          "status": {
+            "ongoing": "جاري",
+            "completed": "مكتمل"
+          }
+        },
+        "contact": {
+          "joined": "انضم في"
+        }
+      },
+      "edit": {
+        "backToDetails": "العودة للتفاصيل",
+        "title": "تعديل بيانات المستخدم",
+        "subtitle": "تعديل معلومات المستخدم الأساسية",
+        "basicInfo": "المعلومات الأساسية",
+        "labels": {
+          "fullName": "الاسم الكامل",
+          "email": "البريد الإلكتروني",
+          "phone": "رقم التليفون",
+          "location": "الموقع",
+          "role": "الدور",
+          "status": "الحالة",
+          "bio": "نبذة تعريفية"
+        },
+        "buttons": {
+          "save": "حفظ التعديلات",
+          "cancel": "إلغاء"
+        },
+        "validation": {
+          "nameRequired": "الاسم الكامل مطلوب",
+          "nameMin": "يجب أن يكون الاسم 3 أحرف على الأقل",
+          "emailRequired": "البريد الإلكتروني مطلوب",
+          "emailInvalid": "البريد الإلكتروني غير صحيح",
+          "phoneNumeric": "رقم التليفون يجب أن يحتوي على أرقام فقط",
+          "roleRequired": "الدور مطلوب",
+          "statusRequired": "الحالة مطلوبة"
+        }
+      }
+    },
+    "sidebar": {
+      "overview": "نظرة عامة",
+      "users": "المستخدمون",
+      "instructors": "المدربون",
+      "courses": "الدورات",
+      "payments": "المدفوعات",
+      "reports": "التقارير",
+      "certificates": "الشهادات",
+      "settings": "الإعدادات",
+      "logout": "تسجيل خروج"
+    },
+    "navbar": {
+      "searchPlaceholder": "البحث عن دروس، مدربين..."
+    }
   }
 }
 

@@ -1,4 +1,4 @@
-type ButtonVariant = "primary" | "outline" | "ghost" | "info";
+type ButtonVariant = "primary" | "outline" | "ghost" | "info" | "save" | "cancel";
 type ButtonSize = "sm" | "md" | "lg";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -18,11 +18,13 @@ const variantClasses: Record<ButtonVariant, string> = {
     "text-orange-500 hover:bg-orange-50 bg-transparent transition-all duration-300",
 
   info: " bg-[#F3EAE2] text-[#113555] px-4 py-2 rounded-full text-sm hover:opacity-90 transition transition-all duration-200",
+  save: "bg-[#FF6B00] text-white shadow-lg shadow-orange-100 dark:shadow-transparent hover:bg-[#e66000] rounded-2xl transition-all duration-300",
+  cancel: "bg-white dark:bg-slate-800 border border-[#FF6B00] text-[#535353] dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-slate-700 rounded-2xl transition-all duration-300",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
   sm: "px-4 py-1 text-sm rounded-xl",
-  md: "px-6 py-2 text-base rounded-xl",
+  md: "px-4 py-2.5 text-base rounded-xl",
   lg: "px-7 py-2 text-lg rounded-3xl",
 };
 
