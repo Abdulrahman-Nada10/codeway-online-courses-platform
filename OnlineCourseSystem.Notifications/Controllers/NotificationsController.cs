@@ -47,7 +47,7 @@ namespace OnlineCourseSystem.Notifications.Controllers
             return this.OkResponse(userNotificationIds, "Notification created successfully");
         }
 
-
+        // هيبقي افضل لو جبنا ال USerID من التوكن لان كدا ممكن يوزر يجيب نوتيفيكيشن بتاع يوزر تاني ودي مش حاجة كويسة
         /// <summary>
         /// Retrieves a paginated list of notifications for the specified user.
         /// </summary>

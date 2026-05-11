@@ -1,7 +1,7 @@
 using MediatR;
+using OnlineCourseSystem.Notifications.DTOs;
 using OnlineCourseSystem.Notifications.Exceptions;
 using OnlineCourseSystem.Notifications.Features.Messages.DTOs;
-using OnlineCourseSystem.Notifications.Features.Notifications.DTOs;
 using OnlineCourseSystem.Notifications.Infrastructure.Repositories.UnitOfWork;
 using OnlineCourseSystem.Notifications.Infrastructure.Services.Interfaces;
 using OnlineCourseSystem.Notifications.Models;

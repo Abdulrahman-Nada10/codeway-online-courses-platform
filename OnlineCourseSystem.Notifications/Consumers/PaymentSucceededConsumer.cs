@@ -1,6 +1,6 @@
 using MassTransit;
 using OnlineCourseSystem.Contracts.Messaging.Events;
-using OnlineCourseSystem.Notifications.Features.Notifications.DTOs;
+using OnlineCourseSystem.Notifications.DTOs;
 using OnlineCourseSystem.Notifications.Infrastructure.Services.Interfaces;
 using OnlineCourseSystem.Notifications.Models.Enums;
 

@@ -1,9 +1,11 @@
 using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using OnlineCourseSystem.Contracts.Messaging.Events;
-using OnlineCourseSystem.Notifications.Features.Notifications.DTOs;
+using OnlineCourseSystem.Notifications.DTOs;
 using OnlineCourseSystem.Notifications.Infrastructure.Repositories.UnitOfWork;
 using OnlineCourseSystem.Notifications.Infrastructure.Services.Interfaces;
 using OnlineCourseSystem.Notifications.Models;
+using OnlineCourseSystem.Notifications.Models.Data;
 using OnlineCourseSystem.Notifications.Models.Enums;
 
 namespace OnlineCourseSystem.Notifications.Consumers;
