@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.github\\workflows",
+    "\\Course_online",
+    "\\Course_online\\CourseOnline.Auth",
+    "\\Course_online\\CourseOnline.Auth\\Properties",
+    "\\Course_online\\Course_online",
+    "\\GlobalResponse.Shared",
+    "\\OnlineCourseSystem.Auth"
+  ],
+  "SelectedNode": "\\Course_online\\Course_online\\Course_online.csproj",
+  "PreviewInSolutionExplorer": false
+}
