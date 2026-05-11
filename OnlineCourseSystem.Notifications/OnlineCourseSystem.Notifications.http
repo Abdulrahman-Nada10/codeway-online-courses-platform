@@ -1,6 +1,0 @@
-@OnlineCourseSystem.Notifications_HostAddress = http://localhost:5122
-
-GET {{OnlineCourseSystem.Notifications_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
