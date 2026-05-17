@@ -19,6 +19,7 @@ import {
   ChartArea,
   BookUser,
   CircleDollarSign,
+  FileText,
 } from "lucide-react";
 import SidebarItem from "./SidebarInstructorItems";
 import Link from "next/link";
@@ -42,6 +43,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "الطلاب", href: "/ins-students", icon: BookUser },
   { label: "الأرباح", href: "/ins-earnings", icon: CircleDollarSign },
   { label: "الشهادات", href: "/ins-certificates", icon: Award },
+  { label: "الواجبات", href: "/ins-assignment", icon: FileText },
   { label: "الملف الشخصي", href: "/ins-profile", icon: UserCircle },
 ];
 
@@ -58,12 +60,21 @@ function isItemActive(pathname: string, href: string, exact = false): boolean {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export default function Sidebar() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+type SidebarProps = {
+  collapsed?: boolean;
+  onCollapse?: (collapsed: boolean) => void;
+};
+
+export default function Sidebar({ collapsed, onCollapse }: SidebarProps = {}) {
+  const [internalCollapsed, setInternalCollapsed] = useState(false);
+  const isCollapsed = collapsed !== undefined ? collapsed : internalCollapsed;
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const pathname = usePathname();
 
-  const toggle = () => setIsCollapsed((prev) => !prev);
+  const toggle = () => {
+    if (onCollapse) onCollapse(!isCollapsed);
+    else setInternalCollapsed(!isCollapsed);
+  };
   const closeMobile = () => setIsMobileOpen(false);
 
   const renderNavItems = (items: NavItem[], collapsed: boolean) =>

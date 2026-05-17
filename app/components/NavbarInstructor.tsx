@@ -11,7 +11,7 @@ const Navbar = () => {
 
   return (
     <div className="p-3 sm:p-4 lg:p-6 pt-3 sm:pt-4 lg:pt-6">
-      <nav className="bg-white rounded-2xl px-3 sm:px-4 lg:px-6 py-3 sm:py-4 flex items-center justify-between gap-2 sm:gap-3 lg:gap-4 shadow-sm">
+      <nav className="bg-white rounded-2xl pl-3 pr-14 sm:pl-4 sm:pr-16 md:px-4 lg:px-6 py-3 sm:py-4 flex items-center justify-between gap-2 sm:gap-3 lg:gap-4 shadow-sm">
         <div className="flex-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl">
           <SearchBar />
         </div>
