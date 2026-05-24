@@ -3,23 +3,42 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Search, ShoppingCart, Bell, Menu, X, ArrowLeft, LogIn } from "lucide-react";
 
 // روابط التنقل الأساسية
 const navLinks = [
   { name: "الرئيسية", href: "/" },
   { name: "الدورات", href: "/list-of-courses" },
-  { name: "المميزات", href: "/features" },
+  { name: "المميزات", href: "/#features" },
   { name: "تواصل معنا", href: "/contact" },
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
   // يمكنك تغيير هذه الحالة لاحقاً بناءً على نظام التوثيق (Auth) لديك
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-  //  بس هلق مشان التجربه
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navbarRef = useRef<HTMLDivElement>(null);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, href: string) => {
+    setIsMobileMenuOpen(false);
+    if (pathname === "/") {
+      if (href === "/") {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (href.startsWith("/#")) {
+        e.preventDefault();
+        const targetId = href.replace("/#", "");
+        const elem = document.getElementById(targetId);
+        if (elem) {
+          const y = elem.getBoundingClientRect().top + window.scrollY - 80;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
+      }
+    }
+  };
 
   // إغلاق القوائم والبحث عند الضغط خارج النافبار
   useEffect(() => {
@@ -43,7 +62,7 @@ export default function Navbar() {
 
           <div className="flex items-center gap-2 shrink-0 group">
             <div className={`flex items-center gap-2 transition-all duration-300 ${isSearchOpen ? 'hidden sm:flex' : 'flex'}`}>
-              <Link href="/" className="shrink-0 hover:scale-105 transition-transform">
+              <Link href="/" onClick={(e) => handleNavClick(e, "/")} className="shrink-0 hover:scale-105 transition-transform">
                 <Image
                   src="/favicon.ico"
                   alt="Logo"
@@ -73,6 +92,7 @@ export default function Navbar() {
                   <li key={link.name}>
                     <Link
                       href={link.href}
+                      onClick={(e) => handleNavClick(e, link.href)}
                       className="px-5 py-2 text-[15px] font-bold text-gray-500 hover:text-primary rounded-xl hover:bg-primary/5 transition-all duration-200"
                     >
                       {link.name}
@@ -151,7 +171,7 @@ export default function Navbar() {
                 <Link 
                   key={link.name} 
                   href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => handleNavClick(e, link.href)}
                   className="p-3.5 font-bold text-gray-600 hover:bg-primary/5 hover:text-primary rounded-xl transition-all duration-200"
                 >
                   {link.name}

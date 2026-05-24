@@ -25,7 +25,7 @@ export default function Navbar() {
   "
   dir="rtl"
 >
-      <nav className="mx-auto max-w-7xl bg-white rounded-2xl sm:rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-orange-50/50 px-4 sm:px-8 py-3 flex items-center justify-between gap-3">
+      <nav className="mx-auto max-w-7xl bg-white rounded-2xl sm:rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-orange-50/50 pr-16 pl-4 sm:px-8 py-3 flex items-center justify-between gap-3">
 
 
         <div className="flex-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl">

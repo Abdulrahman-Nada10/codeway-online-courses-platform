@@ -60,7 +60,7 @@ export default function Features() {
   ];
 
   return (
-    <section className="py-12 sm:py-16 bg-[#FFF8F0]">
+    <section id="features" className="py-12 sm:py-16 bg-[#FFF8F0]">
       <div className="text-center mb-8 sm:mb-12 px-4">
         <span className="bg-primary/10 text-primary px-3 sm:px-4 py-1 rounded-full text-xs sm:text-sm font-bold">
           لماذا تختار EGC

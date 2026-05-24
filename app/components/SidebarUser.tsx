@@ -13,7 +13,8 @@ import {
   LogOut,
   Menu,
   X,
-  PlaySquare
+  PlaySquare,
+  MessagesSquare,
 } from "lucide-react";
 
 interface MenuItem {
@@ -43,6 +44,7 @@ const Sidebar = () => {
     { id: 'favorites', label: 'المفضلة', href: '/userDashboard/favorites', icon: <Heart className="w-5 h-5" /> },
     { id: 'certificates', label: 'شهاداتي', href: '/userDashboard/certificates', icon: <Award className="w-5 h-5" /> },
     { id: 'liveSession', label: 'حصة مباشرة', href: '/userDashboard/liveSession', icon: <PlaySquare className="w-5 h-5" /> },
+    { id: 'community', label: 'المجتمع', href: '/userDashboard/community', icon: <MessagesSquare className="w-5 h-5" /> },
   ];
 
   const bottomItems: MenuItem[] = [
@@ -77,12 +79,10 @@ const Sidebar = () => {
     <>
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className={`lg:hidden fixed left-4 z-50 p-2 bg-[#FF6400] text-white rounded-lg shadow-lg transition-all duration-300 ${
-          isScrolled ? 'top-2.5' : 'top-27.5'
-        }`}
+        className="lg:hidden fixed right-4 top-[18px] z-[60] p-2 bg-[#FF6400] text-white rounded-xl shadow-md transition-all duration-300"
         aria-label="القائمة"
       >
-        {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
 
       {isMobileMenuOpen && (
