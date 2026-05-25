@@ -4,9 +4,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { 
   MoreHorizontal, Users, Bell, Smile, Link2, Send, Atom, Pin, 
   MessageSquare, Image as ImageIcon, FileText, Camera, Mic, BarChart2,
-  X, Reply, Plus, Play, Pause, File as FileIcon
+  X, Reply, Plus, Play, Pause, File as FileIcon, ArrowRight, SendHorizontal
 } from 'lucide-react';
 import EmojiPicker from 'emoji-picker-react';
+import Link from 'next/link';
 
 interface Message {
   id: string;
@@ -92,6 +93,38 @@ export default function CommunityChatPage({ params }: { params: { id: string } }
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages.length]);
+
+  const renderMessageText = (text: string, isMine: boolean) => {
+    if (!text) return null;
+    
+    const escapeRegExp = (str: string) => {
+      return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    };
+    
+    const sortedMembers = [...mockMembers].sort((a, b) => b.length - a.length);
+    const memberPatterns = sortedMembers.map(escapeRegExp).join('|');
+    const regex = new RegExp(`(@(?:${memberPatterns}|[^\\s@]+))`, 'g');
+    
+    const parts = text.split(regex);
+    
+    return parts.map((part, index) => {
+      if (part.startsWith('@')) {
+        return (
+          <span 
+            key={index} 
+            className={`font-bold rounded-md px-1.5 py-0.5 mx-0.5 text-xs inline-block transition-all duration-200 ${
+              isMine 
+                ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm cursor-pointer' 
+                : 'bg-blue-50 text-blue-600 hover:bg-blue-100 cursor-pointer'
+            }`}
+          >
+            {part}
+          </span>
+        );
+      }
+      return <React.Fragment key={index}>{part}</React.Fragment>;
+    });
+  };
 
   useEffect(() => {
     if (isRecording) {
@@ -323,12 +356,15 @@ export default function CommunityChatPage({ params }: { params: { id: string } }
           </div>
 
           <div className="flex items-center gap-4">
+            <Link href="/userDashboard/community" className="hover:bg-gray-100 p-2 rounded-full transition-colors text-gray-600 mr-1" title="العودة إلى المجتمعات">
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+            <div className="bg-[#FFF5EF] p-3 rounded-full text-[#FF6400]">
+               <Atom className="w-6 h-6" />
+            </div>
             <div className="text-right">
                <h2 className="text-lg md:text-xl font-bold text-[#000000]">مجتمع React الأساسي</h2>
                <p className="text-sm text-gray-500">50 نشط • 248 عضو</p>
-            </div>
-            <div className="bg-[#FFF5EF] p-3 rounded-full text-[#FF6400]">
-               <Atom className="w-6 h-6" />
             </div>
           </div>
         </div>
@@ -387,7 +423,7 @@ export default function CommunityChatPage({ params }: { params: { id: string } }
                   )}
                   
                   {/* Text */}
-                  {msg.text && <p>{msg.text}</p>}
+                  {msg.text && <p>{renderMessageText(msg.text, msg.isMine)}</p>}
 
                   {/* Image Attachment */}
                   {msg.type === 'image' && msg.attachmentUrl && (
@@ -567,7 +603,7 @@ export default function CommunityChatPage({ params }: { params: { id: string } }
                disabled={!inputText.trim()}
                className={`p-3 md:p-4 rounded-full transition-colors flex-shrink-0 flex items-center justify-center ${inputText.trim() ? 'bg-[#FF6400] text-white hover:bg-[#E55A00] shadow-md hover:shadow-lg' : 'bg-[#FFF5EF] text-[#FF6400]'}`}
              >
-               <Send className="w-5 h-5 rtl:rotate-180" />
+               <SendHorizontal className="w-5 h-5 rtl:rotate-180" />
              </button>
              
              {/* Input Bar (Left Side in RTL) */}
@@ -657,7 +693,7 @@ export default function CommunityChatPage({ params }: { params: { id: string } }
                  </div>
                  <div className="flex items-center gap-3">
                    <button onClick={() => { setIsRecording(false); setRecordingTime(0); }} className="text-gray-400 hover:text-gray-700 text-sm font-bold">إلغاء</button>
-                   <button onClick={handleStopRecording} className="bg-[#FF6400] text-white p-2 rounded-full hover:bg-[#E55A00] shadow-sm"><Send className="w-4 h-4 rtl:rotate-180" /></button>
+                   <button onClick={handleStopRecording} className="bg-[#FF6400] text-white p-2 rounded-full hover:bg-[#E55A00] shadow-sm"><SendHorizontal className="w-4 h-4 rtl:rotate-180" /></button>
                  </div>
                </div>
              )}
