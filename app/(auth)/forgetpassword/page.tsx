@@ -1,6 +1,6 @@
 import AuthWrapper from "@/app/components/auth/AuthWrapper";
 import { Input } from "@/app/components/auth/Input";
-import { AiOutlineMail } from 'react-icons/ai'; // ✅ Imports سليمة
+import { AiOutlineMail } from 'react-icons/ai'; 
 import { HiLockClosed } from 'react-icons/hi';
 import Link from "next/link";
 
@@ -24,7 +24,7 @@ export default function ForgotPasswordPage() {
                     <Input
                         type="email"
                         placeholder="البريد الإلكتروني"
-                        icon={<AiOutlineMail size={20} />} // ✅ تم التعديل هنا
+                        icon={<AiOutlineMail size={20} />} 
                     />
 
                     <button className="w-full bg-primary text-white font-bold py-3.5 rounded-xl hover:opacity-95 transition-all shadow-lg shadow-primary/20 active:scale-[0.98]">

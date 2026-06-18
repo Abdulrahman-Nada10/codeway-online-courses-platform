@@ -1,4 +1,4 @@
-import AuthWrapper from "@/app/components/auth/AuthWrapper"; // التعديل: استيراد بدون أقواس
+import AuthWrapper from "@/app/components/auth/AuthWrapper"; 
 import { Input } from "@/app/components/auth/Input";
 import { AiOutlineMail, AiOutlineLock, AiOutlineEye } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';

@@ -3,7 +3,7 @@ import { Input } from "@/app/components/auth/Input";
 import { GenderSelect } from "@/app/components/auth/GenderSelect";
 import { AiOutlineMail, AiOutlineLock, AiOutlineEye, AiOutlineUser } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
-import { RiUserSharedLine } from 'react-icons/ri'; // محتاجة تثبتي react-icons لو مش موجودة
+import { RiUserSharedLine } from 'react-icons/ri'; 
 import Link from "next/link";
 import { FaLinkedin, FaFacebook, FaYoutube, FaInstagram } from 'react-icons/fa';
 
@@ -40,7 +40,7 @@ export default function RegisterPage() {
                 {/* السن */}
                 <Input type="number" placeholder="السن" />
 
-                {/* المحافظة والمنطقة (نصين في سطر واحد) */}
+                
                 <div className="flex gap-4">
                     <div className="flex-[1.2]"> {/* المحافظة Select أو Input */}
                         <select className="w-full bg-input-bg border border-[#FFD8BF] rounded-xl py-3 px-4 text-right outline-none text-sm input-shadow text-gray-400 appearance-none">

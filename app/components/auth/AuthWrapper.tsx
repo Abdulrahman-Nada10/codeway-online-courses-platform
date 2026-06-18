@@ -5,7 +5,7 @@ interface AuthWrapperProps {
     children: React.ReactNode;
     title: string;
     subTitle?: string;
-    icon?: React.ReactNode; // ضفنا الـ icon هنا عشان الكود ميعملش Error
+    icon?: React.ReactNode; 
 }
 
 const AuthWrapper = ({ children, title, subTitle, icon }: AuthWrapperProps) => {
@@ -41,7 +41,7 @@ const AuthWrapper = ({ children, title, subTitle, icon }: AuthWrapperProps) => {
                     </p>
                 )}
 
-                {/* الـ Form أو المحتوى اللي بيبعت من الصفحات التانية */}
+               
                 <div className="w-full mt-8">
                     {children}
                 </div>

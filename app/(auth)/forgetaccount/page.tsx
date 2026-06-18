@@ -1,7 +1,7 @@
 "use client";
 
 import AuthWrapper from "@/app/components/auth/AuthWrapper";
-import { Input } from "@/app/components/auth/Input"; // ✅ ضفنا الأقواس هنا
+import { Input } from "@/app/components/auth/Input"; 
 import Link from "next/link";
 
 import { HiOutlineUpload } from "react-icons/hi";
