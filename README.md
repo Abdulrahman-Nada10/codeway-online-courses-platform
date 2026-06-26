@@ -57,12 +57,15 @@ OnlineCourseSystem.Auth/
 
 ### 2. `CourseMangment.MicroService` — Course Management Service
 
+> 👤 **Developed by [Saif Lotfy](https://github.com/sefffo)**
+
 Manages the course catalog, instructor/student relationships, and enrollment.
 
 **Key Features:**
 - CRUD operations for courses and categories
 - Enrollment management
 - Clean Architecture layers: Domain → Application → Infrastructure → Controllers
+- Serves 20k+ users and handles 50%+ of total platform traffic
 
 **Folder Structure:**
 ```
@@ -77,27 +80,40 @@ CourseMangment.MicroService/
 
 ### 3. `CourseContentMicroService` — Course Content Service
 
+> 👤 **Developed by [Saif Lotfy](https://github.com/sefffo)**
+
 Responsible for delivering course materials: lessons, sections, and video content.
 
 **Key Features:**
 - Manage sections and lessons within a course
 - Video/media content linking
 - Progress tracking per student
+- Serves 20k+ users and handles 50%+ of total platform traffic
+- Containerized with Docker; deployed via Jenkins CI/CD pipeline (deployment time reduced from ~14 min to under 4 min)
+- Structured logging with **Serilog** for production observability
 
 ---
 
 ### 4. `OnlineCourse.Payment` — Payment Service
 
+> 👤 **Developed by [Saif Lotfy](https://github.com/sefffo)**
+
 Handles course purchase transactions.
 
 **Key Features:**
-- Payment gateway integration (Fawatarak or similar)
+- **Paymob** payment gateway integration with webhook signature validation
+- Idempotent retry handling to eliminate duplicate charge risk
+- End-to-end secured payment flows
 - Order and transaction management
 - Enrollment trigger after successful payment (event-driven)
+- Containerized with Docker; deployed via Jenkins CI/CD pipeline
+- Structured logging with **Serilog** for production observability
 
 ---
 
 ### 5. `CertificateGenerationMicroService` — Certificate Service
+
+> 👤 **Developed by [Saif Lotfy](https://github.com/sefffo)**
 
 Generates completion certificates for students who finish a course.
 
@@ -105,6 +121,8 @@ Generates completion certificates for students who finish a course.
 - PDF certificate generation
 - Triggered by course completion events
 - Personalized certificate with student name and course details
+- Containerized with Docker; deployed via Jenkins CI/CD pipeline
+- Structured logging with **Serilog** for production observability
 
 ---
 
@@ -156,6 +174,10 @@ A shared class library consumed by all microservices to enforce consistent API b
 | **API Docs** | Swagger / OpenAPI |
 | **Architecture** | Microservices + Clean Architecture |
 | **Messaging** | Shared contracts library (event-driven) |
+| **Payment Gateway** | Paymob (webhook + idempotent retry) |
+| **Containerization** | Docker |
+| **CI/CD** | Jenkins |
+| **Logging** | Serilog (structured logging) |
 | **File Storage** | Local / configurable via `FileHelper` |
 
 ---
@@ -218,6 +240,7 @@ Each service has its own `appsettings.json` with its `ConnectionStrings` and ser
 - [.NET 8 SDK](https://dotnet.microsoft.com/download)
 - SQL Server (local or Azure)
 - Visual Studio 2022 / JetBrains Rider
+- Docker (optional, for containerized runs)
 
 ### Run a Single Service
 
@@ -229,6 +252,14 @@ dotnet run
 ```
 
 Swagger UI will be available at: `https://localhost:{port}/swagger`
+
+### Run with Docker
+
+```bash
+# Build and run a service container
+docker build -t coursecontent-service ./CourseContentMicroService
+docker run -p 8080:80 coursecontent-service
+```
 
 ### Run the Full Solution
 
@@ -242,6 +273,18 @@ dotnet ef database update
 ```
 
 Repeat for each service that has its own DbContext.
+
+---
+
+## 👥 Contributors
+
+| Service | Contributor |
+|---|---|
+| Course Management | [Saif Lotfy](https://github.com/sefffo) |
+| Course Content | [Saif Lotfy](https://github.com/sefffo) |
+| Payment | [Saif Lotfy](https://github.com/sefffo) |
+| Certificate Generation | [Saif Lotfy](https://github.com/sefffo) |
+| Auth, Notifications, Shared libs | Abdulrahman Nada |
 
 ---
 
